@@ -1,0 +1,170 @@
+﻿<Window x:Class="ExamClock.Views.StartupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:vm="clr-namespace:ExamClock.ViewModels"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Title="StartupWindow" Height="360" Width="500">
+    <Window.DataContext>
+        <vm:StartupViewModel/>
+    </Window.DataContext>
+    <Border Background="White"
+            BorderBrush="#B2B2B2"
+            MouseDown="Border_MouseDown"
+            BorderThickness="1"
+            CornerRadius="{StaticResource WindowCornerRadius}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="163"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Background="#D4ECFF"
+                    Grid.Row="0"
+                    CornerRadius="{StaticResource TitleBarCornerRadius}">
+                <Grid Margin="55 47 0 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="教育考试时钟"
+                           Grid.Row="0"
+                           FontSize="40"
+                           FontFamily="{StaticResource Hei}"/>
+                    <Label Content="{Binding ExamDateText}"
+                           Grid.Row="1"
+                           FontSize="20"
+                           FontFamily="{StaticResource Hei}"/>
+                </Grid>
+
+            </Border>
+            <Grid Grid.Row="1" Margin="50 27 50 15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="32"/>
+                </Grid.RowDefinitions>
+
+                <Button Width="150"
+                        Name="StartExamButton"
+                        Command="{Binding StartExamCommand}"
+                        Height="120"
+                        Grid.Row="0"
+                        Grid.Column="0">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Background="{StaticResource ShallowBlueBrush}"
+                                    Height="120" Width="120"
+                                    CornerRadius="60"
+                                    BorderBrush="{StaticResource BorderBlueBrush}"
+                                    BorderThickness="4">
+                                <Image Source="/Views/Images/Icons/StartExam.png"
+                                       Height="58" Width="50"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Effect>
+                        <DropShadowEffect BlurRadius="10" 
+                                          Color="{StaticResource BorderBlue}" 
+                                          Direction="0" 
+                                          ShadowDepth="0"
+                                          Opacity="0.2"/>
+                    </Button.Effect>
+                </Button>
+
+                <Label Foreground="#5D5D5D"
+                       FontFamily="{StaticResource Hei}"
+                       FontSize="18"
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Content="开始考试"/>
+
+                <Button Width="150"
+                        Name="TimeTableButton"
+                        Height="120"
+                        Command="{Binding ShowSettingsWindowCommand}"
+                        Grid.Row="0"
+                        Grid.Column="1">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Background="{StaticResource ShallowBlueBrush}"
+                                    Height="120" Width="120"
+                                    CornerRadius="60"
+                                    BorderBrush="{StaticResource BorderBlueBrush}"
+                                    BorderThickness="4">
+                                <Image Source="/Views/Images/Icons/TimeTable.png"
+                                       Height="46" Width="59"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.Effect>
+                        <DropShadowEffect BlurRadius="10" 
+                                          Color="{StaticResource BorderBlue}" 
+                                          Direction="0" 
+                                          ShadowDepth="0"
+                                          Opacity="0.2"/>
+                    </Button.Effect>
+                </Button>
+
+                <Label Foreground="#5D5D5D"
+                       FontFamily="{StaticResource Hei}"
+                       FontSize="18"
+                       Grid.Column="1"
+                       Grid.Row="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Content="时间表"/>
+            </Grid>
+
+            <Button Grid.Row="0" 
+                    Width="33" Height="33"
+                    HorizontalAlignment="Right"
+                    Name="CloseButton"
+                    Click="CloseButton_Click"
+                    VerticalAlignment="Top">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Border Background="#D4ECFF"
+                                CornerRadius="0 5 0 0">
+                            <Image Source="Images/Close.png" 
+                               Width="13"/>
+                        </Border>
+
+                    </ControlTemplate>
+                    
+                </Button.Template>
+                
+            </Button>
+
+            <Button Grid.Row="0" Width="32" Height="32"
+                    HorizontalAlignment="Left"
+                    Name="InfoButton"
+                    Command="{Binding ShowInfoCommand}"
+                    VerticalAlignment="Top"
+                    Margin="8 6 0 0">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Border Background="#D4ECFF"
+                                BorderBrush="#A1D6FF"
+                                BorderThickness="2"
+                                CornerRadius="10">
+                            <Image Source="Images/Info.png" 
+                                   Width="6"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+    </Border>
+
+</Window>

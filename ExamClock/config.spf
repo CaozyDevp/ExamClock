@@ -1,0 +1,28 @@
+﻿#VERSION
+{
+	prgm = string:"1.0.1",
+	file = string:"1.0"
+}
+
+#SETTINGS
+{
+	beginNotice = bool:"true",
+	beforeEndingNotice = int:"10",
+	endingNotice = bool:"true",
+	roomNumber = ushort:"0518"
+}
+
+#TIMETABLE
+{
+	items = table:"[
+		(string:'语文', DateTime:'2025/9/4 08:00:00.0', int:'120'),
+		(string:'数学', DateTime:'2025/9/4 10:00:00.0', int:'100'),
+		(string:'数学', DateTime:'2025/9/6 10:00:00.0', int:'100'),
+		(string:'数学', DateTime:'2025/9/7 10:00:00.0', int:'100'),
+		(string:'数学', DateTime:'2025/9/8 10:00:00.0', int:'100'),
+		(string:'数学', DateTime:'2025/9/9 10:00:00.0', int:'100'),
+		(string:'数学', DateTime:'2025/9/10 10:00:00.0', int:'100'),
+		(string:'数学', DateTime:'2025/9/11 10:00:00.0', int:'100'),
+		(string:'数学', DateTime:'2025/9/12 10:00:00.0', int:'100')
+	]"
+}
