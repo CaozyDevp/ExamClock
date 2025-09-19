@@ -34,14 +34,5 @@ namespace ExamClock.Views
         {
             Application.Current.Shutdown();
         }
-
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // 拖动窗体
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
-        }
     }
 }

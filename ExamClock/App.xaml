@@ -1,9 +1,10 @@
-﻿<Application x:Class="ExamClock.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             StartupUri="Views/StartupWindow.xaml"
-             Startup="Application_Startup">
+﻿<Application
+    x:Class="ExamClock.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Startup="Application_Startup"
+    StartupUri="Views/StartupWindow.xaml">
     <Application.Resources>
 
         <sys:String x:Key="AppVersion">1.1-beta</sys:String>
@@ -11,10 +12,10 @@
         <sys:String x:Key="Author">Zachary Cao</sys:String>
         <sys:String x:Key="Account">CaozyDevp@Github</sys:String>
 
-        <!--用于显示一般文字-->
+        <!--  用于显示一般文字  -->
         <FontFamily x:Key="Hei">../Views/Fonts/#OPPO Sans</FontFamily>
-        
-        <!--用于显示数字-->
+
+        <!--  用于显示数字  -->
         <FontFamily x:Key="Num">../Views/Fonts/#OPPO Sans</FontFamily>
 
         <Color x:Key="TitleBarForeground">#000000</Color>
@@ -25,13 +26,13 @@
         <Color x:Key="BorderBlue">#0099FF</Color>
         <Color x:Key="ShallowBlue">#F6FAFF</Color>
 
-        <SolidColorBrush x:Key="ActiveBlueBrush" Color="{StaticResource ActiveBlue}"/>
-        <SolidColorBrush x:Key="InactiveGrayBrush" Color="{StaticResource InactiveGray}"/>
-        <SolidColorBrush x:Key="BorderBlueBrush" Color="{StaticResource BorderBlue}"/>
-        <SolidColorBrush x:Key="ShallowBlueBrush" Color="{StaticResource ShallowBlue}"/>
+        <SolidColorBrush x:Key="ActiveBlueBrush" Color="{StaticResource ActiveBlue}" />
+        <SolidColorBrush x:Key="InactiveGrayBrush" Color="{StaticResource InactiveGray}" />
+        <SolidColorBrush x:Key="BorderBlueBrush" Color="{StaticResource BorderBlue}" />
+        <SolidColorBrush x:Key="ShallowBlueBrush" Color="{StaticResource ShallowBlue}" />
 
-        <SolidColorBrush x:Key="TitleBarForegroundBrush" Color="{StaticResource TitleBarForeground}"/>
-        <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="{StaticResource TitleBarBackground}"/>
+        <SolidColorBrush x:Key="TitleBarForegroundBrush" Color="{StaticResource TitleBarForeground}" />
+        <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="{StaticResource TitleBarBackground}" />
 
         <CornerRadius x:Key="WindowCornerRadius">5</CornerRadius>
         <CornerRadius x:Key="TitleBarCornerRadius">5,5,0,0</CornerRadius>
