@@ -150,7 +150,7 @@ namespace Spf
 
         public override string ToString()
         {
-            var result = "table:\"[";
+            var result = "[";
             for (int i = 0; i < Data.Count; i++)
             {
                 result += Data[i].ToString();
@@ -159,7 +159,7 @@ namespace Spf
                     result += ",";
                 }
             }
-            result += "]\"";
+            result += "]";
             return result;
         }
     }

@@ -118,12 +118,12 @@ namespace SpfTests
         [TestMethod]
         public void ToString_Test()
         {
-            var expected = "table:\"[(string:'str',int:'12'),(ushort:'20',bool:'True')]\"";
-            var result = new Table(new List<TableItem>
-            {
-                new TableItem(new List<object>{"str",12}),
-                new TableItem(new List<object>{(ushort)20,true})
-            }).ToString();
+            var expected = "[(string:'str',int:'12'),(ushort:'20',bool:'True')]";
+            var result = new Table(
+            [
+                new TableItem(["str",12]),
+                new TableItem([(ushort)20,true])
+            ]).ToString();
             Assert.AreEqual(expected, result);
         }
     }

@@ -25,32 +25,44 @@ public class SpfItemTests
     [TestMethod]
     public void GetString_Test()
     {
-        var profileItem = new ConfigurationItem()
+        ConfigurationItem profileItem = new()
         {
             Key = "PROFILE",
-            Properties = new List<PropertyItem>()
-                {
+            Properties =
+                [
                     new PropertyItem("name", "Zachary"),    // string
                     new PropertyItem("age", 16),            // int
                     new PropertyItem("valid", true),        // bool
                     new PropertyItem("id", (ushort)5683),   // ushort
                     new PropertyItem("birth", new DateTime(2025,8,21))  // DateTime
-                }
+                ]
         };
-        var scoreItem = new ConfigurationItem()
+        ConfigurationItem scoreItem = new()
         {
             Key = "SCORES",
-            Properties = new List<PropertyItem>()
-                {
+            Properties =
+                [
                     new PropertyItem("cn", 119.5),          // double
                     new PropertyItem("en", 115.5),          // double
                     new PropertyItem("mt", 110.5)           // double
-                }
+                ]
         };
-        List<ConfigurationItem> items = new List<ConfigurationItem>()
+        ConfigurationItem tableItem = new()
         {
-            profileItem, scoreItem
+            Key = "TIMETABLE",
+            Properties =
+                [
+                    new PropertyItem("items", new Table(
+                    [
+                        new(["t1", new DateTime(2025,1,1)]),
+                        new(["t2", new DateTime(2025,1,7)])
+                    ]))
+                ]
         };
+        List<ConfigurationItem> items =
+        [
+            profileItem, scoreItem, tableItem
+        ];
 
         string tempResult = new SpfItem()
         {
@@ -64,7 +76,8 @@ public class SpfItemTests
         }
 
         string tempExpected = "#PROFILE{name = string:\"Zachary\",age = int:\"16\",valid = bool:\"True\",id = ushort:\"5683\",birth = DateTime:\"2025/8/21 0:0:0.0\"}" +
-            "#SCORES{cn = double:\"119.5\",en = double:\"115.5\",mt = double:\"110.5\"}";
+            "#SCORES{cn = double:\"119.5\",en = double:\"115.5\",mt = double:\"110.5\"}" +
+            "#TIMETABLE{items = table:\"[(string:'t1', DateTime:'2025/1/1 0:0:0.0'),(string:'t2', DateTime:'2025/1/7 0:0:0.0')]\"}";
         string expected = "";
         foreach (var c in tempExpected)
         {
