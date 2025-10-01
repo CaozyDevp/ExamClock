@@ -26,48 +26,66 @@ namespace TimeSync
     /// <summary>
     /// 这个类用于接收时间同步请求，并做出回复
     /// </summary>
-    public class TimeSyncResponder
+    public class TimeSyncResponder : IDisposable
     {
+        /// <summary>
+        /// 主机号（考场号）
+        /// </summary>
         public ushort HostNumber { get => GetHostNumber.Invoke(); }
-        public int RequestPort { get; set; }
-        public int RespondPort { get; set; }
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-            set
-            {
-                if (_isEnabled == value)
-                {
-                    return;
-                }
 
-                if (value) _ = StartAsync();
-                else Stop();
-            }
-        }
-        private bool _isEnabled = false;
+        /// <summary>
+        /// 接收请求的端口
+        /// </summary>
+        public int RequestPort { get; }
+
+        /// <summary>
+        /// 对方接收响应的端口
+        /// </summary>
+        public int RespondPort { get; }
+
+        /// <summary>
+        /// 是否已经启动
+        /// </summary>
+        public bool IsRunning { get; private set; }
+
+        /// <summary>
+        /// 获取主机号（考场号）的委托
+        /// </summary>
+        private Func<ushort> GetHostNumber { get; }
+
+        /// <summary>
+        /// 用于接收请求信息的UdpClient
+        /// </summary>
+        private UdpClient Receiver { get; set; }
 
         public TimeSyncResponder(Func<ushort> getHostNumber, int requestPort, int respondPort)
         {
-            GetHostNumber = getHostNumber;
+            GetHostNumber = getHostNumber ?? throw new ArgumentNullException(nameof(getHostNumber));
             RequestPort = requestPort;
             RespondPort = respondPort;
         }
 
         public async Task StartAsync()
         {
-            _isEnabled = true;
-            while (_isEnabled)
+            if (IsRunning) return;
+            IsRunning = true;
+
+            Receiver = new UdpClient(RequestPort);
+
+            while (IsRunning)
             {
-                await ListenAndReplyAsync(RequestPort, RespondPort, HostNumber);
+                var result = await Receiver.ReceiveAsync();
+                var data = result.Buffer;
+                var endPoint = result.RemoteEndPoint;
+
+                ReplyTimeSyncMessage(TimeSyncMessage.Parse(data), DateTime.UtcNow, endPoint.Address, HostNumber, RespondPort);
             }
         }
 
-        public Func<ushort> GetHostNumber { get; private set; }
-
         public void Stop()
         {
-            _isEnabled = false;
+            IsRunning = false;
+            Receiver = null;
         }
 
         /// <summary>
@@ -80,10 +98,12 @@ namespace TimeSync
         /// <param name="port">对方主机的端口号。响应消息将发送到这个端口。</param>
         private void ReplyTimeSyncMessage(TimeSyncMessage request, DateTime arriveTime, IPAddress target, ushort hostNumber, int port)
         {
-            List<DateTime> dateTimes = new List<DateTime>();
-            dateTimes.Add(request.DateTimes[0]);
-            dateTimes.Add(arriveTime);
-            dateTimes.Add(DateTime.UtcNow);
+            List<DateTime> dateTimes = new List<DateTime>
+            {
+                request.DateTimes[0],
+                arriveTime,
+                DateTime.UtcNow
+            };
             TimeSyncMessage response = new TimeSyncMessage()
             {
                 Type = MessageType.Response,
@@ -99,28 +119,9 @@ namespace TimeSync
             }
         }
 
-        /// <summary>
-        /// 接收时间同步请求，并立即作出回应
-        /// </summary>
-        /// <param name="requestPort">本机被监听的端口，对方的请求发送到本机的这个端口</param>
-        /// <param name="respondPort">对方主机接收响应消息的端口</param>
-        /// <param name="hostNumber">本机的考场号（主机号）</param>
-        /// <returns></returns>
-        private async Task ListenAndReplyAsync(int requestPort, int respondPort, ushort hostNumber)
+        public void Dispose()
         {
-            var endPoint = new IPEndPoint(IPAddress.Any, 0);
-
-            byte[] data;
-
-            using (var receiver = new UdpClient(requestPort))
-            {
-                var result = await receiver.ReceiveAsync();
-                data = result.Buffer;
-                endPoint = result.RemoteEndPoint;
-            }
-
-            ReplyTimeSyncMessage(TimeSyncMessage.Parse(data), DateTime.UtcNow, endPoint.Address, hostNumber, respondPort);
+            Receiver = null;
         }
-
     }
 }

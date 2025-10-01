@@ -1,22 +1,21 @@
-﻿<Window
-    x:Class="ExamClock.Views.UserInputWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:ExamClock.Views"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="用户输入"
-    Width="380"
-    Height="200"
-    ResizeMode="NoResize"
-    WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d">
+﻿<Window x:Class="ExamClock.Views.UserInputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ExamClock.Views"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="用户输入"
+        Width="380"
+        Height="200"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d">
     <WindowChrome.WindowChrome>
-        <WindowChrome
-            CaptionHeight="30"
-            CornerRadius="10"
-            GlassFrameThickness="-1"
-            ResizeBorderThickness="5" />
+        <WindowChrome CaptionHeight="30"
+                      CornerRadius="10"
+                      GlassFrameThickness="-1"
+                      ResizeBorderThickness="5"
+                      UseAeroCaptionButtons="True"/>
     </WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
@@ -26,25 +25,23 @@
             <RowDefinition Height="64" />
         </Grid.RowDefinitions>
         <!--  标题栏  -->
-        <Border
-            Grid.Row="0"
-            Height="30"
-            Background="#F3F3F3"
-            CornerRadius="{StaticResource WindowCornerRadius}">
+        <Border Grid.Row="0"
+                Height="30"
+                Background="#F3F3F3"
+                CornerRadius="{StaticResource WindowCornerRadius}">
             <Grid>
-                <Label
-                    Margin="14,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Content="用户输入"
-                    FontFamily="{StaticResource Hei}"
-                    FontSize="15" />
-                <Button
-                    Name="CloseWindowButton"
-                    Width="30"
-                    Height="30"
-                    HorizontalAlignment="Right"
-                    Click="CloseWindowButton_Click">
+                <Label Margin="14,0,0,0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Content="用户输入"
+                       FontFamily="{StaticResource Hei}"
+                       FontSize="15" />
+                <Button Name="CloseWindowButton"
+                        Width="30"
+                        Height="30"
+                        HorizontalAlignment="Right"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        Click="CloseWindowButton_Click">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Source="/Views/Images/Close_Gray.png" />
@@ -53,65 +50,58 @@
                 </Button>
             </Grid>
         </Border>
-        <Label
-            Name="PromptLabel"
-            Grid.Row="1"
-            Margin="36,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Content=""
-            FontFamily="{StaticResource Hei}"
-            FontSize="18" />
-        <TextBox
-            Name="InputTextBox"
-            Grid.Row="2"
-            Height="32"
-            Margin="36,0,30,0"
-            FontSize="18" />
+        <Label Name="PromptLabel"
+               Grid.Row="1"
+               Margin="36,0,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Bottom"
+               Content=""
+               FontFamily="{StaticResource Hei}"
+               FontSize="18" />
+        <TextBox Name="InputTextBox"
+                 Grid.Row="2"
+                 Height="32"
+                 Margin="36,0,30,0"
+                 FontSize="18" />
 
-        <Label
-            Name="WarningLabel"
-            Grid.Row="3"
-            Margin="38,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Content=""
-            FontFamily="{StaticResource Hei}"
-            FontSize="18"
-            Foreground="#BF1515" />
-        <Button
-            Name="SubmitButton"
-            Grid.Row="3"
-            Width="119"
-            Height="45"
-            Margin="0,0,30,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Click="SubmitButton_Click">
+        <Label Name="WarningLabel"
+               Grid.Row="3"
+               Margin="38,0,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Content=""
+               FontFamily="{StaticResource Hei}"
+               FontSize="18"
+               Foreground="#BF1515" />
+        <Button Name="SubmitButton"
+                Grid.Row="3"
+                Width="119"
+                Height="45"
+                Margin="0,0,30,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Click="SubmitButton_Click">
             <Button.Template>
                 <ControlTemplate>
-                    <Border
-                        Background="{StaticResource ShallowBlueBrush}"
-                        BorderBrush="{StaticResource BorderBlueBrush}"
-                        BorderThickness="2"
-                        CornerRadius="23">
-                        <Label
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="确认"
-                            FontFamily="{StaticResource Hei}"
-                            FontSize="18"
-                            Foreground="#0099FF" />
+                    <Border Background="{StaticResource ShallowBlueBrush}"
+                            BorderBrush="{StaticResource BorderBlueBrush}"
+                            BorderThickness="2"
+                            CornerRadius="23">
+                        <Label HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Content="确认"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="18"
+                               Foreground="#0099FF" />
                     </Border>
                 </ControlTemplate>
             </Button.Template>
             <Button.Effect>
-                <DropShadowEffect
-                    BlurRadius="10"
-                    Direction="0"
-                    Opacity="0.2"
-                    ShadowDepth="0"
-                    Color="#0099FF" />
+                <DropShadowEffect BlurRadius="10"
+                                  Direction="0"
+                                  Opacity="0.2"
+                                  ShadowDepth="0"
+                                  Color="#0099FF" />
             </Button.Effect>
         </Button>
     </Grid>
