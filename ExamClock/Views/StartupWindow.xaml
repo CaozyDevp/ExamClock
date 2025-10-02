@@ -25,8 +25,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Border Grid.Row="0"
-                Background="#D4ECFF"
-                CornerRadius="{StaticResource TitleBarCornerRadius}">
+                Background="#D4ECFF">
             <Grid Margin="55,47,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" />
