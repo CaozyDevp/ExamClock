@@ -26,7 +26,7 @@ namespace TimeSync
     /// <summary>
     /// 这个类用于接收时间同步请求，并做出回复
     /// </summary>
-    public class TimeSyncResponder : IDisposable
+    public class TimeSyncResponder
     {
         /// <summary>
         /// 主机号（考场号）
@@ -78,8 +78,21 @@ namespace TimeSync
                 var data = result.Buffer;
                 var endPoint = result.RemoteEndPoint;
 
+                // 如果是本机发来的请求，则忽略
+                if (IsLocalAddress(endPoint.Address)) continue;
+
                 ReplyTimeSyncMessage(TimeSyncMessage.Parse(data), DateTime.UtcNow, endPoint.Address, HostNumber, RespondPort);
             }
+        }
+        private bool IsLocalAddress(IPAddress address)
+        {
+            var hostAddresses = Dns.GetHostAddresses(Dns.GetHostName());
+            foreach (var addr in hostAddresses)
+            {
+                if (addr.Equals(address))
+                    return true;
+            }
+            return IPAddress.IsLoopback(address);
         }
 
         public void Stop()
@@ -117,11 +130,6 @@ namespace TimeSync
             {
                 sender.Send(data, data.Length, new IPEndPoint(target, port));
             }
-        }
-
-        public void Dispose()
-        {
-            Receiver = null;
         }
     }
 }

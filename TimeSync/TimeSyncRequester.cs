@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace TimeSync
 {
@@ -26,11 +28,10 @@ namespace TimeSync
     {
         private void BroadcastTimeSyncRequest(int port, ushort hostNumber)
         {
-            var now = DateTime.Now.ToLocalTime();
             var message = new TimeSyncMessage()
             {
                 Type = MessageType.Request,
-                DateTimes = new List<DateTime> { now },
+                DateTimes = new List<DateTime> { DateTime.UtcNow },
                 HostNumber = hostNumber
             };
 
@@ -48,24 +49,40 @@ namespace TimeSync
         /// <summary>
         /// 接收指定端口的回复，如果没有收到，返回<see cref="null"/>
         /// </summary>
-        private TimeKeeper ReceiveResponse(int port, int timeout)
+        private async Task<TimeKeeper> ReceiveResponse(int port, int timeout)
         {
             var target = new IPEndPoint(IPAddress.Any, 0);
-            byte[] data;
+            byte[] data = null;
 
             using (var receiver = new UdpClient(port))
             {
                 try
                 {
-                    receiver.Client.ReceiveTimeout = timeout;
-                    data = receiver.Receive(ref target);
+                    var receiveTask = receiver.ReceiveAsync();
+                    var delayTask = Task.Delay(timeout);
+
+                    // 已经完成的任务，用于实现超时检测
+                    var completedTask = await Task.WhenAny(receiveTask, delayTask);
+                    if (completedTask == delayTask)
+                    {
+                        return null;
+                    }
+
+                    var result = await receiveTask;
+                    data = result.Buffer;
+                    target = result.RemoteEndPoint;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    MessageBox.Show($"接收时间同步响应消息时发生错误，错误信息：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return null;
                 }
             }
-            var message = TimeSyncMessage.Parse(data);
+
+            if (data == null || !TimeSyncMessage.TryParse(out var message, data))
+            {
+                return null;
+            }
 
             if (message.Type == MessageType.Response)
             {
@@ -90,20 +107,22 @@ namespace TimeSync
         }
 
         /// <summary>
-        /// 广播请求消息，并将接收到的消息转为<see cref="TimeKeeper"/>
+        /// 广播请求消息，并将接收到的消息转为<see cref="TimeKeeper"/>，最多接收50个响应
         /// </summary>
         /// <param name="requestPort"></param>
         /// <param name="respondPort"></param>
         /// <param name="hostNumber"></param>
         /// <returns></returns>
-        public List<TimeKeeper> BroadcastAndGetTimeKeepers(int requestPort, int respondPort, ushort hostNumber)
+        public async Task<List<TimeKeeper>> BroadcastAndGetTimeKeepers(int requestPort, int respondPort, ushort hostNumber)
         {
             const int timeout = 1000;
             BroadcastTimeSyncRequest(requestPort, hostNumber);
             var timeKeepers = new List<TimeKeeper>();
-            while (true)
+
+            // 最多接收50个响应
+            for (int i = 0; i < 50; i++)
             {
-                var keeper = ReceiveResponse(respondPort, timeout);
+                var keeper = await ReceiveResponse(respondPort, timeout);
                 if (keeper == null)
                 {
                     break;
