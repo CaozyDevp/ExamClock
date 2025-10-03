@@ -80,7 +80,7 @@ namespace ExamClock.Views.UserControls
             {
                 if (TimeKeeper == null)
                     return "未知时间";
-                return TimeKeeper.CurrentTime.ToString("yyyy/MM/dd\nHH:mm:ss");
+                return TimeKeeper.CurrentTime.ToLocalTime().ToString("yyyy/MM/dd\nHH:mm:ss");
             }
         }
 
@@ -127,8 +127,8 @@ namespace ExamClock.Views.UserControls
         {
             try
             {
-                var dateStr = TimeKeeper.CurrentTime.ToString("yyyy-MM-dd");
-                var timeStr = TimeKeeper.CurrentTime.ToString("HH:mm:ss");
+                var dateStr = TimeKeeper.CurrentTime.ToLocalTime().ToString("yyyy-MM-dd");
+                var timeStr = TimeKeeper.CurrentTime.ToLocalTime().ToString("HH:mm:ss");
 
                 var process = new Process
                 {

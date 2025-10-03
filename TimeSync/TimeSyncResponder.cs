@@ -39,11 +39,6 @@ namespace TimeSync
         public int RequestPort { get; }
 
         /// <summary>
-        /// 对方接收响应的端口
-        /// </summary>
-        public int RespondPort { get; }
-
-        /// <summary>
         /// 是否已经启动
         /// </summary>
         public bool IsRunning { get; private set; }
@@ -58,11 +53,10 @@ namespace TimeSync
         /// </summary>
         private UdpClient Receiver { get; set; }
 
-        public TimeSyncResponder(Func<ushort> getHostNumber, int requestPort, int respondPort)
+        public TimeSyncResponder(Func<ushort> getHostNumber, int requestPort)
         {
             GetHostNumber = getHostNumber ?? throw new ArgumentNullException(nameof(getHostNumber));
             RequestPort = requestPort;
-            RespondPort = respondPort;
         }
 
         public async Task StartAsync()
@@ -74,14 +68,21 @@ namespace TimeSync
 
             while (IsRunning)
             {
-                var result = await Receiver.ReceiveAsync();
-                var data = result.Buffer;
-                var endPoint = result.RemoteEndPoint;
+                try
+                {
+                    var result = await Receiver.ReceiveAsync();
+                    var data = result.Buffer;
+                    var endPoint = result.RemoteEndPoint;
 
-                // 如果是本机发来的请求，则忽略
-                if (IsLocalAddress(endPoint.Address)) continue;
+                    // 如果是本机发来的请求，则忽略
+                    if (IsLocalAddress(endPoint.Address)) continue;
 
-                ReplyTimeSyncMessage(TimeSyncMessage.Parse(data), DateTime.UtcNow, endPoint.Address, HostNumber, RespondPort);
+                    ReplyTimeSyncMessage(TimeSyncMessage.Parse(data), DateTime.UtcNow, endPoint.Address, HostNumber, endPoint.Port);
+                }
+                catch
+                {
+                    // [TODO] 这里可以log一下，暂且忽略
+                }
             }
         }
         private bool IsLocalAddress(IPAddress address)
@@ -98,6 +99,7 @@ namespace TimeSync
         public void Stop()
         {
             IsRunning = false;
+            Receiver?.Close();
             Receiver = null;
         }
 

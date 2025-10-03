@@ -24,8 +24,24 @@ using System.Windows;
 
 namespace TimeSync
 {
-    public class TimeSyncRequester
+    public class TimeSyncRequester : IDisposable
     {
+
+        private UdpClient _udpClient;
+
+        /// <summary>
+        /// 服务端接收请求的端口
+        /// </summary>
+        private readonly int _port;
+
+
+        /// <param name="requestPort">服务端接收请求的端口</param>
+        public TimeSyncRequester(int requestPort)
+        {
+            _udpClient = new UdpClient();
+            _port = requestPort;
+        }
+
         private void BroadcastTimeSyncRequest(int port, ushort hostNumber)
         {
             var message = new TimeSyncMessage()
@@ -39,44 +55,38 @@ namespace TimeSync
 
             var target = new IPEndPoint(IPAddress.Broadcast, port);
 
-            using (var sender = new UdpClient())
-            {
-                sender.EnableBroadcast = true;
-                sender.Send(data, data.Length, target);
-            }
+            _udpClient.EnableBroadcast = true;
+            _udpClient.Send(data, data.Length, target);
         }
 
         /// <summary>
-        /// 接收指定端口的回复，如果没有收到，返回<see cref="null"/>
+        /// 接收服务端的回复，如果没有收到，返回<see cref="null"/>
         /// </summary>
-        private async Task<TimeKeeper> ReceiveResponse(int port, int timeout)
+        private async Task<TimeKeeper> ReceiveResponse(int timeout)
         {
-            var target = new IPEndPoint(IPAddress.Any, 0);
-            byte[] data = null;
+            IPEndPoint target;
+            byte[] data;
 
-            using (var receiver = new UdpClient(port))
+            try
             {
-                try
-                {
-                    var receiveTask = receiver.ReceiveAsync();
-                    var delayTask = Task.Delay(timeout);
+                var receiveTask = _udpClient.ReceiveAsync();
+                var delayTask = Task.Delay(timeout);
 
-                    // 已经完成的任务，用于实现超时检测
-                    var completedTask = await Task.WhenAny(receiveTask, delayTask);
-                    if (completedTask == delayTask)
-                    {
-                        return null;
-                    }
-
-                    var result = await receiveTask;
-                    data = result.Buffer;
-                    target = result.RemoteEndPoint;
-                }
-                catch (Exception ex)
+                // 已经完成的任务，用于实现超时检测
+                var completedTask = await Task.WhenAny(receiveTask, delayTask);
+                if (completedTask == delayTask)
                 {
-                    MessageBox.Show($"接收时间同步响应消息时发生错误，错误信息：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return null;
                 }
+
+                var result = await receiveTask;
+                data = result.Buffer;
+                target = result.RemoteEndPoint;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"接收时间同步响应消息时发生错误，错误信息：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
             }
 
             if (data == null || !TimeSyncMessage.TryParse(out var message, data))
@@ -95,8 +105,21 @@ namespace TimeSync
 
         }
 
+        /// <summary>
+        /// 根据接收到的响应消息，获取<see cref="TimeKeeper"/>对象
+        /// </summary>
+        /// <param name="utcTimes"></param>
+        /// <param name="hostNumber"></param>
+        /// <param name="utcNow"></param>
+        /// <param name="ip"></param>
+        /// <returns></returns>
         private TimeKeeper GetTimeKeeper(List<DateTime> utcTimes, ushort hostNumber, DateTime utcNow, IPAddress ip)
         {
+            if (utcTimes == null || utcTimes.Count != 3)
+            {
+                throw new ArgumentException("utcTimes参数无效，必须包含3个时间点。", nameof(utcTimes));
+            }
+
             var temp = (utcTimes[1] - utcTimes[0]) + (utcTimes[2] - utcNow);
             var offset = new TimeSpan(temp.Ticks / 2);
             return new TimeKeeper(offset)
@@ -113,7 +136,7 @@ namespace TimeSync
         /// <param name="respondPort"></param>
         /// <param name="hostNumber"></param>
         /// <returns></returns>
-        public async Task<List<TimeKeeper>> BroadcastAndGetTimeKeepers(int requestPort, int respondPort, ushort hostNumber)
+        public async Task<List<TimeKeeper>> BroadcastAndGetTimeKeepers(int requestPort, ushort hostNumber)
         {
             const int timeout = 1000;
             BroadcastTimeSyncRequest(requestPort, hostNumber);
@@ -122,7 +145,7 @@ namespace TimeSync
             // 最多接收50个响应
             for (int i = 0; i < 50; i++)
             {
-                var keeper = await ReceiveResponse(respondPort, timeout);
+                var keeper = await ReceiveResponse(timeout);
                 if (keeper == null)
                 {
                     break;
@@ -130,6 +153,12 @@ namespace TimeSync
                 timeKeepers.Add(keeper);
             }
             return timeKeepers;
+        }
+
+        public void Dispose()
+        {
+            _udpClient.Close();
+            _udpClient = null;
         }
     }
 }

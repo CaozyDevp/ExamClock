@@ -27,13 +27,13 @@ namespace TimeSync
     public class TimeKeeper
     {
         private DateTime _baseTime;
-        private Stopwatch _stopwatch = new Stopwatch();
+        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         public bool IsRunning => _stopwatch.IsRunning;
 
         public TimeKeeper(TimeSpan offset)
         {
-            SetTime(DateTime.Now.ToLocalTime() + offset);
+            SetTime(DateTime.UtcNow + offset);
         }
 
         public TimeKeeper(DateTime time)

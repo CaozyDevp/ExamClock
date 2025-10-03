@@ -49,11 +49,6 @@ namespace ExamClock
         public static int RequestPort => 25566;
 
         /// <summary>
-        /// 时间同步响应的端口：响应将被发送到这个端口；在这个端口接收响应
-        /// </summary>
-        public static int ResponsePort => 25567;
-
-        /// <summary>
         /// 软件的版本号（从资源中获取）
         /// </summary>
         public static string Version => (string)Application.Current.Resources["AppVersion"];

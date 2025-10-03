@@ -190,7 +190,6 @@ namespace TimeSync
             // 0~3字节固定，第4个字节使用0x00占位
             List<byte> result = new List<byte>() { 0x45, 0x43, 0x54, 0x43, 0x00 };
 
-            ushort number = HostNumber;
             result.AddRange(new byte[] { (byte)(HostNumber % 256), (byte)(HostNumber / 256) });
 
             foreach (var time in DateTimes)

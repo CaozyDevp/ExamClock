@@ -833,9 +833,8 @@ namespace ExamClock.ViewModels
         /// 查找局域网中的可用主机，并显示
         /// </summary>
         /// <param name="requestPort">发送请求的端口</param>
-        /// <param name="responsePort">接收响应的端口</param>
         /// <param name="roomNumber">本机的考场号</param>
-        private async Task FindHostAndShow(int requestPort, int responsePort, ushort roomNumber)
+        private async Task FindHostAndShow(int requestPort, ushort roomNumber)
         {
             if (SyncItemElements == null)
             {
@@ -847,12 +846,12 @@ namespace ExamClock.ViewModels
 
             try
             {
-                var requester = new TimeSyncRequester();
-                keepers = await requester.BroadcastAndGetTimeKeepers(requestPort, responsePort, roomNumber);
+                var requester = new TimeSyncRequester(requestPort);
+                keepers = await requester.BroadcastAndGetTimeKeepers(requestPort, roomNumber);
             }
             catch
             {
-                MessageBox.Show($"发送请求失败，请检查{requestPort}和{responsePort}端口是否被占用！");
+                MessageBox.Show($"发送请求失败！");
             }
 
             foreach (var keeper in keepers)
@@ -888,7 +887,7 @@ namespace ExamClock.ViewModels
             get => new RelayCommand(async execute =>
             {
                 CanFind = false;
-                await FindHostAndShow(Configuration.RequestPort, Configuration.ResponsePort, Configuration.RoomNumber);
+                await FindHostAndShow(Configuration.RequestPort, Configuration.RoomNumber);
             }, canExecute =>
             {
                 return CanFind;
