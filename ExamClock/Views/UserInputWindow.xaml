@@ -33,8 +33,7 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Content="用户输入"
-                       FontFamily="{StaticResource Hei}"
-                       FontSize="15" />
+                       FontSize="14" />
                 <Button Name="CloseWindowButton"
                         Width="30"
                         Height="30"
