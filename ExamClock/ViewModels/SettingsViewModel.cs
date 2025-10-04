@@ -484,6 +484,10 @@ namespace ExamClock.ViewModels
                     {
                         parsedItems.Add(parsedItem);
                     }
+                    else
+                    {
+                        throw new Exception();  // 解析失败
+                    }
                 }
 
                 timeTable = parsedItems;
