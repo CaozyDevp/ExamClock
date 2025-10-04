@@ -23,7 +23,7 @@ using System.Windows.Threading;
 
 namespace ExamClock.ViewModels
 {
-    class ClockViewModel : ViewModelBase
+    class ClockViewModel : ViewModelBase, IDisposable
     {
         public ClockViewModel()
         {
@@ -35,11 +35,11 @@ namespace ExamClock.ViewModels
             RefreshClock();
             SetEventNameAndTime();
 
-            DispatcherTimer timer = new DispatcherTimer
+            _timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(0.4)
             };
-            timer.Tick += (s, e) =>
+            _timer.Tick += (s, e) =>
             {
                 RefreshClock();
                 SetEventNameAndTime();
@@ -58,8 +58,13 @@ namespace ExamClock.ViewModels
                 }
 
             };
-            timer.Start();
+            _timer.Start();
         }
+
+        /// <summary>
+        /// 定时器
+        /// </summary>
+        private DispatcherTimer _timer;
 
         /// <summary>
         /// 当前的时间
@@ -211,6 +216,12 @@ namespace ExamClock.ViewModels
             }
 
             return true;
+        }
+
+        public void Dispose()
+        {
+            _timer?.Stop();
+            _timer = null;
         }
     }
 }

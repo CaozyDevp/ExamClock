@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using ExamClock.ViewModels;
+using System;
 using System.Windows;
 
 namespace ExamClock.Views
@@ -33,10 +35,15 @@ namespace ExamClock.Views
             //Height = SystemParameters.FullPrimaryScreenHeight;
         }
 
-
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            (this.DataContext as ClockViewModel)?.Dispose();
         }
     }
 }
