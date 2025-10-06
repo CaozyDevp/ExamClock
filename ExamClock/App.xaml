@@ -7,8 +7,8 @@
     StartupUri="Views/StartupWindow.xaml">
     <Application.Resources>
 
-        <sys:String x:Key="AppVersion">1.1-beta</sys:String>
-        <sys:String x:Key="PublishDate">20250902</sys:String>
+        <sys:String x:Key="AppVersion">v1.1.0-rc.1</sys:String>
+        <sys:String x:Key="PublishDate">20251006</sys:String>
         <sys:String x:Key="Author">Zachary Cao</sys:String>
         <sys:String x:Key="Account">CaozyDevp@Github</sys:String>
 
