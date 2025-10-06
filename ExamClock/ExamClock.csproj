@@ -79,7 +79,6 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Enums\SoundType.cs" />
-    <Compile Include="Interfaces\IAudioPlayer.cs" />
     <Compile Include="Models\ExamItem.cs" />
     <Compile Include="Models\ExamVoiceReminder.cs" />
     <Compile Include="Models\NoticeItem.cs" />

@@ -42,11 +42,16 @@ namespace ExamClock
         }
 
         #region Properties
+        /// <summary>
+        /// 程序配置文件的路径
+        /// </summary>
+        private static string ConfigPath => AppDomain.CurrentDomain.BaseDirectory + "config.spf";
 
         /// <summary>
         /// 时间同步请求的端口：请求将被发送到这个端口；在这个端口接收请求
         /// </summary>
-        public static int RequestPort => 25566;
+        public static int RequestPort => _requestPort;
+        private const int _requestPort = 25566;
 
         /// <summary>
         /// 软件的版本号（从资源中获取）
@@ -361,7 +366,7 @@ namespace ExamClock
 
             target = new SpfItem()
             {
-                Path = AppDomain.CurrentDomain.BaseDirectory + "config.spf",
+                Path = ConfigPath,
                 Configuration = new List<ConfigurationItem>
                 {
                     new ConfigurationItem
@@ -401,7 +406,7 @@ namespace ExamClock
         /// </summary>
         public static bool LoadConfig()
         {
-            return LoadConfig(AppDomain.CurrentDomain.BaseDirectory + "config.spf");
+            return LoadConfig(ConfigPath);
         }
 
 
@@ -437,7 +442,7 @@ namespace ExamClock
         /// </summary>
         public static bool SaveConfig()
         {
-            return SaveConfig(AppDomain.CurrentDomain.BaseDirectory + "config.spf");
+            return SaveConfig(ConfigPath);
         }
         #endregion
     }

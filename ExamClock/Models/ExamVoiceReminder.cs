@@ -16,14 +16,13 @@
 */
 
 using ExamClock.Enums;
-using ExamClock.Interfaces;
-using ExamClock.ViewModels;
 using System;
 using System.Media;
+using System.Reflection;
 
 namespace ExamClock.Models
 {
-    public class ExamVoiceReminder : IAudioPlayer
+    public class ExamVoiceReminder
     {
         /// <summary>
         /// 结束前15分钟提醒：（叮咚）距考试结束还有15分钟，请检查答案是否按规定填涂在答题卡上。
@@ -48,14 +47,16 @@ namespace ExamClock.Models
         /// <summary>
         /// 声音类型
         /// </summary>
-        private SoundType AudioType { get; set; }
+        private SoundType AudioType { get; }
 
-
+        /// <summary>
+        /// 使用<see cref="SoundType"/>枚举值初始化<see cref="ExamVoiceReminder"/>对象
+        /// </summary>
+        /// <param name="audioType">指定的声音类型</param>
         public ExamVoiceReminder(SoundType audioType)
         {
             AudioType = audioType;
         }
-
 
         /// <summary>
         /// 获取音频文件的路径
@@ -80,27 +81,37 @@ namespace ExamClock.Models
             }
         }
 
-
+        /// <summary>
+        /// 播放音频
+        /// </summary>
         public void Play()
         {
+            // 如果音频不能播放，直接返回
+            if (!CanPlay()) return;
+
             string path = GetAudioPath(AudioType);
             if (string.IsNullOrEmpty(path))
             {
                 return;
             }
 
-            var assembly = typeof(ClockViewModel).Assembly;
+            // 获取包含当前执行的代码的程序集
+            var assembly = Assembly.GetExecutingAssembly();
+
+            // 播放路径为path的资源，即指定的音频
             using (var stream = assembly.GetManifestResourceStream(path))
             {
                 if (stream != null)
                 {
-                    SoundPlayer player = new SoundPlayer(stream);
+                    var player = new SoundPlayer(stream);
                     player.Play();
                 }
             }
         }
 
-
+        /// <summary>
+        /// 检测当前的音频是否可以播放
+        /// </summary>
         public bool CanPlay()
         {
             try
