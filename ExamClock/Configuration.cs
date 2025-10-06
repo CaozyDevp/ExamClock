@@ -72,6 +72,8 @@ namespace ExamClock
                     case 15:
                         return SoundType._15MinBeforeEnding;
                     default:
+                        NoticeBeforeEnding = SoundType.None;
+                        SaveConfig();
                         return SoundType.None;
                 }
             }
@@ -311,9 +313,14 @@ namespace ExamClock
             {
                 source.LoadFile(configFile);
             }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("无法找到配置文件，已重新创建");
+                return false;
+            }
             catch
             {
-                MessageBox.Show("配置文件加载失败，请检查文件是否“只读”！");
+                MessageBox.Show("配置文件可能损坏，无法读取。\n注意：原有的所有配置将被覆盖！");
                 return false;
             }
 
