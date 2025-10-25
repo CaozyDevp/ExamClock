@@ -404,17 +404,18 @@
                            FontSize="16"
                            Foreground="#D2D2D2" />
 
-                    <ItemsControl Grid.Row="3"
+                    <ScrollViewer Grid.Row="3"
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"
-                                  ItemsSource="{Binding SyncItemElements, Mode=TwoWay}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-
+                                  VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding SyncItemElements, Mode=TwoWay}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
 
                     <Button Grid.Row="5"
                             Width="142"
