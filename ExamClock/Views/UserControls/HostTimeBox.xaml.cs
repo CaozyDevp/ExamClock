@@ -123,12 +123,17 @@ namespace ExamClock.Views.UserControls
             get => Source.ToString();
         }
 
+        /// <summary>
+        /// 设置系统时间
+        /// </summary>
+        /// <param name="keeper"></param>
+        /// <returns>是否成功设置</returns>
         private bool SetSystemTime(TimeKeeper keeper)
         {
             try
             {
-                var dateStr = TimeKeeper.CurrentTime.ToLocalTime().ToString("yyyy-MM-dd");
-                var timeStr = TimeKeeper.CurrentTime.ToLocalTime().ToString("HH:mm:ss");
+                var dateStr = keeper.CurrentTime.ToLocalTime().ToString("yyyy-MM-dd");
+                var timeStr = keeper.CurrentTime.ToLocalTime().ToString("HH:mm:ss");
 
                 var process = new Process
                 {

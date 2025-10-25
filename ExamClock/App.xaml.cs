@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System;
 using System.Diagnostics;
 using System.Windows;
 using TimeSync;
@@ -32,9 +33,9 @@ namespace ExamClock
             if (processes.Length > 1)
             {
                 MessageBox.Show("当前程序已在运行！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
-                Current.Shutdown();
+                Environment.Exit(0);
+                return;
             }
-
             InitResponder();
         }
 
