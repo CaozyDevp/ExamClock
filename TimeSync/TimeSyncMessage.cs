@@ -59,9 +59,9 @@ namespace TimeSync
             }
 
             // 通过校验前4个字节，判断是不是“考试时钟时间校准信息”
-            if (message[0] != 0x45 &&
-                message[1] != 0x43 &&
-                message[2] != 0x54 &&
+            if (message[0] != 0x45 ||
+                message[1] != 0x43 ||
+                message[2] != 0x54 ||
                 message[3] != 0x43)
             {
                 throw new Exception("Is not Exam Clock Time Calibration Message!");
