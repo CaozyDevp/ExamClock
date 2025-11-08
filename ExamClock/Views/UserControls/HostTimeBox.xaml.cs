@@ -16,9 +16,9 @@
 */
 
 using ExamClock.Commands;
+using ExamClock.Models;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -124,33 +124,15 @@ namespace ExamClock.Views.UserControls
         }
 
         /// <summary>
-        /// 设置系统时间
+        /// 应用系统时间
         /// </summary>
         /// <param name="keeper"></param>
-        /// <returns>是否成功设置</returns>
-        private bool SetSystemTime(TimeKeeper keeper)
+        /// <returns>是否成功应用</returns>
+        private bool ApplySystemTime(TimeKeeper keeper)
         {
             try
             {
-                var dateStr = keeper.CurrentTime.ToLocalTime().ToString("yyyy-MM-dd");
-                var timeStr = keeper.CurrentTime.ToLocalTime().ToString("HH:mm:ss");
-
-                var process = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "cmd.exe",
-                        Arguments = $"/C date {dateStr} && time {timeStr}",
-                        Verb = "runas", // 请求管理员权限
-                        UseShellExecute = true,
-                        CreateNoWindow = true
-                    }
-                };
-
-                process.Start();
-                process.WaitForExit();
-
-                return process.ExitCode == 0;
+                return SystemTimeManager.SetSystemTime(keeper.CurrentTime.ToUniversalTime());
             }
             catch
             {
@@ -166,7 +148,7 @@ namespace ExamClock.Views.UserControls
                 return;
             }
 
-            if (SetSystemTime(TimeKeeper))
+            if (ApplySystemTime(TimeKeeper))
             {
                 MessageBox.Show("设置成功！");
             }
