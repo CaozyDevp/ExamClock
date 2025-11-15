@@ -19,6 +19,7 @@ using ExamClock.Enums;
 using ExamClock.Models;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace ExamClock.ViewModels
@@ -41,22 +42,28 @@ namespace ExamClock.ViewModels
             };
             _timer.Tick += (s, e) =>
             {
-                RefreshClock();
-                SetEventNameAndTime();
-
-                // 如果没有设置提醒，则不进行通知
-                if (Configuration.NoticeBeforeEnding == SoundType.None) return;
-
-                var now = DateTime.Now;
-                foreach (var notice in NoticeTimes)
+                try
                 {
-                    if (now < notice.NoticeTime || now >= notice.NoticeTime.AddSeconds(2)) continue;
-                    new ExamVoiceReminder(notice.NoticeType).Play();
-                    NoticeTimes.Remove(notice);
-                    break; // 上面的集合在循环中被修改，所以需要退出当前循环
-                    // 否则会抛出异常
-                }
+                    RefreshClock();         // 刷新时间显示
+                    SetEventNameAndTime();  // 刷新考试项目和考试时间显示
 
+                    var now = DateTime.Now;
+                    for (int i = 0; i < NoticeTimes.Count; i++)
+                    {
+                        NoticeItem notice = NoticeTimes[i];
+                        if (now >= notice.NoticeTime && now < notice.NoticeTime.AddSeconds(2))
+                        {
+                            // 处于提醒的时间内，播放提醒
+                            new ExamVoiceReminder(notice.NoticeType).Play();
+                            NoticeTimes.RemoveAt(i);
+                            return;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Timer Tick 出现异常：{ex}");
+                }
             };
             _timer.Start();
         }
@@ -169,27 +176,41 @@ namespace ExamClock.ViewModels
             OnPropertyChanged(nameof(SecondAngle));
         }
 
+        /// <summary>
+        /// 初始化语音提醒列表
+        /// </summary>
+        /// <param name="sortedTimeTable">按时间升序排序且无重叠的考试时间表</param>
+        /// <param name="noticeBeforeEnding">考试结束前提醒的类型</param>
+        /// <param name="beginningNotice">是否启用开考铃</param>
+        /// <param name="endingNotice">是否启用结束铃</param>
+        /// <returns>设置成功，返回<see langword="true"/>；否则返回<see langword="false"/></returns>
         private bool SetNoticeTimes(List<ExamItem> sortedTimeTable, SoundType noticeBeforeEnding, bool beginningNotice, bool endingNotice)
         {
             _noticeTimes.Clear();
-            if (sortedTimeTable == null || sortedTimeTable.Count == 0)
+            if (sortedTimeTable == null)
             {
                 return false;
             }
+            if (sortedTimeTable.Count == 0)
+            {
+                return true;
+            }
 
-            // 设置考试前提醒的分钟数
-            int noticeBeforeEndingMinutes;
+            // 设置收卷前提醒的时间
+            TimeSpan beforeEnding;
             switch (noticeBeforeEnding)
             {
                 case SoundType._15MinBeforeEnding:
-                    noticeBeforeEndingMinutes = 15;
+                    beforeEnding = TimeSpan.FromMinutes(15);
                     break;
                 case SoundType._10MinBeforeEnding:
-                    noticeBeforeEndingMinutes = 10;
+                    beforeEnding = TimeSpan.FromMinutes(10);
                     break;
                 case SoundType.None:
+                    beforeEnding = TimeSpan.Zero;
+                    break;
                 default:
-                    // 如果没有设置提醒，则不添加任何提醒
+                    // 如果不是期望的值，直接返回
                     return false;
             }
 
@@ -202,8 +223,8 @@ namespace ExamClock.ViewModels
                 }
 
                 // 收卷前铃
-                DateTime noticeTime = item.EndTime - TimeSpan.FromMinutes(noticeBeforeEndingMinutes);
-                if (noticeTime > DateTime.Now && item.Duration > TimeSpan.FromMinutes(noticeBeforeEndingMinutes))
+                DateTime noticeTime = item.EndTime - beforeEnding;
+                if (beforeEnding != TimeSpan.Zero && noticeTime > DateTime.Now && item.Duration > beforeEnding)
                 {
                     _noticeTimes.Add(new NoticeItem(noticeTime, noticeBeforeEnding));
                 }
