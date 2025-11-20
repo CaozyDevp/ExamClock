@@ -90,10 +90,6 @@ namespace ExamClock.Models
             if (!CanPlay()) return;
 
             string path = GetAudioPath(AudioType);
-            if (string.IsNullOrEmpty(path))
-            {
-                return;
-            }
 
             // 获取包含当前执行的代码的程序集
             var assembly = Assembly.GetExecutingAssembly();
