@@ -85,8 +85,7 @@
                                 <Label HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Content="总览"
-                                       FontFamily="{StaticResource Hei}"
-                                       FontSize="20"
+                                       FontSize="18"
                                        Foreground="{Binding Grid0TextBrush}" />
                             </ControlTemplate>
                         </Button.Template>
@@ -101,8 +100,7 @@
                                 <Label HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Content="安排"
-                                       FontFamily="{StaticResource Hei}"
-                                       FontSize="20"
+                                       FontSize="18"
                                        Foreground="{Binding Grid1TextBrush}" />
                             </ControlTemplate>
                         </Button.Template>
@@ -117,8 +115,7 @@
                                 <Label HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Content="播报"
-                                       FontFamily="{StaticResource Hei}"
-                                       FontSize="20"
+                                       FontSize="18"
                                        Foreground="{Binding Grid2TextBrush}" />
                             </ControlTemplate>
                         </Button.Template>
@@ -133,8 +130,7 @@
                                 <Label HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Content="校时"
-                                       FontFamily="{StaticResource Hei}"
-                                       FontSize="20"
+                                       FontSize="18"
                                        Foreground="{Binding Grid3TextBrush}" />
                             </ControlTemplate>
                         </Button.Template>
