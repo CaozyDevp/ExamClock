@@ -54,7 +54,7 @@ namespace ExamClock.ViewModels
                         if (now >= notice.NoticeTime && now < notice.NoticeTime.AddSeconds(2))
                         {
                             // 处于提醒的时间内，播放提醒
-                            new ExamVoiceReminder(notice.NoticeType).Play();
+                            ExamVoiceReminder.Instance.Play(notice.NoticeType);
                             NoticeTimes.RemoveAt(i);
                             return;
                         }

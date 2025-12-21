@@ -17,111 +17,100 @@
 
 using ExamClock.Enums;
 using System;
-using System.Media;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Windows.Media;
 
 namespace ExamClock.Models
 {
-    public class ExamVoiceReminder
+    public class ExamVoiceReminder : IDisposable
     {
         /// <summary>
-        /// 结束前15分钟提醒：（叮咚）距考试结束还有15分钟，请检查答案是否按规定填涂在答题卡上。
+        /// 可在外部访问的实例
         /// </summary>
-        private const string _15MinBeforeEndingPath = "ExamClock.Assets.15MinBeforeEnding.wav";
+        public static ExamVoiceReminder Instance => _instance;
+        private static readonly ExamVoiceReminder _instance = new ExamVoiceReminder();
 
         /// <summary>
-        /// 结束前15分钟提醒：（叮咚）距考试结束还有10分钟，请检查答案是否按规定填涂在答题卡上。
+        /// 用于播放考试提示音的<see cref="MediaPlayer"/>对象
         /// </summary>
-        private const string _10MinBeforeEndingPath = "ExamClock.Assets.10MinBeforeEnding.wav";
+        private readonly MediaPlayer _player = new MediaPlayer();
 
         /// <summary>
-        /// 开考铃声：（电铃10秒）考生可以开始答题。
+        /// 考试提示音的资源路径
         /// </summary>
-        private const string ExamBeginningPath = "ExamClock.Assets.ExamBeginning.wav";
-
-        /// <summary>
-        /// 开考铃声：（电铃15秒）请考生立即停笔并停止答题，请考生立即停笔并停止答题。
-        /// </summary>
-        private const string ExamEndingPath = "ExamClock.Assets.ExamEnding.wav";
-
-        /// <summary>
-        /// 声音类型
-        /// </summary>
-        private SoundType AudioType { get; }
-
-        /// <summary>
-        /// 使用<see cref="SoundType"/>枚举值初始化<see cref="ExamVoiceReminder"/>对象
-        /// </summary>
-        /// <param name="audioType">指定的声音类型</param>
-        public ExamVoiceReminder(SoundType audioType)
+        private readonly Dictionary<SoundType, string> _audioResourcePaths = new Dictionary<SoundType, string>()
         {
-            AudioType = audioType;
-        }
+            { SoundType.ExamBeginning, "ExamClock.Assets.ExamBeginning.mp3" },
+            { SoundType.ExamEnding, "ExamClock.Assets.ExamEnding.mp3" },
+            { SoundType._10MinBeforeEnding, "ExamClock.Assets.10MinBeforeEnding.mp3" },
+            { SoundType._15MinBeforeEnding, "ExamClock.Assets.15MinBeforeEnding.mp3" },
+        };
 
         /// <summary>
-        /// 获取音频文件的路径
+        /// 将指定类型的音频保存为临时文件，如果存在则覆盖它
         /// </summary>
-        /// <returns>音频文件的路径</returns>
-        private string GetAudioPath(SoundType type)
-        {
-            switch (type)
-            {
-                case SoundType._15MinBeforeEnding:
-                    return _15MinBeforeEndingPath;
-                case SoundType._10MinBeforeEnding:
-                    return _10MinBeforeEndingPath;
-                case SoundType.ExamBeginning:
-                    return ExamBeginningPath;
-                case SoundType.ExamEnding:
-                    return ExamEndingPath;
-                case SoundType.None:
-                    return null;
-                default:
-                    throw new Exception("Sound type not defined! Cannot get the path.");
-            }
-        }
-
-        /// <summary>
-        /// 播放音频
-        /// </summary>
-        public void Play()
-        {
-            // 如果音频不能播放，直接返回
-            if (!CanPlay()) return;
-
-            string path = GetAudioPath(AudioType);
-
-            // 获取包含当前执行的代码的程序集
-            var assembly = Assembly.GetExecutingAssembly();
-
-            // 播放路径为path的资源，即指定的音频
-            using (var stream = assembly.GetManifestResourceStream(path))
-            {
-                if (stream != null)
-                {
-                    var player = new SoundPlayer(stream);
-                    player.Play();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 检测当前的音频是否可以播放
-        /// </summary>
-        public bool CanPlay()
+        /// <param name="type">音频类型</param>
+        /// <returns>如果成功，返回临时文件的路径；否则返回<see langword="null"/></returns>
+        private string GetTempFile(SoundType type)
         {
             try
             {
-                if (string.IsNullOrEmpty(GetAudioPath(AudioType)))
+                var assembly = Assembly.GetExecutingAssembly();
+                using (var stream = assembly.GetManifestResourceStream(_audioResourcePaths[type]))
                 {
-                    return false;
+                    if (stream == null) return null;
+
+                    // 在系统临时目录下创建一个专门的文件夹
+                    string tempDir = Path.Combine(Path.GetTempPath(), "ExamClock_Res");
+                    if (!Directory.Exists(tempDir))
+                    {
+                        Directory.CreateDirectory(tempDir);
+                    }
+
+                    // 保存临时文件
+                    string tempFilePath = Path.Combine(tempDir, $"{type}.mp3");
+                    using (var destination = File.Create(tempFilePath))
+                    {
+                        stream.CopyTo(destination);
+                    }
+
+                    return tempFilePath;
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
-            return true;
+        }
+
+        /// <summary>
+        /// 播放指定类型的音频
+        /// </summary>
+        public void Play(SoundType type)
+        {
+            if (type == SoundType.None) return;
+
+            string tempFilePath = GetTempFile(type);
+            if (tempFilePath == null) return;
+
+            // 打开并播放指定音频（在构造函数中已经添加了MediaOpened事件处理器，在打开之后会自动播放，无需再调用Play()方法）
+            _player.Open(new Uri(tempFilePath, UriKind.Absolute));
+        }
+
+        public ExamVoiceReminder()
+        {
+            _player.Volume = 1.0;
+            _player.MediaOpened += (s, e) =>
+            {
+                _player.Play();
+            };
+        }
+
+        public void Dispose()
+        {
+            _player.Close();
         }
     }
 }

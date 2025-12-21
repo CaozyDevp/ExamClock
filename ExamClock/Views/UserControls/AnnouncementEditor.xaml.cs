@@ -121,7 +121,7 @@ namespace ExamClock.Views.UserControls
             {
                 return;
             }
-            new ExamVoiceReminder(AudioType).Play();
+            ExamVoiceReminder.Instance.Play(AudioType);
         }
         #endregion
 

@@ -199,17 +199,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Assets\10MinBeforeEnding.wav" />
-    <EmbeddedResource Include="Assets\15MinBeforeEnding.wav" />
+    <EmbeddedResource Include="Assets\10MinBeforeEnding.mp3" />
+    <EmbeddedResource Include="Assets\15MinBeforeEnding.mp3" />
+    <EmbeddedResource Include="Assets\ExamBeginning.mp3" />
+    <EmbeddedResource Include="Assets\ExamEnding.mp3" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Views\Images\Save.png" />
     <Resource Include="Views\Images\Search.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\ExamBeginning.wav" />
-    <EmbeddedResource Include="Assets\ExamEnding.wav" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Spf\Spf.csproj">
