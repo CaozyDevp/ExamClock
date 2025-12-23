@@ -15,13 +15,13 @@
         WindowState="Maximized"
         Topmost="True">
     <Window.DataContext>
-        <vm:ClockViewModel/>
+        <vm:ClockViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="{Binding ElementName=ClockGrid, Path=Width}"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="{Binding ElementName=ClockGrid, Path=Width}" />
+            <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
 
         <Grid Name="ClockGrid"
@@ -41,7 +41,8 @@
                    Height="617.5"
                    RenderTransformOrigin="0.5,0.5">
                 <Image.RenderTransform>
-                    <RotateTransform x:Name="HourAngle" Angle="{Binding HourAngle}"/>
+                    <RotateTransform x:Name="HourAngle"
+                                     Angle="{Binding HourAngle}" />
                 </Image.RenderTransform>
             </Image>
 
@@ -51,7 +52,7 @@
                    RenderTransformOrigin="0.5,0.5">
                 <Image.RenderTransform>
                     <RotateTransform x:Name="MinuteAngle"
-                                     Angle="{Binding MinuteAngle}"/>
+                                     Angle="{Binding MinuteAngle}" />
                 </Image.RenderTransform>
             </Image>
 
@@ -61,30 +62,48 @@
                    RenderTransformOrigin="0.5,0.5">
                 <Image.RenderTransform>
                     <RotateTransform x:Name="SecondAngle"
-                                     Angle="{Binding SecondAngle}"/>
+                                     Angle="{Binding SecondAngle}" />
                 </Image.RenderTransform>
             </Image>
         </Grid>
 
         <Button Grid.Column="2"
-                Width="120"
-                Height="47"
+                Width="52"
+                Height="52"
                 Click="ExitButton_Click"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
-                Margin="0 33 39 0">
+                Margin="0 36 42 0">
             <Button.Template>
                 <ControlTemplate>
-                    <Border Background="#292929"
+                    <Border Width="52"
+                            Height="52"
+                            BorderThickness="2.5"
                             BorderBrush="#606060"
-                            BorderThickness="2"
-                            CornerRadius="10">
-                        <Label Content="结束考试"
-                               FontFamily="{StaticResource Hei}"
-                               FontSize="20"
-                               Foreground="#CBCBCB"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"/>
+                            CornerRadius="16">
+                        <Image Source="/Views/Images/Exit.png"
+                               Width="23"
+                               Margin="10 0 8 0"
+                               Height="22" />
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="25"
+                                              Direction="0"
+                                              Opacity="0.3"
+                                              ShadowDepth="0"
+                                              Color="White" />
+                        </Border.Effect>
+                        <Border.Background>
+                            <RadialGradientBrush Center="0.5,0.5"
+                                                 RadiusX="0.5"
+                                                 RadiusY="0.5">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Color="#191919"
+                                                  Offset="0" />
+                                    <GradientStop Color="#232323"
+                                                  Offset="1" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                        </Border.Background>
                     </Border>
                 </ControlTemplate>
             </Button.Template>
@@ -99,12 +118,12 @@
                    FontFamily="{StaticResource Hei}"
                    Name="EventLabel"
                    Content="{Binding EventNameText}"
-                   Foreground="#DADADA"/>
+                   Foreground="#DADADA" />
             <Label FontSize="40"
                    FontFamily="{StaticResource Hei}"
                    Name="TimeLabel"
                    Content="{Binding EventTimeText}"
-                   Foreground="#A9A9A9"/>
+                   Foreground="#A9A9A9" />
         </StackPanel>
     </Grid>
 </Window>
