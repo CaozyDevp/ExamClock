@@ -21,6 +21,7 @@
 	.st15{display:inline;fill:#CFDAE5;}
 	.st16{font-size:36px;}
 	.st17{fill:#8CAEC4;}
+	.st18{fill:url(#SVGID_4_);stroke:#4D4D4D;stroke-width:16;stroke-miterlimit:10;}
 </style>
 <radialGradient id="SVGID_1_" cx="960" cy="360" r="435.6083" fx="862.6492" fy="358.7166" gradientTransform="matrix(0.0106 0.9999 -2.9087 0.0309 1996.9241 -611.0827)" gradientUnits="userSpaceOnUse">
 	<stop  offset="0" style="stop-color:#E9F5FF"/>
@@ -115,23 +116,23 @@
 		c2.28-2.87,6.45-3.34,9.32-1.07l35.62,28.3C558.33,211.84,558.8,216.01,556.53,218.88z"/>
 </g>
 <g>
-	<path class="st7" d="M985.2,566h-69.02c-8.74,0-15.82-7.08-15.82-15.82v-31.36c0-8.74,7.08-15.82,15.82-15.82h69.02V566z"/>
-	<path class="st8" d="M1114.84,566H985.2v-63h130.07c8.88,0,16.09,7.2,16.09,16.09v30.39C1131.36,558.6,1123.96,566,1114.84,566z"/>
-	<text transform="matrix(1 0 0 1 917.5352 548.6816)" class="st5 st9 st10">C#</text>
-	<text transform="matrix(1 0 0 1 1004.0552 548.6816)" class="st5 st9 st10">100%</text>
+	<path class="st7" d="M1006.2,566h-69.02c-8.74,0-15.82-7.08-15.82-15.82v-31.36c0-8.74,7.08-15.82,15.82-15.82h69.02V566z"/>
+	<path class="st8" d="M1135.84,566H1006.2v-63h130.07c8.88,0,16.09,7.2,16.09,16.09v30.39C1152.36,558.6,1144.96,566,1135.84,566z"
+		/>
+	<text transform="matrix(1 0 0 1 938.5352 548.6816)" class="st5 st9 st10">C#</text>
+	<text transform="matrix(1 0 0 1 1025.0552 548.6816)" class="st5 st9 st10">100%</text>
 </g>
 <g>
-	<path class="st7" d="M1288.44,566h-118.58c-8.74,0-15.82-7.08-15.82-15.82v-31.36c0-8.74,7.08-15.82,15.82-15.82h118.58V566z"/>
-	<path class="st11" d="M1415.56,566h-127.12v-63h127.55c8.88,0,16.09,7.2,16.09,16.09v30.39C1432.08,558.6,1424.68,566,1415.56,566z
-		"/>
-	<text transform="matrix(1 0 0 1 1172.0557 548.6816)" class="st5 st9 st10">Beta</text>
-	<text transform="matrix(1 0 0 1 1307.2949 548.6816)" class="st5 st9 st10">v1.1</text>
+	<path class="st7" d="M1262,566h-71.14c-8.74,0-15.82-7.08-15.82-15.82v-31.36c0-8.74,7.08-15.82,15.82-15.82H1262V566z"/>
+	<path class="st11" d="M1377.48,566h-117.04v-63h117.47c8.88,0,16.09,7.2,16.09,16.09v30.39C1394,558.6,1386.6,566,1377.48,566z"/>
+	<text transform="matrix(1 0 0 1 1194.0557 548.6816)" class="st5 st9 st10">OS</text>
+	<text transform="matrix(1 0 0 1 1289.2949 548.6816)" class="st5 st9 st10">Win</text>
 </g>
 <g>
-	<path class="st7" d="M695.4,566H492.82c-8.74,0-15.82-7.08-15.82-15.82v-31.36c0-8.74,7.08-15.82,15.82-15.82H695.4V566z"/>
-	<path class="st12" d="M861.16,566H695.4v-63h166.19c8.88,0,16.09,7.2,16.09,16.09v30.39C877.68,558.6,870.28,566,861.16,566z"/>
-	<text transform="matrix(1 0 0 1 496.6953 548.6816)" class="st5 st9 st10">License</text>
-	<text transform="matrix(1 0 0 1 715.0952 548.6816)"><tspan x="0" y="0" class="st5 st9 st10">GPL</tspan><tspan x="77.59" y="0" class="st5 st9 st13"> </tspan><tspan x="88.87" y="0" class="st5 st9 st10">v3</tspan></text>
+	<path class="st7" d="M716.4,566H513.82c-8.74,0-15.82-7.08-15.82-15.82v-31.36c0-8.74,7.08-15.82,15.82-15.82H716.4V566z"/>
+	<path class="st12" d="M882.16,566H716.4v-63h166.19c8.88,0,16.09,7.2,16.09,16.09v30.39C898.68,558.6,891.28,566,882.16,566z"/>
+	<text transform="matrix(1 0 0 1 517.6953 548.6816)" class="st5 st9 st10">License</text>
+	<text transform="matrix(1 0 0 1 736.0952 548.6816)"><tspan x="0" y="0" class="st5 st9 st10">GPL</tspan><tspan x="77.59" y="0" class="st5 st9 st13"> </tspan><tspan x="88.87" y="0" class="st5 st9 st10">v3</tspan></text>
 </g>
 <g class="st14">
 	<text transform="matrix(1 0 0 1 614.8936 688.8506)" class="st15 st9 st16">https://github.com/CaozyDevp/ExamClock</text>
