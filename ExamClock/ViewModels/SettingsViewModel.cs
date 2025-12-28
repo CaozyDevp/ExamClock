@@ -274,7 +274,11 @@ namespace ExamClock.ViewModels
         /// </summary>
         public string RoomNumberText
         {
-            get => "考场号 | " + RoomNumber.ToString("0000");
+            get
+            {
+                if (RoomNumber == 0) return "未设置考场号";
+                return "考场号 | " + RoomNumber.ToString("0000");
+            }
         }
 
         /// <summary>
