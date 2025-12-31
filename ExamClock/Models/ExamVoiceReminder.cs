@@ -49,6 +49,18 @@ namespace ExamClock.Models
         };
 
         /// <summary>
+        /// 各考试提示音的总秒数
+        /// </summary>
+        private readonly Dictionary<SoundType, int> _audioTotalSeconds = new Dictionary<SoundType, int>()
+        {
+            { SoundType.ExamBeginning, 13 },
+            { SoundType.ExamEnding, 23 },
+            { SoundType._10MinBeforeEnding, 10 },
+            { SoundType._15MinBeforeEnding, 10 },
+            { SoundType.None, 0 },
+        };
+
+        /// <summary>
         /// 将指定类型的音频保存为临时文件，如果存在则覆盖它
         /// </summary>
         /// <param name="type">音频类型</param>
@@ -97,6 +109,20 @@ namespace ExamClock.Models
 
             // 打开并播放指定音频（在构造函数中已经添加了MediaOpened事件处理器，在打开之后会自动播放，无需再调用Play()方法）
             _player.Open(new Uri(tempFilePath, UriKind.Absolute));
+        }
+
+        /// <summary>
+        /// 获取指定类型音频的总秒数
+        /// </summary>
+        /// <param name="type">音频类型</param>
+        /// <returns>该类型音频的总秒数。如果不存在，返回0</returns>
+        public int GetTotalSeconds(SoundType type)
+        {
+            if (_audioTotalSeconds.TryGetValue(type, out var seconds))
+            {
+                return seconds;
+            }
+            return 0;
         }
 
         public ExamVoiceReminder()

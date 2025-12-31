@@ -49,24 +49,29 @@ namespace ExamClock.Views.UserControls
 
 
         #region Dependency Properties
-        public static readonly DependencyProperty AnnouncementNameProperty =
-            DependencyProperty.Register(nameof(AnnouncementName), typeof(string), typeof(AnnouncementEditor), new PropertyMetadata(""));
+        /// <summary>
+        /// 提醒项目的名称
+        /// </summary>
         public string AnnouncementName
         {
             get => (string)GetValue(AnnouncementNameProperty);
             set => SetValue(AnnouncementNameProperty, value);
         }
+        public static readonly DependencyProperty AnnouncementNameProperty =
+            DependencyProperty.Register(nameof(AnnouncementName), typeof(string), typeof(AnnouncementEditor), new PropertyMetadata(""));
 
-        public static readonly DependencyProperty AnnouncementOptionsProperty =
-            DependencyProperty.Register(nameof(AnnouncementOptions), typeof(List<string>), typeof(AnnouncementEditor), new PropertyMetadata(new List<string>()));
+        /// <summary>
+        /// 可供选择的选项
+        /// </summary>
         public List<string> AnnouncementOptions
         {
             get => (List<string>)GetValue(AnnouncementOptionsProperty);
             set => SetValue(AnnouncementOptionsProperty, value);
         }
+        public static readonly DependencyProperty AnnouncementOptionsProperty =
+            DependencyProperty.Register(nameof(AnnouncementOptions), typeof(List<string>), typeof(AnnouncementEditor), new PropertyMetadata(new List<string>()));
 
-        public static readonly DependencyProperty SelectedIndexProperty =
-            DependencyProperty.Register(nameof(SelectedIndex), typeof(int), typeof(AnnouncementEditor), new PropertyMetadata(0));
+
         /// <summary>
         /// 选中的下标，下标0代表“关闭”
         /// </summary>
@@ -79,14 +84,17 @@ namespace ExamClock.Views.UserControls
                 OnPropertyChanged();
             }
         }
+        public static readonly DependencyProperty SelectedIndexProperty =
+            DependencyProperty.Register(nameof(SelectedIndex), typeof(int), typeof(AnnouncementEditor), new PropertyMetadata(0));
 
-        public static readonly DependencyProperty AudioTypeProperty =
-            DependencyProperty.Register(nameof(AudioType), typeof(SoundType), typeof(AnnouncementEditor), new PropertyMetadata(SoundType.None));
+
         public SoundType AudioType
         {
             get => (SoundType)GetValue(AudioTypeProperty);
             set { SetValue(AudioTypeProperty, value); }
         }
+        public static readonly DependencyProperty AudioTypeProperty =
+            DependencyProperty.Register(nameof(AudioType), typeof(SoundType), typeof(AnnouncementEditor), new PropertyMetadata(SoundType.None));
         #endregion
 
 
@@ -140,7 +148,7 @@ namespace ExamClock.Views.UserControls
                 IsAudioPlaying = true;
                 DispatcherTimer timer = new DispatcherTimer()
                 {
-                    Interval = TimeSpan.FromSeconds(10)
+                    Interval = TimeSpan.FromSeconds(ExamVoiceReminder.Instance.GetTotalSeconds(AudioType))
                 };
                 timer.Start();
                 timer.Tick += (object sender, EventArgs e) =>
