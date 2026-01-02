@@ -128,10 +128,18 @@ namespace ExamClock.Models
         public ExamVoiceReminder()
         {
             _player.Volume = 1.0;
-            _player.MediaOpened += (s, e) =>
-            {
-                _player.Play();
-            };
+            _player.MediaOpened += MediaOpened;
+            _player.MediaEnded += MediaEnded;
+        }
+
+        private void MediaOpened(object sender, EventArgs e)
+        {
+            _player.Play();
+        }
+
+        private void MediaEnded(object sender, EventArgs e)
+        {
+            _player.Close();
         }
 
         public void Dispose()
