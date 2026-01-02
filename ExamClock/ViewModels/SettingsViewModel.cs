@@ -67,7 +67,7 @@ namespace ExamClock.ViewModels
         #region Pages Switch
 
         /// <summary>
-        /// 0-总览 1-安排 2-播报 3-校准
+        /// 0-总览 1-安排 2-提醒 3-同步
         /// </summary>
         private int _currentGrid = 0;
         public int CurrentGrid
@@ -222,7 +222,7 @@ namespace ExamClock.ViewModels
         private ObservableCollection<UIElement> _examElements = new ObservableCollection<UIElement>();
 
         /// <summary>
-        /// 语音播报的信息
+        /// 语音提醒的信息
         /// </summary>
         public string NoticeText
         {
@@ -265,7 +265,7 @@ namespace ExamClock.ViewModels
                     result = "无";
                 }
 
-                return "语音播报：" + result;
+                return "语音提醒：" + result;
             }
         }
 

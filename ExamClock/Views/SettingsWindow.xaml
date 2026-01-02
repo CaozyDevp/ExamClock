@@ -114,7 +114,7 @@
                             <ControlTemplate>
                                 <Label HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       Content="播报"
+                                       Content="提醒"
                                        FontSize="18"
                                        Foreground="{Binding Grid2TextBrush}" />
                             </ControlTemplate>
@@ -129,7 +129,7 @@
                             <ControlTemplate>
                                 <Label HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       Content="校时"
+                                       Content="同步"
                                        FontSize="18"
                                        Foreground="{Binding Grid3TextBrush}" />
                             </ControlTemplate>
@@ -333,7 +333,7 @@
                 </Grid>
             </Grid>
 
-            <!--  【播报】页面  -->
+            <!--  【提醒】页面  -->
             <Grid Name="AnnouncementGrid"
                   Visibility="{Binding AnnouncementGridVisibility}">
                 <Grid Margin="52,0,50,0">
@@ -347,7 +347,7 @@
                     <Label Grid.Row="1"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="语音播报"
+                           Content="语音提醒"
                            FontFamily="{StaticResource Hei}"
                            FontSize="30"
                            Foreground="#2E4959" />
@@ -358,7 +358,7 @@
                                                AudioType="{Binding ExamBeginningSoundType}"
                                                SelectedIndex="{Binding SelectedExamBeginningIndex, Mode=TwoWay}" />
                         <uc:AnnouncementEditor Height="50"
-                                               AnnouncementName="收卷前播报"
+                                               AnnouncementName="收卷前提醒"
                                                AnnouncementOptions="{Binding NoticeBeforeEndingOptions}"
                                                AudioType="{Binding NoticeBeforeEndingSoundType}"
                                                SelectedIndex="{Binding SelectedNoticeBeforeEndingIndex, Mode=TwoWay}" />
@@ -372,7 +372,7 @@
                 </Grid>
             </Grid>
 
-            <!--  【校时】页面  -->
+            <!--  【同步】页面  -->
             <Grid Name="CalibrationGrid"
                   Visibility="{Binding CalibrationGridVisibility}">
                 <Grid Margin="52,0,38,0">
@@ -388,14 +388,14 @@
                     <Label Grid.Row="1"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="系统时间校准"
+                           Content="系统时间同步"
                            FontFamily="{StaticResource Hei}"
                            FontSize="30"
                            Foreground="#2E4959" />
                     <Label Grid.Row="2"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="选择一个目标主机以校准系统时间"
+                           Content="选择一个目标主机以同步系统时间"
                            FontFamily="{StaticResource Hei}"
                            FontSize="16"
                            Foreground="#D2D2D2" />
