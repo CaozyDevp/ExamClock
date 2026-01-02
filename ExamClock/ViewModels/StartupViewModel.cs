@@ -94,7 +94,21 @@ namespace ExamClock.ViewModels
 
         public ICommand StartExamCommand => new RelayCommand(execute =>
         {
-            new ClockWindow().Show();
+            var clockWindow = new ClockWindow();
+            var startupWindow = Application.Current.MainWindow as StartupWindow;
+
+            // 关闭时钟窗口的事件处理器
+            void ClosedHandler(object sender, EventArgs e)
+            {
+                clockWindow.Closed -= ClosedHandler;    // 取消订阅，避免内存泄漏
+                startupWindow?.Show();                  // 显示启动窗口
+            }
+
+            // 现在：隐藏启动窗口，并显示时钟窗口
+            startupWindow?.Hide();
+            clockWindow.Show();
+
+            clockWindow.Closed += ClosedHandler;
         });
     }
 }
