@@ -47,16 +47,36 @@ namespace ExamClock.ViewModels
         {
             var currentItem = Configuration.GetCurrentItem();
             var nextItem = Configuration.GetNextItem();
+
+            var nowTime = DateTime.Now;
+
             if (currentItem != null)
             {
                 var endTime = currentItem.BeginTime + currentItem.Duration;
-                ExamDateText = $"当前考试：{currentItem.Subject}，还有{(int)(endTime - DateTime.Now).TotalMinutes}分钟结束";
+                ExamDateText = $"当前考试：{currentItem.Subject}，还有{(int)(endTime - nowTime).TotalMinutes}分钟结束";
             }
             else if (nextItem != null)
             {
-                ExamDateText = nextItem.BeginTime.Date == DateTime.Now.Date ?
-                    $"下一场：{nextItem.Subject}，还有{(int)(nextItem.BeginTime - DateTime.Now).TotalMinutes}分钟开始" :
-                    $"考试将在 {nextItem.BeginTime.Date.ToShortDateString()} 开始";
+                // 如果下一场考试在今天
+                if (nextItem.BeginTime.Date == nowTime.Date)
+                {
+                    // 距离下一场考试的分钟数
+                    int minutes = (int)(nextItem.BeginTime - nowTime).TotalMinutes;
+
+                    if (minutes < 1)
+                    {
+                        ExamDateText = $"下一场：{nextItem.Subject}，即将开始";
+                    }
+                    else
+                    {
+                        ExamDateText = $"下一场：{nextItem.Subject}，还有{minutes}分钟开始";
+                    }
+                }
+                // 如果下一场考试不在今天
+                else
+                {
+                    ExamDateText = $"考试将在 {nextItem.BeginTime.Date.ToShortDateString()} 开始";
+                }
             }
             else
             {
