@@ -24,8 +24,25 @@
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Name="ClockGrid"
-              Grid.Column="1"
+        <StackPanel Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="65 56 0 0">
+            <Label FontSize="50"
+                   FontFamily="{StaticResource Hei}"
+                   Name="EventLabel"
+                   Content="{Binding EventNameText}"
+                   Foreground="#DADADA" />
+            <Label FontSize="40"
+                   FontFamily="{StaticResource Hei}"
+                   Name="TimeLabel"
+                   Content="{Binding EventTimeText}"
+                   Foreground="#A9A9A9" />
+        </StackPanel>
+
+        <Grid Grid.Column="1"
+              Name="ClockGrid"
               Height="650"
               Width="650"
               HorizontalAlignment="Center"
@@ -67,63 +84,60 @@
             </Image>
         </Grid>
 
-        <Button Grid.Column="2"
-                Width="52"
-                Height="52"
-                Click="ExitButton_Click"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Right"
-                Margin="0 36 42 0">
-            <Button.Template>
-                <ControlTemplate>
-                    <Border Width="52"
-                            Height="52"
-                            BorderThickness="2.5"
-                            BorderBrush="#606060"
-                            CornerRadius="16">
-                        <Image Source="/Views/Images/Exit.png"
-                               Width="23"
-                               Margin="10 0 8 0"
-                               Height="22" />
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="25"
-                                              Direction="0"
-                                              Opacity="0.3"
-                                              ShadowDepth="0"
-                                              Color="White" />
-                        </Border.Effect>
-                        <Border.Background>
-                            <RadialGradientBrush Center="0.5,0.5"
-                                                 RadiusX="0.5"
-                                                 RadiusY="0.5">
-                                <RadialGradientBrush.GradientStops>
-                                    <GradientStop Color="#191919"
-                                                  Offset="0" />
-                                    <GradientStop Color="#232323"
-                                                  Offset="1" />
-                                </RadialGradientBrush.GradientStops>
-                            </RadialGradientBrush>
-                        </Border.Background>
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-
-        <StackPanel Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Left"
+        <StackPanel Grid.Column="2"
+                    Margin="0 36 42 0"
+                    Height="52"
                     VerticalAlignment="Top"
-                    Margin="65 56 0 0">
-            <Label FontSize="50"
+                    Orientation="Horizontal"
+                    FlowDirection="RightToLeft">
+            <Button Width="52"
+                    Height="52"
+                    Click="ExitButton_Click"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    FlowDirection="LeftToRight">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Border Width="52"
+                                Height="52"
+                                BorderThickness="2.5"
+                                BorderBrush="#606060"
+                                CornerRadius="16">
+                            <Image Source="/Views/Images/Exit.png"
+                                   Width="23"
+                                   Margin="10 0 8 0"
+                                   Height="22" />
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="25"
+                                                  Direction="0"
+                                                  Opacity="0.3"
+                                                  ShadowDepth="0"
+                                                  Color="White" />
+                            </Border.Effect>
+                            <Border.Background>
+                                <RadialGradientBrush Center="0.5,0.5"
+                                                     RadiusX="0.5"
+                                                     RadiusY="0.5">
+                                    <RadialGradientBrush.GradientStops>
+                                        <GradientStop Color="#191919"
+                                                      Offset="0" />
+                                        <GradientStop Color="#232323"
+                                                      Offset="1" />
+                                    </RadialGradientBrush.GradientStops>
+                                </RadialGradientBrush>
+                            </Border.Background>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Label Foreground="#5E5E5E"
+                   Content="{Binding RoomNumberText}"
                    FontFamily="{StaticResource Hei}"
-                   Name="EventLabel"
-                   Content="{Binding EventNameText}"
-                   Foreground="#DADADA" />
-            <Label FontSize="40"
-                   FontFamily="{StaticResource Hei}"
-                   Name="TimeLabel"
-                   Content="{Binding EventTimeText}"
-                   Foreground="#A9A9A9" />
+                   FontSize="30"
+                   Margin="13 0 0 0"
+                   FlowDirection="LeftToRight"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

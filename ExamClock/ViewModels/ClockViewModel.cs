@@ -93,7 +93,6 @@ namespace ExamClock.ViewModels
         /// </summary>
         public double SecondAngle => Time.Second * 6.0;
 
-
         /// <summary>
         /// 考试项目名称
         /// </summary>
@@ -138,6 +137,21 @@ namespace ExamClock.ViewModels
         }
         private List<NoticeItem> _noticeTimes = new List<NoticeItem>();
 
+        /// <summary>
+        /// 考场号文本
+        /// </summary>
+        public string RoomNumberText
+        {
+            get
+            {
+                var number = Configuration.RoomNumber;
+                if (number == 0)
+                {
+                    return "未知考场";
+                }
+                return number.ToString("0000");
+            }
+        }
 
         private void SetEventNameAndTime()
         {
