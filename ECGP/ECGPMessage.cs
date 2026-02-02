@@ -23,12 +23,18 @@ using System.Text;
 
 namespace ECGP
 {
-    public struct ECGPMessage
+    public class ECGPMessage
     {
+        #region Fields
+
         /// <summary>
         /// 报头的ASCII字符串
         /// </summary>
-        const string HeaderString = ".%ECGP%.";
+        private const string HeaderString = ".%ECGP%.";
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// 报头
@@ -82,15 +88,11 @@ namespace ECGP
         /// <summary>
         /// 主体
         /// </summary>
-        public byte[] Body { get; set; }
+        public byte[] Body { get; set; } = new byte[0];
 
-        /// <summary>
-        /// 空的ECGP消息
-        /// </summary>
-        public static ECGPMessage Empty
-        {
-            get => new ECGPMessage();
-        }
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// 构造一个ECGP消息
@@ -105,6 +107,23 @@ namespace ECGP
             Type = type;
             Body = body ?? (new byte[0]);
         }
+
+        /// <summary>
+        /// 构造一个填入指定特征码的ECGP消息
+        /// </summary>
+        /// <param name="ver">版本号</param>
+        /// <param name="type">类型</param>
+        /// <param name="body">消息主体</param>
+        /// <param name="number">特征码</param>
+        public ECGPMessage(ushort ver, uint number, ushort type, byte[] body)
+        {
+            Version = ver;
+            Number = number;
+            Type = type;
+            Body = body ?? (new byte[0]);
+        }
+
+        #endregion
 
         /// <summary>
         /// 将ECGP消息转换为字节数组
@@ -178,19 +197,13 @@ namespace ECGP
             var body = new byte[bytes.Length - 20];
             Buffer.BlockCopy(bytes, 20, body, 0, body.Length);
 
-            return new ECGPMessage()
-            {
-                Version = ver,
-                Number = num,
-                Type = type,
-                Body = body
-            };
+            return new ECGPMessage(ver, num, type, body);
         }
 
         /// <summary>
         /// 尝试将字节数组解析为ECGP消息
         /// </summary>
-        /// <param name="result">结果ECGP消息</param>
+        /// <param name="result">结果ECGP消息，如果解析失败，返回空引用</param>
         /// <param name="bytes">源字符数组</param>
         /// <returns>是否解析成功</returns>
         public static bool TryParse(out ECGPMessage result, byte[] bytes)
@@ -202,7 +215,7 @@ namespace ECGP
             }
             catch
             {
-                result = Empty;
+                result = null;
                 return false;
             }
         }
