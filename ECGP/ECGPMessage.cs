@@ -95,6 +95,18 @@ namespace ECGP
         #region Constructors
 
         /// <summary>
+        /// 构造一个ECGP消息，版本号默认
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <param name="body">消息主体</param>
+        public ECGPMessage(ushort type, byte[] body)
+        {
+            Number = GetRandomNumber();
+            Type = type;
+            Body = body ?? (new byte[0]);
+        }
+
+        /// <summary>
         /// 构造一个ECGP消息
         /// </summary>
         /// <param name="ver">版本号</param>
@@ -118,6 +130,19 @@ namespace ECGP
         public ECGPMessage(ushort ver, uint number, ushort type, byte[] body)
         {
             Version = ver;
+            Number = number;
+            Type = type;
+            Body = body ?? (new byte[0]);
+        }
+
+        /// <summary>
+        /// 构造一个填入指定特征码的ECGP消息，版本号默认
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <param name="body">消息主体</param>
+        /// <param name="number">特征码</param>
+        public ECGPMessage(uint number, ushort type, byte[] body)
+        {
             Number = number;
             Type = type;
             Body = body ?? (new byte[0]);
