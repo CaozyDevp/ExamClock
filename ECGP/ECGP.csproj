@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DetectionMessage.cs" />
     <Compile Include="ECGPMessage.cs" />
     <Compile Include="Exceptions\ECGPFormatException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
