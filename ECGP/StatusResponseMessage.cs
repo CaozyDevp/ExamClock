@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using ECGP.Exceptions;
 using ExamClock.Enums;
 using System;
 using System.Collections.Generic;
@@ -82,6 +83,71 @@ namespace ECGP
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 将字符数组解析为状态响应消息
+        /// </summary>
+        /// <param name="bytes">源字符数组</param>
+        /// <param name="RSAPrivateKeyXml">用于解密的RSA私钥xml字符串</param>
+        /// <returns></returns>
+        /// <exception cref="StatusResponseFormatException"></exception>
+        public static StatusResponseMessage Parse(byte[] bytes, string RSAPrivateKeyXml)
+        {
+            ECGPMessage rawMessage = Parse(bytes);
+            string publicKeyXml;
+            byte[] body;
+            using (var rsa = RSA.Create())
+            {
+                rsa.FromXmlString(RSAPrivateKeyXml);
+                body = rsa.DecryptValue(rawMessage.Body);
+                publicKeyXml = rsa.ToXmlString(false);
+            }
+
+            if (body.Length != 24)
+            {
+                throw new StatusResponseFormatException("Format exception: the length of decrypted body must be 24.");
+            }
+
+            var numReceived = BitConverter.ToUInt32(body, 0);
+            var roomNum = BitConverter.ToUInt16(body, 4);
+            var scheduleMD5 = new byte[16];
+            Buffer.BlockCopy(body, 7, scheduleMD5, 0, scheduleMD5.Length);
+
+            // 设置状态信息
+            var statusByte = body[6];
+            if (statusByte > 3)
+            {
+                throw new StatusResponseFormatException("Format exception: status invalid.");
+            }
+            ClientStatus status = (ClientStatus)statusByte;
+
+            // 设置播报配置
+            var notice = body[23];
+            bool beginning = false;
+            bool ending = false;
+            SoundType beforeEnding = SoundType.None;
+            if ((notice & 0b0000_0001) != 0)
+            {
+                beginning = true;
+            }
+            if ((notice & 0b0000_0010) != 0)
+            {
+                ending = true;
+            }
+            if ((notice & 0b0000_0100) != 0)
+            {
+                if ((notice & 0b0000_1000) == 0)
+                {
+                    beforeEnding = SoundType._10MinBeforeEnding;
+                }
+                else
+                {
+                    beforeEnding = SoundType._15MinBeforeEnding;
+                }
+            }
+
+            return new StatusResponseMessage(numReceived, roomNum, status, scheduleMD5, beginning, ending, beforeEnding, publicKeyXml);
         }
 
         #region Properties
