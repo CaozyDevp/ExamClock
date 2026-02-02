@@ -41,10 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientStatus.cs" />
     <Compile Include="DetectionMessage.cs" />
     <Compile Include="ECGPMessage.cs" />
     <Compile Include="Exceptions\ECGPFormatException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatusResponseMessage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExamClock\ExamClock.csproj">
+      <Project>{c1090037-0c40-4f19-9181-eec5342bd978}</Project>
+      <Name>ExamClock</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
