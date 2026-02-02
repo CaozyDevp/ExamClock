@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ECGP
+namespace ECGP.Messages
 {
     public class ECGPMessage
     {
@@ -229,7 +229,7 @@ namespace ECGP
         /// 尝试将字节数组解析为ECGP消息
         /// </summary>
         /// <param name="result">结果ECGP消息，如果解析失败，返回空引用</param>
-        /// <param name="bytes">源字符数组</param>
+        /// <param name="bytes">源字节数组</param>
         /// <returns>是否解析成功</returns>
         public static bool TryParse(out ECGPMessage result, byte[] bytes)
         {

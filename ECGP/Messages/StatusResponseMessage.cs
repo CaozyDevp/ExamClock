@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace ECGP
+namespace ECGP.Messages
 {
     /// <summary>
     /// 状态响应消息：对<see cref="DetectionMessage"/>的回复
@@ -86,9 +86,9 @@ namespace ECGP
         }
 
         /// <summary>
-        /// 将字符数组解析为状态响应消息
+        /// 将字节数组解析为状态响应消息
         /// </summary>
-        /// <param name="bytes">源字符数组</param>
+        /// <param name="bytes">源字节数组</param>
         /// <param name="RSAPrivateKeyXml">用于解密的RSA私钥xml字符串</param>
         /// <returns></returns>
         /// <exception cref="StatusResponseFormatException"></exception>

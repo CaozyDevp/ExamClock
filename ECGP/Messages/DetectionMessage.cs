@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace ECGP
+namespace ECGP.Messages
 {
     /// <summary>
     /// 存在探测报文

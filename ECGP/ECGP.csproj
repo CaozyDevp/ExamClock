@@ -42,12 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientStatus.cs" />
-    <Compile Include="DetectionMessage.cs" />
-    <Compile Include="ECGPMessage.cs" />
+    <Compile Include="Messages\DetectionMessage.cs" />
+    <Compile Include="Messages\ECGPMessage.cs" />
     <Compile Include="Exceptions\ECGPFormatException.cs" />
     <Compile Include="Exceptions\StatusResponseFormatException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatusResponseMessage.cs" />
+    <Compile Include="Messages\StatusResponseMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExamClock\ExamClock.csproj">
