@@ -153,7 +153,7 @@ namespace ECGP
         /// <summary>
         /// 将ECGP消息转换为字节数组
         /// </summary>
-        public byte[] ToBytes()
+        public virtual byte[] ToBytes()
         {
             var arrayList = new List<byte[]>()
             {
