@@ -47,7 +47,7 @@ namespace ECGP
         /// <summary>
         /// 版本号
         /// </summary>
-        public ushort Version { get; set; }
+        public ushort Version { get; set; } = 0x01;
 
         /// <summary>
         /// 特征码
