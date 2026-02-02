@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ClientStatus.cs" />
     <Compile Include="Messages\DetectionMessage.cs" />
+    <Compile Include="Messages\DynamicKeyRequestMessage.cs" />
     <Compile Include="Messages\ECGPMessage.cs" />
     <Compile Include="Exceptions\ECGPFormatException.cs" />
     <Compile Include="Exceptions\StatusResponseFormatException.cs" />
