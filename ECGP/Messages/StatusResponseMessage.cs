@@ -28,10 +28,10 @@ namespace ECGP.Messages
     /// </summary>
     public class StatusResponseMessage : ECGPMessage
     {
-        public StatusResponseMessage(uint numberReceived, ushort roomNumber, ClientStatus status, byte[] scheduleMD5,
-            bool isBeginningNoticeEnabled, bool isEndingNoticeEnabled, SoundType noticeBeforeEndingType, string rsaPublicKeyXml) : base(0x02, null)
+        public StatusResponseMessage(uint numberReceived, ushort roomNumber, ClientStatus status, byte[] scheduleMD5, bool isBeginningNoticeEnabled, 
+            bool isEndingNoticeEnabled, SoundType noticeBeforeEndingType, byte systemVolume, string rsaPublicKeyXml) : base(0x02, null)
         {
-            Body = new byte[24];
+            Body = new byte[25];
             NumberReceived = numberReceived;
             RoomNumber = roomNumber;
             Status = status;
@@ -40,6 +40,8 @@ namespace ECGP.Messages
             IsBeginningNoticeEnabled = isBeginningNoticeEnabled;
             IsEndingNoticeEnabled = isEndingNoticeEnabled;
             NoticeBeforeEndingType = noticeBeforeEndingType;
+
+            SystemVolume = systemVolume;
 
             RSAPublicKeyXml = rsaPublicKeyXml;
         }
@@ -104,9 +106,9 @@ namespace ECGP.Messages
                 publicKeyXml = rsa.ToXmlString(false);
             }
 
-            if (body.Length != 24)
+            if (body.Length != 25)
             {
-                throw new ECGPFormatException("The length of decrypted body must be 24.");
+                throw new ECGPFormatException("The length of decrypted body must be 25.");
             }
 
             var numReceived = BitConverter.ToUInt32(body, 0);
@@ -114,7 +116,7 @@ namespace ECGP.Messages
             var scheduleMD5 = new byte[16];
             Buffer.BlockCopy(body, 7, scheduleMD5, 0, scheduleMD5.Length);
 
-            // 设置状态信息
+            // 状态信息
             var statusByte = body[6];
             if (statusByte > 3)
             {
@@ -122,7 +124,7 @@ namespace ECGP.Messages
             }
             ClientStatus status = (ClientStatus)statusByte;
 
-            // 设置播报配置
+            // 播报配置
             var notice = body[23];
             bool beginning = false;
             bool ending = false;
@@ -147,7 +149,10 @@ namespace ECGP.Messages
                 }
             }
 
-            return new StatusResponseMessage(numReceived, roomNum, status, scheduleMD5, beginning, ending, beforeEnding, publicKeyXml);
+            // 系统音量
+            var volume = body[24];
+
+            return new StatusResponseMessage(numReceived, roomNum, status, scheduleMD5, beginning, ending, beforeEnding, volume, publicKeyXml);
         }
 
         #region Properties
@@ -272,6 +277,24 @@ namespace ECGP.Messages
             }
         }
         private SoundType _noticeBeforeEndingType;
+
+        /// <summary>
+        /// 系统音量（范围0~100）
+        /// </summary>
+        public byte SystemVolume
+        {
+            get => _systemVolume;
+            set
+            {
+                if (value > 100)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), value, "System volume must be between 0 and 100.");
+                }
+                _systemVolume = value;
+                Body[24] = value;
+            }
+        }
+        private byte _systemVolume;
 
         /// <summary>
         /// 用于加密的RSA公钥
