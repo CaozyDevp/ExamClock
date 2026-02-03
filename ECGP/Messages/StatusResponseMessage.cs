@@ -106,7 +106,7 @@ namespace ECGP.Messages
 
             if (body.Length != 24)
             {
-                throw new StatusResponseFormatException("Format exception: the length of decrypted body must be 24.");
+                throw new ECGPFormatException("The length of decrypted body must be 24.");
             }
 
             var numReceived = BitConverter.ToUInt32(body, 0);
@@ -118,7 +118,7 @@ namespace ECGP.Messages
             var statusByte = body[6];
             if (statusByte > 3)
             {
-                throw new StatusResponseFormatException("Format exception: status invalid.");
+                throw new ECGPFormatException("Status invalid. It can only be 0~3.");
             }
             ClientStatus status = (ClientStatus)statusByte;
 

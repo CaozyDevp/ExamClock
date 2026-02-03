@@ -47,7 +47,6 @@
     <Compile Include="Messages\DynamicKeyResponseMessage.cs" />
     <Compile Include="Messages\ECGPMessage.cs" />
     <Compile Include="Exceptions\ECGPFormatException.cs" />
-    <Compile Include="Exceptions\StatusResponseFormatException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Messages\StatusResponseMessage.cs" />
   </ItemGroup>

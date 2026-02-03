@@ -19,7 +19,7 @@ using System;
 
 namespace ECGP.Exceptions
 {
-    public class ECGPFormatException : Exception
+    public class ECGPFormatException : FormatException
     {
         public ECGPFormatException()
         {
