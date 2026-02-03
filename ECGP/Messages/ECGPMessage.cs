@@ -277,7 +277,7 @@ namespace ECGP.Messages
         /// <summary>
         /// 获取一个密码学安全随机数
         /// </summary>
-        private static uint GetRandomNumber()
+        protected static uint GetRandomNumber()
         {
             byte[] bytes = new byte[4];
             using (var rng = RandomNumberGenerator.Create())
