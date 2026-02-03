@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientStatus.cs" />
+    <Compile Include="InstructionType.cs" />
     <Compile Include="Messages\DetectionMessage.cs" />
     <Compile Include="Messages\DynamicKeyRequestMessage.cs" />
     <Compile Include="Messages\DynamicKeyResponseMessage.cs" />
