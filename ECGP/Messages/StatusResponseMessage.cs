@@ -155,6 +155,27 @@ namespace ECGP.Messages
             return new StatusResponseMessage(numReceived, roomNum, status, scheduleMD5, beginning, ending, beforeEnding, volume, publicKeyXml);
         }
 
+        /// <summary>
+        /// 尝试将字节数组解析为状态响应消息
+        /// </summary>
+        /// <param name="bytes">源字节数组</param>
+        /// <param name="RSAPrivateKeyXml">用于解密的RSA私钥xml字符串</param>
+        /// <param name="result">解析结果，如果失败则为null</param>
+        /// <returns>如果解析成功则为true，否则为false。</returns>
+        public static bool TryParse(byte[] bytes, string RSAPrivateKeyXml, out StatusResponseMessage result)
+        {
+            try
+            {
+                result = Parse(bytes, RSAPrivateKeyXml);
+                return true;
+            }
+            catch
+            {
+                result = null;
+                return false;
+            }
+        }
+
         #region Properties
 
         /// <summary>
