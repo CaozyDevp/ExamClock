@@ -30,29 +30,6 @@ namespace ECGP.Messages
         #region Properties
 
         /// <summary>
-        /// 密钥失效的UTC时间，在报文中以“距离失效的秒数”体现
-        /// </summary>
-        public DateTime Invalidity
-        {
-            get => _invalidity;
-            set
-            {
-                _invalidity = value;
-
-                var distance = value.ToUniversalTime() - DateTime.UtcNow;
-                uint seconds = 0;
-                if (distance.TotalSeconds > 0)
-                {
-                    seconds = (uint)distance.TotalSeconds;
-                }
-
-                byte[] secondsBytes = BitConverter.GetBytes(seconds);
-                Buffer.BlockCopy(secondsBytes, 0, Body, 16, secondsBytes.Length);
-            }
-        }
-        private DateTime _invalidity;
-
-        /// <summary>
         /// 动态AES密钥
         /// </summary>
         public byte[] DynamicKey
@@ -72,17 +49,31 @@ namespace ECGP.Messages
         private byte[] _dynamicKey = new byte[16];
 
         /// <summary>
+        /// 接收到的特征码
+        /// </summary>
+        public uint NumberReceived
+        {
+            get => _numberReceived;
+            set
+            {
+                _numberReceived = value;
+                Buffer.BlockCopy(BitConverter.GetBytes(value), 0, Body, 16, sizeof(uint));
+            }
+        }
+        private uint _numberReceived;
+
+        /// <summary>
         /// 用于加密的RSA公钥
         /// </summary>
         public string RSAPublicKeyXml { get; set; }
 
         #endregion
 
-        public DynamicKeyResponseMessage(byte[] dynamicKey, DateTime invalidity, string rsaPublicKeyXml) : base(0x04, null)
+        public DynamicKeyResponseMessage(byte[] dynamicKey, uint numReceived, string rsaPublicKeyXml) : base(0x04, null)
         {
             Body = new byte[20];
             DynamicKey = dynamicKey;
-            Invalidity = invalidity;
+            NumberReceived = numReceived;
             RSAPublicKeyXml = rsaPublicKeyXml;
         }
 
@@ -148,13 +139,11 @@ namespace ECGP.Messages
                 throw new ECGPFormatException("The length of decrypted body must be 20.");
             }
 
-            var seconds = BitConverter.ToUInt32(body, 16);
+            var numReceived = BitConverter.ToUInt32(body, 16);
             var dynamicKey = new byte[16];
             Buffer.BlockCopy(body, 0, dynamicKey, 0, dynamicKey.Length);
 
-            var invalidity = DateTime.UtcNow + TimeSpan.FromSeconds(seconds);
-
-            return new DynamicKeyResponseMessage(dynamicKey, invalidity, publicKeyXml);
+            return new DynamicKeyResponseMessage(dynamicKey, numReceived, publicKeyXml);
         }
     }
 }
