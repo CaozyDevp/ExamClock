@@ -20,7 +20,7 @@ namespace ECGP
     /// <summary>
     /// 客户端的状态
     /// </summary>
-    public enum ClientStatus
+    public enum ClientStatus : byte
     {
         Unknown,
         Exiting,
