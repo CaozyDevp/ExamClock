@@ -48,7 +48,7 @@ namespace ExamClock
                 Responder?.Stop();
                 Responder = null;
 
-                Responder = new TimeSyncResponder(() => { return Configuration.RoomNumber; }, Configuration.RequestPort);
+                Responder = new TimeSyncResponder(() => { return Configuration.RoomNumber; }, Configuration.TimeSyncPort);
                 await Responder.StartAsync();
             }
             catch (System.Exception ex)

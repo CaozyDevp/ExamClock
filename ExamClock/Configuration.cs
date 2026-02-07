@@ -50,8 +50,8 @@ namespace ExamClock
         /// <summary>
         /// 时间同步请求的端口：请求将被发送到这个端口；在这个端口接收请求
         /// </summary>
-        public static int RequestPort => _requestPort;
-        private const int _requestPort = 25566;
+        public static int TimeSyncPort => _timeSyncPort;
+        private const int _timeSyncPort = 25566;
 
         /// <summary>
         /// 软件的版本号（从资源中获取）

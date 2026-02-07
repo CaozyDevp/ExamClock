@@ -36,7 +36,7 @@ namespace TimeSync
         /// <summary>
         /// 接收请求的端口
         /// </summary>
-        public int RequestPort { get; }
+        public int TimeSyncPort { get; }
 
         /// <summary>
         /// 是否已经启动
@@ -53,10 +53,10 @@ namespace TimeSync
         /// </summary>
         private UdpClient Receiver { get; set; }
 
-        public TimeSyncResponder(Func<ushort> getHostNumber, int requestPort)
+        public TimeSyncResponder(Func<ushort> getHostNumber, int timeSyncPort)
         {
             GetHostNumber = getHostNumber ?? throw new ArgumentNullException(nameof(getHostNumber));
-            RequestPort = requestPort;
+            TimeSyncPort = timeSyncPort;
         }
 
         public async Task StartAsync()
@@ -64,7 +64,7 @@ namespace TimeSync
             if (IsRunning) return;
             IsRunning = true;
 
-            Receiver = new UdpClient(RequestPort);
+            Receiver = new UdpClient(TimeSyncPort);
 
             while (IsRunning)
             {

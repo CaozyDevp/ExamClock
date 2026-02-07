@@ -34,12 +34,14 @@ namespace TimeSync
         /// </summary>
         private readonly int _port;
 
-
-        /// <param name="requestPort">服务端接收请求的端口</param>
-        public TimeSyncRequester(int requestPort)
+        /// <summary>
+        /// 初始化一个时间同步请求发送器
+        /// </summary>
+        /// <param name="timeSyncPort">服务端接收时间同步请求的端口</param>
+        public TimeSyncRequester(int timeSyncPort)
         {
             _udpClient = new UdpClient();
-            _port = requestPort;
+            _port = timeSyncPort;
         }
 
         private void BroadcastTimeSyncRequest(int port, ushort hostNumber)
@@ -132,14 +134,13 @@ namespace TimeSync
         /// <summary>
         /// 广播请求消息，并将接收到的消息转为<see cref="TimeKeeper"/>，最多接收50个响应
         /// </summary>
-        /// <param name="requestPort"></param>
-        /// <param name="respondPort"></param>
+        /// <param name="timeSyncPort"></param>
         /// <param name="hostNumber"></param>
         /// <returns></returns>
-        public async Task<List<TimeKeeper>> BroadcastAndGetTimeKeepers(int requestPort, ushort hostNumber)
+        public async Task<List<TimeKeeper>> BroadcastAndGetTimeKeepers(int timeSyncPort, ushort hostNumber)
         {
             const int timeout = 1000;
-            BroadcastTimeSyncRequest(requestPort, hostNumber);
+            BroadcastTimeSyncRequest(timeSyncPort, hostNumber);
             var timeKeepers = new List<TimeKeeper>();
 
             // 最多接收50个响应

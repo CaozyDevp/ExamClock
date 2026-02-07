@@ -840,9 +840,9 @@ namespace ExamClock.ViewModels
         /// <summary>
         /// 查找局域网中的可用主机，并显示
         /// </summary>
-        /// <param name="requestPort">发送请求的端口</param>
+        /// <param name="timeSyncPort">用于时间同步的端口</param>
         /// <param name="roomNumber">本机的考场号</param>
-        private async Task FindHostAndShow(int requestPort, ushort roomNumber)
+        private async Task FindHostAndShow(int timeSyncPort, ushort roomNumber)
         {
             if (SyncItemElements == null)
             {
@@ -854,8 +854,8 @@ namespace ExamClock.ViewModels
 
             try
             {
-                var requester = new TimeSyncRequester(requestPort);
-                keepers = await requester.BroadcastAndGetTimeKeepers(requestPort, roomNumber);
+                var requester = new TimeSyncRequester(timeSyncPort);
+                keepers = await requester.BroadcastAndGetTimeKeepers(timeSyncPort, roomNumber);
             }
             catch
             {
@@ -895,7 +895,7 @@ namespace ExamClock.ViewModels
             get => new RelayCommand(async execute =>
             {
                 CanFind = false;
-                await FindHostAndShow(Configuration.RequestPort, Configuration.RoomNumber);
+                await FindHostAndShow(Configuration.TimeSyncPort, Configuration.RoomNumber);
             }, canExecute =>
             {
                 return CanFind;
