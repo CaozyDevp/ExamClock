@@ -20,7 +20,7 @@ namespace ECGP
     /// <summary>
     /// 控制指令的类型
     /// </summary>
-    public enum InstructionType
+    public enum InstructionType : ushort
     {
         ModeSwitch = 0x01,
         SetSystemVolume = 0x02,
