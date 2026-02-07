@@ -122,6 +122,7 @@ namespace ECGP.Messages
         /// 将字节数组解析为动态密钥响应消息
         /// </summary>
         /// <param name="bytes">源字节数组</param>
+        /// <param name="rsaPrivateKeyXml">用于解密的RSA私钥</param>
         public static DynamicKeyResponseMessage Parse(byte[] bytes, string rsaPrivateKeyXml)
         {
             ECGPMessage rawMessage = Parse(bytes);
@@ -144,6 +145,27 @@ namespace ECGP.Messages
             Buffer.BlockCopy(body, 0, dynamicKey, 0, dynamicKey.Length);
 
             return new DynamicKeyResponseMessage(dynamicKey, numReceived, publicKeyXml);
+        }
+
+        /// <summary>
+        /// 尝试将字节数组解析为动态密钥响应消息
+        /// </summary>
+        /// <param name="bytes">源字节数组</param>
+        /// <param name="rsaPrivateKeyXml">用于解密的RSA私钥</param>
+        /// <param name="result">解析结果</param>
+        /// <returns>解析是否成功。如果失败，<paramref name="result"/>设为null</returns>
+        public static bool TryParse(byte[] bytes, string rsaPrivateKeyXml, out DynamicKeyResponseMessage result)
+        {
+            try
+            {
+                result = Parse(bytes, rsaPrivateKeyXml);
+                return true;
+            }
+            catch
+            {
+                result = null;
+                return false;
+            }
         }
     }
 }
