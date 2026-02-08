@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSync", "TimeSync\TimeSy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECGP", "ECGP\ECGP.csproj", "{167B8576-2FC2-4C97-84DA-C654563E5ABA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamClock.Admin", "ExamClock.Admin\ExamClock.Admin.csproj", "{DCAD9308-789F-4DAE-81F2-961624ADE44D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{167B8576-2FC2-4C97-84DA-C654563E5ABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{167B8576-2FC2-4C97-84DA-C654563E5ABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{167B8576-2FC2-4C97-84DA-C654563E5ABA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCAD9308-789F-4DAE-81F2-961624ADE44D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCAD9308-789F-4DAE-81F2-961624ADE44D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCAD9308-789F-4DAE-81F2-961624ADE44D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCAD9308-789F-4DAE-81F2-961624ADE44D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
