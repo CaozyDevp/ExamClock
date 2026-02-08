@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:ExamClock.Admin"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        
+        <!--  用于显示一般文字  -->
+        <FontFamily x:Key="Hei">../Views/Fonts/#OPPO Sans</FontFamily>
+
+        <!--  用于显示数字  -->
+        <FontFamily x:Key="Num">../Views/Fonts/#OPPO Sans</FontFamily>
+        
     </Application.Resources>
 </Application>
