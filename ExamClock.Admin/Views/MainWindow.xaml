@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExamClock.Admin"
         mc:Ignorable="d"
-        Height="700"
-        Width="1020"
+        MinHeight="700" MinWidth="1020"
+        Height="700" Width="1020"
         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen">
@@ -25,15 +25,259 @@
                 <RowDefinition Height="76" />
                 <RowDefinition />
             </Grid.RowDefinitions>
+
             <Border Grid.Row="0"
                     Height="76"
                     Background="#D6EDFF">
-                <Grid Margin="55,20,0,0">
-                    <Label Content="教育考试时钟 - 管理端"
+                <StackPanel Margin="39 0 0 0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left">
+                    <Label Content="考试管理中心"
                            FontFamily="{StaticResource Hei}"
-                           FontSize="20" />
-                </Grid>
+                           FontSize="27" />
+                    <Button Grid.Row="0"
+                            Width="32"
+                            Height="32"
+                            Margin="8,6,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border Background="#D4ECFF"
+                                        BorderBrush="#A1D6FF"
+                                        BorderThickness="2"
+                                        CornerRadius="10">
+                                    <Image Width="6"
+                                           Source="../Assets/Images/Info.png" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
             </Border>
+            <Button Grid.Row="0"
+                    Width="33"
+                    Height="33"
+                    Margin="0 0 3 0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    WindowChrome.IsHitTestVisibleInChrome="True">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Border Background="#D4ECFF"
+                                CornerRadius="0 5 0 0">
+                            <Image Width="11"
+                                   Source="../Assets/Images/Close.png" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="73" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="42" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="125" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Row="0"
+                            Grid.Column="1"
+                            Orientation="Horizontal"
+                            Margin="4"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Left">
+                    <Border Background="White"
+                            Width="277"
+                            Height="40"
+                            CornerRadius="20">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="6"
+                                              ShadowDepth="0"
+                                              Color="Black"
+                                              Opacity="0.16" />
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="88" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0"
+                                   Content="配置"
+                                   Margin="28 0 0 0"
+                                   FontSize="18"
+                                   VerticalAlignment="Center"
+                                   Foreground="#757575" />
+
+                            <Border Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    Background="#0090FF"
+                                    BorderBrush="#88CBFF"
+                                    BorderThickness="2"
+                                    CornerRadius="5"
+                                    Height="17"
+                                    Width="17" />
+                            <Label Grid.Column="1"
+                                   Content="正确 12"
+                                   FontSize="17"
+                                   Foreground="#0090FF"
+                                   VerticalAlignment="Center"
+                                   Margin="15 0 0 0" />
+
+                            <Border Grid.Column="2"
+                                    HorizontalAlignment="Left"
+                                    Background="#FF0000"
+                                    BorderBrush="#FF8B8B"
+                                    BorderThickness="2"
+                                    CornerRadius="5"
+                                    Height="17"
+                                    Width="17" />
+                            <Label Grid.Column="2"
+                                   Content="错误 12"
+                                   FontSize="17"
+                                   Foreground="#FF0000"
+                                   VerticalAlignment="Center"
+                                   Margin="15 0 0 0" />
+                        </Grid>
+                    </Border>
+                    <Border Background="White"
+                            Width="396"
+                            Height="40"
+                            Margin="14 0 0 0"
+                            CornerRadius="20">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="6"
+                                              ShadowDepth="0"
+                                              Color="Black"
+                                              Opacity="0.16" />
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="88" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0"
+                                   Content="时间"
+                                   Margin="28 0 0 0"
+                                   FontSize="18"
+                                   VerticalAlignment="Center"
+                                   Foreground="#757575" />
+
+                            <Border Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    Background="#0090FF"
+                                    BorderBrush="#88CBFF"
+                                    BorderThickness="2"
+                                    CornerRadius="9"
+                                    Height="17"
+                                    Width="17" />
+                            <Label Grid.Column="1"
+                                   Content="正确 12"
+                                   FontSize="17"
+                                   Foreground="#0090FF"
+                                   VerticalAlignment="Center"
+                                   Margin="15 0 0 0" />
+
+                            <Border Grid.Column="2"
+                                    HorizontalAlignment="Left"
+                                    Background="#FFA000"
+                                    BorderBrush="#FFD692"
+                                    BorderThickness="2"
+                                    CornerRadius="9"
+                                    Height="17"
+                                    Width="17" />
+                            <Label Grid.Column="2"
+                                   Content="偏离 12"
+                                   FontSize="17"
+                                   Foreground="#FFA000"
+                                   VerticalAlignment="Top"
+                                   Margin="15,4,0,0" />
+
+                            <Border Grid.Column="3"
+                                    HorizontalAlignment="Left"
+                                    Background="#FF0000"
+                                    BorderBrush="#FF8B8B"
+                                    BorderThickness="2"
+                                    CornerRadius="9"
+                                    Height="17"
+                                    Width="17" />
+                            <Label Grid.Column="3"
+                                   Content="错误 12"
+                                   FontSize="17"
+                                   Foreground="#FF0000"
+                                   VerticalAlignment="Top"
+                                   Margin="15,4,0,0" />
+                        </Grid>
+                    </Border>
+                    <Border Background="White"
+                            Width="166"
+                            Margin="14 0 0 0"
+                            Height="40"
+                            CornerRadius="20">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="6"
+                                              ShadowDepth="0"
+                                              Color="Black"
+                                              Opacity="0.16" />
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="88" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Grid.Column="0"
+                                   Content="考场"
+                                   Margin="28 0 0 0"
+                                   FontSize="18"
+                                   VerticalAlignment="Center"
+                                   Foreground="#757575" />
+
+                            <Label Grid.Column="1"
+                                   Content="9/12"
+                                   FontSize="17"
+                                   Foreground="#757575"
+                                   VerticalAlignment="Center"
+                                   Margin="5 0 0 0" />
+
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <Button Grid.Row="0"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Width="54"
+                                    Height="40"
+                                    CornerRadius="20"
+                                    Background="#F6FAFF"
+                                    BorderBrush="#0099FF"
+                                    BorderThickness="2">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="6"
+                                                      ShadowDepth="0"
+                                                      Color="#0099FF"
+                                                      Opacity="0.2" />
+                                </Border.Effect>
+                                <Image Source="/Assets/Images/Refresh.png"
+                                       Height="22"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
         </Grid>
     </Border>
 </Window>
