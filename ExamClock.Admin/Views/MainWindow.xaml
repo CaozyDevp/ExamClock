@@ -60,9 +60,9 @@
                 </StackPanel>
             </Border>
             <Button Grid.Row="0"
-                    Width="33"
+                    Width="36"
                     Height="33"
-                    Margin="0 0 3 0"
+                    Click="CloseButton_Click"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     WindowChrome.IsHitTestVisibleInChrome="True">
