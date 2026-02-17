@@ -64,6 +64,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Models\RoomInfo.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -111,7 +112,10 @@
     <Resource Include="Assets\Images\Info.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\ECGP\ECGP.csproj">
+      <Project>{167b8576-2fc2-4c97-84da-c654563e5aba}</Project>
+      <Name>ECGP</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
