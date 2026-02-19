@@ -15,7 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using ExamClock.Admin.Commands;
 using System;
+using System.Windows.Input;
 
 namespace ExamClock.Admin.ViewModels
 {
@@ -156,7 +158,7 @@ namespace ExamClock.Admin.ViewModels
                 OnPropertyChanged(nameof(EventName));
             }
         }
-        private string _eventName;
+        private string _eventName = "--";
 
         /// <summary>
         /// 事件时间字符串（格式：HH:mm）
@@ -171,7 +173,7 @@ namespace ExamClock.Admin.ViewModels
                 OnPropertyChanged(nameof(EventTimeString));
             }
         }
-        private string _eventTimeString;
+        private string _eventTimeString = "--:--";
 
         /// <summary>
         /// 管理权限字符串
@@ -186,7 +188,7 @@ namespace ExamClock.Admin.ViewModels
                 OnPropertyChanged(nameof(PermissionString));
             }
         }
-        private string _permissionString;
+        private string _permissionString = "--";
 
         /// <summary>
         /// 自动登出倒计时字符串（格式：HH:mm）
@@ -201,6 +203,38 @@ namespace ExamClock.Admin.ViewModels
                 OnPropertyChanged(nameof(LogoutTimeString));
             }
         }
-        private string _logoutTimeString;
+        private string _logoutTimeString = "--:--";
+
+        /// <summary>
+        /// 刷新命令（重新获取考场信息）
+        /// </summary>
+        public ICommand RefreshCommand => new RelayCommand(excute =>
+        {
+
+        });
+
+        /// <summary>
+        /// 推送命令
+        /// </summary>
+        public ICommand PushCommand => new RelayCommand(excute =>
+        {
+
+        });
+
+        /// <summary>
+        /// 打开设置窗口命令
+        /// </summary>
+        public ICommand SettingsCommand => new RelayCommand(excute =>
+        {
+
+        });
+
+        /// <summary>
+        /// 显示关于信息命令
+        /// </summary>
+        public ICommand ShowInfoCommand => new RelayCommand(excute =>
+        {
+
+        });
     }
 }

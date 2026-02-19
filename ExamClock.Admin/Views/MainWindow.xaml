@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ExamClock.Admin.ViewModels"
         xmlns:local="clr-namespace:ExamClock.Admin"
         mc:Ignorable="d"
         MinHeight="700"
@@ -19,6 +20,9 @@
                       GlassFrameThickness="-1"
                       ResizeBorderThickness="5" />
     </WindowChrome.WindowChrome>
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
     <Border BorderThickness="1"
             Background="White"
             BorderBrush="LightGray">
@@ -31,19 +35,24 @@
             <Border Grid.Row="0"
                     Height="76"
                     Background="#D6EDFF">
-                <StackPanel Margin="39 0 0 0"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left">
-                    <Label Content="考试管理中心"
+                <Grid Margin="39 0 0 0"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="173"/>
+                        <ColumnDefinition Width="48"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                           Content="考试管理中心"
                            FontFamily="{StaticResource Hei}"
                            FontSize="27" />
-                    <Button Grid.Row="0"
+                    <Button Grid.Column="1"
                             Width="32"
+                            Command="{Binding ShowInfoCommand}"
                             Height="32"
-                            Margin="8,6,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             WindowChrome.IsHitTestVisibleInChrome="True">
                         <Button.Template>
                             <ControlTemplate>
@@ -57,7 +66,16 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                </StackPanel>
+                    <Label Grid.Column="2"
+                           FontFamily="{StaticResource Hei}"
+                           FontSize="22"
+                           Foreground="#657994"
+                           Padding="0"
+                           Margin="0 0 50 5"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Content="{Binding LocalTimeString}" />
+                </Grid>
             </Border>
             <Button Grid.Row="0"
                     Width="36"
@@ -126,7 +144,8 @@
                                     Height="17"
                                     Width="17" />
                             <Label Grid.Column="1"
-                                   Content="正确 12"
+                                   Content="{Binding Path=RightConfiguredRooms}"
+                                   ContentStringFormat="正确 {0}"
                                    FontSize="17"
                                    Foreground="#0090FF"
                                    VerticalAlignment="Center"
@@ -141,7 +160,8 @@
                                     Height="17"
                                     Width="17" />
                             <Label Grid.Column="2"
-                                   Content="错误 12"
+                                   Content="{Binding WrongConfiguredRooms}"
+                                   ContentStringFormat="错误 {0}"
                                    FontSize="17"
                                    Foreground="#FF0000"
                                    VerticalAlignment="Center"
@@ -182,7 +202,8 @@
                                     Height="17"
                                     Width="17" />
                             <Label Grid.Column="1"
-                                   Content="正确 12"
+                                   Content="{Binding TimeSyncedRooms}"
+                                   ContentStringFormat="同步 {0}"
                                    FontSize="17"
                                    Foreground="#0090FF"
                                    VerticalAlignment="Center"
@@ -197,7 +218,8 @@
                                     Height="17"
                                     Width="17" />
                             <Label Grid.Column="2"
-                                   Content="偏离 12"
+                                   Content="{Binding TimeWanderedRooms}"
+                                   ContentStringFormat="偏移 {0}"
                                    FontSize="17"
                                    Foreground="#FFA000"
                                    VerticalAlignment="Top"
@@ -212,7 +234,8 @@
                                     Height="17"
                                     Width="17" />
                             <Label Grid.Column="3"
-                                   Content="错误 12"
+                                   Content="{Binding TimeWrongRooms}"
+                                   ContentStringFormat="错误 {0}"
                                    FontSize="17"
                                    Foreground="#FF0000"
                                    VerticalAlignment="Top"
@@ -243,12 +266,19 @@
                                    VerticalAlignment="Center"
                                    Foreground="#757575" />
 
-                            <Label Grid.Column="1"
-                                   Content="9/12"
-                                   FontSize="17"
-                                   Foreground="#757575"
-                                   VerticalAlignment="Center"
-                                   Margin="5 0 0 0" />
+                            <TextBox Grid.Column="1"
+                                     FontSize="17"
+                                     Foreground="#757575"
+                                     BorderThickness="0"
+                                     VerticalAlignment="Center"
+                                     Margin="5 0 0 0">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} / {1}">
+                                        <Binding Path="ActualTotalRooms" />
+                                        <Binding Path="ExpectedTotalRooms" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
 
                         </Grid>
                     </Border>
@@ -257,6 +287,7 @@
                 <Button Grid.Row="0"
                         Grid.Column="2"
                         Grid.ColumnSpan="2"
+                        Command="{Binding RefreshCommand}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
                     <Button.Template>
@@ -293,13 +324,13 @@
                             Orientation="Vertical"
                             VerticalAlignment="Top"
                             Margin="19 15 0 0">
-                    <Label Content="下一场"
+                    <Label Content="{Binding EventTitle}"
                            FontFamily="{StaticResource Hei}"
                            FontSize="18"
                            Margin="0 0 0 3"
                            Foreground="#757575"
                            Padding="0" />
-                    <Label Content="语文"
+                    <Label Content="{Binding EventName}"
                            FontFamily="{StaticResource Hei}"
                            FontSize="25"
                            Foreground="#757575"
@@ -311,7 +342,7 @@
                            Margin="0 0 0 3"
                            Foreground="#757575"
                            Padding="0" />
-                    <Label Content="08:55"
+                    <Label Content="{Binding EventTimeString}"
                            FontFamily="{StaticResource Hei}"
                            FontSize="25"
                            Foreground="#757575"
@@ -323,7 +354,7 @@
                            Margin="0 0 0 3"
                            Foreground="#757575"
                            Padding="0" />
-                    <Label Content="完全"
+                    <Label Content="{Binding PermissionString}"
                            FontFamily="{StaticResource Hei}"
                            FontSize="25"
                            Foreground="#757575"
@@ -335,7 +366,7 @@
                            Margin="0 0 0 3"
                            Foreground="#757575"
                            Padding="0" />
-                    <Label Content="10:15"
+                    <Label Content="{Binding LogoutTimeString}"
                            FontFamily="{StaticResource Hei}"
                            FontSize="25"
                            Foreground="#757575"
@@ -348,6 +379,7 @@
                             VerticalAlignment="Bottom"
                             Margin="19 0 0 25">
                     <Button Height="38"
+                            Command="{Binding PushCommand}"
                             Width="82"
                             HorizontalAlignment="Left"
                             Margin="0 0 0 13">
@@ -378,6 +410,7 @@
                     </Button>
                     <Button Height="38"
                             Width="82"
+                            Command="{Binding SettingsCommand}"
                             HorizontalAlignment="Left">
                         <Button.Template>
                             <ControlTemplate>
