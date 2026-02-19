@@ -17,6 +17,7 @@
 
 using ExamClock.Admin.Commands;
 using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ExamClock.Admin.ViewModels
@@ -234,7 +235,15 @@ namespace ExamClock.Admin.ViewModels
         /// </summary>
         public ICommand ShowInfoCommand => new RelayCommand(excute =>
         {
+            var version = (string)Application.Current.Resources["AppVersion"];
+            var publish = (string)Application.Current.Resources["PublishDate"];
+            var author = (string)Application.Current.Resources["Author"];
+            var account = (string)Application.Current.Resources["Account"];
 
+            // 显示关于软件的信息
+            MessageBox.Show($"版本：{version}\n发行：{publish}\n开发：{author}({account})\n" +
+                "开源：本软件基于 GNU GPL v3.0 协议开源",
+                "关于软件", MessageBoxButton.OK, MessageBoxImage.Information);
         });
     }
 }
