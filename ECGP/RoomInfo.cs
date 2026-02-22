@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System;
+using ExamClock.Enums;
 using System.Net;
 
 namespace ECGP
@@ -36,14 +36,9 @@ namespace ECGP
         public IPAddress IP { get; set; }
 
         /// <summary>
-        /// 与本机时间的偏移量
+        /// 日程配置的哈希值
         /// </summary>
-        public TimeSpan TimeOffset { get; set; }
-
-        /// <summary>
-        /// 配置的哈希值
-        /// </summary>
-        public byte[] ConfigHash { get; set; }
+        public byte[] ScheduleHash { get; set; }
 
         /// <summary>
         /// 考场当前状态
@@ -66,14 +61,8 @@ namespace ECGP
         public bool IsExamEndNoticeEnabled { get; set; }
 
         /// <summary>
-        /// 是否开启了结束前铃声
+        /// 结束前铃声的类型（0 = 10分钟，1 = 15分钟）
         /// </summary>
-        public bool IsBeforeEndingNoticeEnabled { get; set; }
-
-        /// <summary>
-        /// 结束前铃声的类型（0 = 10分钟，1 = 15分钟），
-        /// 仅当<see cref="IsBeforeEndingNoticeEnabled"/>为true时有效
-        /// </summary>
-        public bool NoticeBeforeEndingType { get; set; }
+        public SoundType NoticeBeforeEndingType { get; set; }
     }
 }
