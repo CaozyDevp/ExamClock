@@ -16,15 +16,19 @@
 */
 
 using ECGP.Messages;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace ECGP.Requesters
 {
     /// <summary>
     /// 存在探测消息发送器
     /// </summary>
-    public class DetectionRequester
+    public class DetectionRequester : IDisposable
     {
         private UdpClient _udpClient;
 
@@ -54,5 +58,86 @@ namespace ECGP.Requesters
             _udpClient.Send(messageBytes, messageBytes.Length, target);
         }
 
+        /// <summary>
+        /// 接收客户端的响应，如果没有收到，返回<see cref="null"/>
+        /// </summary>
+        /// <param name="timeout">超时时间</param>
+        private async Task<RoomInfo> ReceiveResponse(int timeout)
+        {
+            IPEndPoint target;
+            byte[] data;
+
+            try
+            {
+                var receiveTask = _udpClient.ReceiveAsync();
+                var delayTask = Task.Delay(timeout);
+
+                // 已经完成的任务，用于实现超时检测
+                var completedTask = await Task.WhenAny(receiveTask, delayTask);
+                if (completedTask == delayTask)
+                {
+                    return null;
+                }
+
+                var result = await receiveTask;
+                data = result.Buffer;
+                target = result.RemoteEndPoint;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"接收时间同步响应消息时发生错误，错误信息：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+
+            if (data == null || !StatusResponseMessage.TryParse(out var message, data))
+            {
+                return null;
+            }
+
+            var srMessage = message as StatusResponseMessage;
+            return new RoomInfo()
+            {
+                RoomNumber = srMessage.RoomNumber,
+                IP = target.Address,
+                ScheduleHash = srMessage.ScheduleMD5,
+                Status = srMessage.Status,
+                Volume = srMessage.SystemVolume,
+                NoticeBeforeEndingType = srMessage.NoticeBeforeEndingType,
+                IsExamBeginNoticeEnabled = srMessage.IsBeginningNoticeEnabled,
+                IsExamEndNoticeEnabled = srMessage.IsEndingNoticeEnabled,
+            };
+        }
+
+        /// <summary>
+        /// 广播存在探测消息，并将接收到的消息转为<see cref="RoomInfo"/>，最多接收64个响应
+        /// </summary>
+        /// <param name="port">客户端接收消息的端口</param>
+        /// <returns>接收到的响应信息</returns>
+        public async Task<List<RoomInfo>> BroadcastAndGetRoomInfos(int port)
+        {
+            const int timeout = 1000;
+            const int maxResponses = 64;
+
+            BroadcastDetectionRequest(port);
+            var roomInfos = new List<RoomInfo>();
+
+            // 最多接收64个响应
+            for (int i = 0; i < maxResponses; i++)
+            {
+                var room = await ReceiveResponse(timeout);
+                if (room == null)
+                {
+                    break;
+                }
+                roomInfos.Add(room);
+            }
+            return roomInfos;
+        }
+
+        public void Dispose()
+        {
+            _udpClient?.Close();
+            _udpClient = null;
+        }
     }
 }
