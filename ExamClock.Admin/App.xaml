@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ExamClock.Admin"
-             StartupUri="Views/MainWindow.xaml">
+             StartupUri="Views/MainWindow.xaml"
+             Startup="Application_Startup">
     <Application.Resources>
         <sys:String x:Key="AppVersion">v1.1.3</sys:String>
         <sys:String x:Key="PublishDate">20260219</sys:String>
