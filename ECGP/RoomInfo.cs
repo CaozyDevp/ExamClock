@@ -17,9 +17,8 @@
 
 using System;
 using System.Net;
-using ECGP;
 
-namespace ExamClock.Admin.Models
+namespace ECGP
 {
     /// <summary>
     /// 考场信息
