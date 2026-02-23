@@ -38,10 +38,21 @@ namespace ECGP.Requesters
         public int Port => _port;
         private readonly int _port;
 
-        public DetectionRequester(int port)
+        /// <summary>
+        /// RSA私钥的XML字符串（包含私钥参数），用于解密动态密钥响应消息中的动态密钥
+        /// </summary>
+        public string RsaPrivateKeyXml => _rsaPrivateKeyXml;
+        private readonly string _rsaPrivateKeyXml;
+
+        public DetectionRequester(int port, string rsaPrivateKeyXml)
         {
+            if (rsaPrivateKeyXml == null || string.IsNullOrEmpty(rsaPrivateKeyXml))
+            {
+                throw new ArgumentNullException(nameof(rsaPrivateKeyXml));
+            }
             _udpClient = new UdpClient();
             _port = port;
+            _rsaPrivateKeyXml = rsaPrivateKeyXml;
         }
 
         /// <summary>
@@ -89,22 +100,21 @@ namespace ECGP.Requesters
                 return null;
             }
 
-            if (data == null || !StatusResponseMessage.TryParse(out var message, data))
+            if (data == null || !StatusResponseMessage.TryParse(data, RsaPrivateKeyXml, out var message))
             {
                 return null;
             }
 
-            var srMessage = message as StatusResponseMessage;
             return new RoomInfo()
             {
-                RoomNumber = srMessage.RoomNumber,
+                RoomNumber = message.RoomNumber,
                 IP = target.Address,
-                ScheduleHash = srMessage.ScheduleMD5,
-                Status = srMessage.Status,
-                Volume = srMessage.SystemVolume,
-                NoticeBeforeEndingType = srMessage.NoticeBeforeEndingType,
-                IsExamBeginNoticeEnabled = srMessage.IsBeginningNoticeEnabled,
-                IsExamEndNoticeEnabled = srMessage.IsEndingNoticeEnabled,
+                ScheduleHash = message.ScheduleMD5,
+                Status = message.Status,
+                Volume = message.SystemVolume,
+                NoticeBeforeEndingType = message.NoticeBeforeEndingType,
+                IsExamBeginNoticeEnabled = message.IsBeginningNoticeEnabled,
+                IsExamEndNoticeEnabled = message.IsEndingNoticeEnabled,
             };
         }
 
