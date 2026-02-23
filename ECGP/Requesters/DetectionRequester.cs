@@ -113,12 +113,12 @@ namespace ECGP.Requesters
         /// </summary>
         /// <param name="port">客户端接收消息的端口</param>
         /// <returns>接收到的响应信息</returns>
-        public async Task<List<RoomInfo>> BroadcastAndGetRoomInfos(int port)
+        public async Task<List<RoomInfo>> BroadcastAndGetRoomInfos()
         {
             const int timeout = 1000;
             const int maxResponses = 64;
 
-            BroadcastDetectionRequest(port);
+            BroadcastDetectionRequest(Port);
             var roomInfos = new List<RoomInfo>();
 
             // 最多接收64个响应
