@@ -55,6 +55,7 @@
     <Compile Include="Messages\StatusResponseMessage.cs" />
     <Compile Include="Requesters\DynamicKeyRequester.cs" />
     <Compile Include="Requesters\DetectionRequester.cs" />
+    <Compile Include="Requesters\InstructionSender.cs" />
     <Compile Include="ReturnCode.cs" />
     <Compile Include="RoomInfo.cs" />
   </ItemGroup>
