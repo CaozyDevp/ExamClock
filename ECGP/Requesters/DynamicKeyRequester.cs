@@ -15,15 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using ECGP.Exceptions;
 using ECGP.Messages;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace ECGP.Requesters
 {
