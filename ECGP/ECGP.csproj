@@ -51,11 +51,13 @@
     <Compile Include="Messages\ECGPMessage.cs" />
     <Compile Include="Exceptions\ECGPFormatException.cs" />
     <Compile Include="Messages\InstructionMessage.cs" />
+    <Compile Include="NoticeConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Messages\StatusResponseMessage.cs" />
     <Compile Include="Requesters\DynamicKeyRequester.cs" />
     <Compile Include="Requesters\DetectionRequester.cs" />
     <Compile Include="Requesters\InstructionSender.cs" />
+    <Compile Include="Responders\StatusResponder.cs" />
     <Compile Include="ReturnCode.cs" />
     <Compile Include="RoomInfo.cs" />
   </ItemGroup>
@@ -65,8 +67,6 @@
       <Name>ExamClock</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Responders\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
