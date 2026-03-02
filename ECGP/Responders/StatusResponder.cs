@@ -115,7 +115,7 @@ namespace ECGP.Responders
         /// </summary>
         public string RsaPrivateKeyXml
         {
-            get => _rsaPrivateKeyXml;
+            private get => _rsaPrivateKeyXml;
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -132,19 +132,20 @@ namespace ECGP.Responders
         /// </summary>
         public bool IsRunning { get; private set; }
 
-        public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc,
-            Func<ClientStatus> getStatusFunc, Func<byte[]> getScheduleHashFunc, Func<NoticeConfig> getNoticeConfigFunc)
+        public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc, Func<ClientStatus> getStatusFunc, 
+            Func<byte[]> getScheduleHashFunc, Func<NoticeConfig> getNoticeConfigFunc, string rsaPrivateKeyXml)
         {
             GetSystemVolumeFunc = getSystemVolumeFunc;
             GetRoomNumberFunc = getRoomNumberFunc;
             GetStatusFunc = getStatusFunc;
             GetScheduleHashFunc = getScheduleHashFunc;
             GetNoticeConfigFunc = getNoticeConfigFunc;
+            RsaPrivateKeyXml = rsaPrivateKeyXml;
         }
 
-        public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc,
-            Func<ClientStatus> getStatusFunc, Func<byte[]> getScheduleHashFunc, Func<NoticeConfig> getNoticeConfigFunc, int port)
-            : this(getSystemVolumeFunc, getRoomNumberFunc, getStatusFunc, getScheduleHashFunc, getNoticeConfigFunc)
+        public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc, Func<ClientStatus> getStatusFunc, 
+            Func<byte[]> getScheduleHashFunc, Func<NoticeConfig> getNoticeConfigFunc, int port, string rsaPrivateKeyXml)
+            : this(getSystemVolumeFunc, getRoomNumberFunc, getStatusFunc, getScheduleHashFunc, getNoticeConfigFunc, rsaPrivateKeyXml)
         {
             Port = port;
         }
