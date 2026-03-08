@@ -91,6 +91,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\SystemTimeManager.cs" />
+    <Compile Include="Models\SystemVolumeManager.cs" />
     <Compile Include="ViewModels\ClockViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\StartupViewModel.cs" />
