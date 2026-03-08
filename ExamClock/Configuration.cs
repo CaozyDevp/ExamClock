@@ -178,6 +178,15 @@ namespace ExamClock
         }
 
         /// <summary>
+        /// 是否允许集控
+        /// </summary>
+        public static bool AllowControl
+        {
+            get => (bool)Config.GetValue("SETTINGS.allowControl");
+            set => Config.SetValue("SETTINGS.allowControl", value);
+        }
+
+        /// <summary>
         /// 考试时间表，在调用set访问器时会自动进行排序
         /// </summary>
         public static List<ExamItem> TimeTable
@@ -352,8 +361,11 @@ namespace ExamClock
             object prgm = "", file = "";
 
             // SETTINGS
-            object beginNotice = false, beforeEndingNotice = 0,
-                   endingNotice = false, roomNumber = (ushort)0;
+            object beginNotice = false, 
+                   beforeEndingNotice = 0,
+                   endingNotice = false, 
+                   roomNumber = (ushort)0,
+                   allowControl = false;
 
             // TIMETABLE
             object items = new Table();
@@ -367,6 +379,7 @@ namespace ExamClock
                 source.TryGetValue($"SETTINGS.{nameof(beforeEndingNotice)}", ref beforeEndingNotice);
                 source.TryGetValue($"SETTINGS.{nameof(endingNotice)}", ref endingNotice);
                 source.TryGetValue($"SETTINGS.{nameof(roomNumber)}", ref roomNumber);
+                source.TryGetValue($"SETTINGS.{nameof(allowControl)}", ref allowControl);
 
                 source.TryGetValue($"TIMETABLE.{nameof(items)}", ref items);
             }
@@ -394,6 +407,7 @@ namespace ExamClock
                             new PropertyItem(nameof(beforeEndingNotice), beforeEndingNotice),
                             new PropertyItem(nameof(endingNotice), endingNotice),
                             new PropertyItem(nameof(roomNumber), roomNumber),
+                            new PropertyItem(nameof(allowControl), allowControl),
                         }
                     },
                     new ConfigurationItem
@@ -415,7 +429,6 @@ namespace ExamClock
         {
             return LoadConfig(ConfigPath);
         }
-
 
         /// <summary>
         /// 保存配置到指定的文件路径
