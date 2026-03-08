@@ -98,14 +98,16 @@ namespace ECGP.Responders
         /// </summary>
         public bool IsRunning { get; private set; }
 
-        public ClientResponder(string rsaPublicKeyXml)
+        public ClientResponder(string rsaPublicKeyXml, Func<InstructionType, byte[], ReturnCode> executeInstruction)
         {
             RsaPublicKeyXml = rsaPublicKeyXml;
+            ExecuteInstruction = executeInstruction;
         }
 
-        public ClientResponder(string rsaPublicKeyXml, int port)
+        public ClientResponder(string rsaPublicKeyXml, Func<InstructionType, byte[], ReturnCode> executeInstruction, int port)
         {
             RsaPublicKeyXml = rsaPublicKeyXml;
+            ExecuteInstruction = executeInstruction;
             Port = port;
         }
 
