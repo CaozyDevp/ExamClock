@@ -36,12 +36,12 @@ namespace ExamClock
                 Environment.Exit(0);
                 return;
             }
-            InitResponder();
+            InitTimeResponder();
         }
 
         private TimeSyncResponder TimeResponder { get; set; }
 
-        private async void InitResponder()
+        private async void InitTimeResponder()
         {
             try
             {
