@@ -81,17 +81,12 @@
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="Enums\SoundType.cs" />
     <Compile Include="KeyManager.cs" />
-    <Compile Include="Models\ExamItem.cs" />
     <Compile Include="Models\ExamVoiceReminder.cs" />
-    <Compile Include="Models\NoticeItem.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\SystemTimeManager.cs" />
-    <Compile Include="Models\SystemVolumeManager.cs" />
     <Compile Include="ViewModels\ClockViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\StartupViewModel.cs" />
@@ -211,6 +206,10 @@
     <Resource Include="Views\Images\Search.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExamClock.Core\ExamClock.Core.csproj">
+      <Project>{d26f3314-924b-4a4c-8289-821c18ec301f}</Project>
+      <Name>ExamClock.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spf\Spf.csproj">
       <Project>{29f6436e-39ca-45ba-ad95-ed307f29230e}</Project>
       <Name>Spf</Name>

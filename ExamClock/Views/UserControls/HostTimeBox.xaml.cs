@@ -16,7 +16,7 @@
 */
 
 using ExamClock.Commands;
-using ExamClock.Models;
+using ExamClock.Core.System;
 using System;
 using System.ComponentModel;
 using System.Net;

@@ -15,27 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using ExamClock.Enums;
-using System;
+using System.ComponentModel;
 
-namespace ExamClock.Models
+namespace ExamClock.Core.Enums
 {
-    internal class NoticeItem
+    public enum SoundType
     {
-        public NoticeItem(DateTime noticeTime, SoundType noticeType)
-        {
-            NoticeTime = noticeTime;
-            NoticeType = noticeType;
-        }
-
-        public DateTime NoticeTime
-        {
-            get; set;
-        }
-
-        public SoundType NoticeType
-        {
-            get; set;
-        }
+        [Description("不提醒")]
+        None = 0,
+        [Description("结束前15分钟")]
+        _15MinBeforeEnding,
+        [Description("结束前10分钟")]
+        _10MinBeforeEnding,
+        [Description("考试开始")]
+        ExamBeginning,
+        [Description("考试结束")]
+        ExamEnding,
     }
 }

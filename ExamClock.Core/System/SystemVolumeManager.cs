@@ -18,7 +18,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ExamClock.Models
+namespace ExamClock.Core.System
 {
     public class SystemVolumeManager
     {

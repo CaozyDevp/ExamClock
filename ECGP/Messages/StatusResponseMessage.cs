@@ -16,7 +16,7 @@
 */
 
 using ECGP.Exceptions;
-using ExamClock.Enums;
+using ExamClock.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;

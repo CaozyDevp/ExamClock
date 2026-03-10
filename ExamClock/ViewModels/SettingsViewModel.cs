@@ -16,8 +16,8 @@
 */
 
 using ExamClock.Commands;
-using ExamClock.Enums;
-using ExamClock.Models;
+using ExamClock.Core;
+using ExamClock.Core.Enums;
 using ExamClock.Views;
 using ExamClock.Views.UserControls;
 using Microsoft.Win32;

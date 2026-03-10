@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using ExamClock.Models;
+using ExamClock.Core;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;

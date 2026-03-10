@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using ExamClock.Enums;
+using ExamClock.Core.Enums;
 using System.Net;
 
 namespace ECGP

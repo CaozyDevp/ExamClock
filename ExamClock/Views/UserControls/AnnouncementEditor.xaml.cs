@@ -16,7 +16,7 @@
 */
 
 using ExamClock.Commands;
-using ExamClock.Enums;
+using ExamClock.Core.Enums;
 using ExamClock.Models;
 using System;
 using System.Collections.Generic;

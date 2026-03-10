@@ -18,7 +18,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ExamClock.Models
+namespace ExamClock.Core.System
 {
     /// <summary>
     /// 使用协调世界时（UTC）设置系统时间

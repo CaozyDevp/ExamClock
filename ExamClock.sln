@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECGP", "ECGP\ECGP.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamClock.Admin", "ExamClock.Admin\ExamClock.Admin.csproj", "{DCAD9308-789F-4DAE-81F2-961624ADE44D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamClock.Core", "ExamClock.Core\ExamClock.Core.csproj", "{D26F3314-924B-4A4C-8289-821C18EC301F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{DCAD9308-789F-4DAE-81F2-961624ADE44D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCAD9308-789F-4DAE-81F2-961624ADE44D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCAD9308-789F-4DAE-81F2-961624ADE44D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D26F3314-924B-4A4C-8289-821C18EC301F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D26F3314-924B-4A4C-8289-821C18EC301F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D26F3314-924B-4A4C-8289-821C18EC301F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D26F3314-924B-4A4C-8289-821C18EC301F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

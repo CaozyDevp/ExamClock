@@ -17,7 +17,7 @@
 
 using System;
 
-namespace ExamClock.Models
+namespace ExamClock.Core
 {
     public class ExamItem
     {

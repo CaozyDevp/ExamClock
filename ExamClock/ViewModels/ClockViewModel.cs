@@ -15,8 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using ExamClock.Enums;
+using ExamClock.Core.Enums;
 using ExamClock.Models;
+using ExamClock.Core;
 using System;
 using System.Collections.Generic;
 using System.Windows;
