@@ -113,19 +113,19 @@ namespace ECGP.Responders
         /// <summary>
         /// RSA私钥xml
         /// </summary>
-        public string RsaPrivateKeyXml
+        public string RsaPublicKeyXml
         {
-            private get => _rsaPrivateKeyXml;
+            private get => _rsaPublicKeyXml;
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
-                _rsaPrivateKeyXml = value;
+                _rsaPublicKeyXml = value;
             }
         }
-        private string _rsaPrivateKeyXml;
+        private string _rsaPublicKeyXml;
 
         /// <summary>
         /// 是否已经启动
@@ -140,7 +140,7 @@ namespace ECGP.Responders
             GetStatusFunc = getStatusFunc;
             GetScheduleHashFunc = getScheduleHashFunc;
             GetNoticeConfigFunc = getNoticeConfigFunc;
-            RsaPrivateKeyXml = rsaPrivateKeyXml;
+            RsaPublicKeyXml = rsaPrivateKeyXml;
         }
 
         public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc, Func<ClientStatus> getStatusFunc, 
@@ -196,7 +196,7 @@ namespace ECGP.Responders
             var notice = GetNoticeConfigFunc();
 
             var message = new StatusResponseMessage(numReceived, roomNumber, status, hash, notice.EnableBeginning,
-                notice.EnableEnding, notice.BeforeEnding, volume, RsaPrivateKeyXml);
+                notice.EnableEnding, notice.BeforeEnding, volume, RsaPublicKeyXml);
             var msgBytes = message.ToBytes();
 
             _udpClient.Send(msgBytes, msgBytes.Length, new IPEndPoint(target, Port));
