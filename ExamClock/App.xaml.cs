@@ -39,17 +39,17 @@ namespace ExamClock
             InitResponder();
         }
 
-        private TimeSyncResponder Responder { get; set; }
+        private TimeSyncResponder TimeResponder { get; set; }
 
         private async void InitResponder()
         {
             try
             {
-                Responder?.Stop();
-                Responder = null;
+                TimeResponder?.Stop();
+                TimeResponder = null;
 
-                Responder = new TimeSyncResponder(() => { return Configuration.RoomNumber; }, Configuration.TimeSyncPort);
-                await Responder.StartAsync();
+                TimeResponder = new TimeSyncResponder(() => { return Configuration.RoomNumber; }, Configuration.TimeSyncPort);
+                await TimeResponder.StartAsync();
             }
             catch (System.Exception ex)
             {
