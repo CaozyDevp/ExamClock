@@ -93,7 +93,7 @@ namespace ECGP.Messages
         /// <param name="bytes">源字节数组</param>
         /// <param name="RSAPrivateKeyXml">用于解密的RSA私钥xml字符串</param>
         /// <returns></returns>
-        /// <exception cref="StatusResponseFormatException"></exception>
+        /// <exception cref="ECGPFormatException"></exception>
         public static StatusResponseMessage Parse(byte[] bytes, string RSAPrivateKeyXml)
         {
             ECGPMessage rawMessage = Parse(bytes);
