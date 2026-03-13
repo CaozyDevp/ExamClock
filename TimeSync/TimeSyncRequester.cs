@@ -44,7 +44,13 @@ namespace TimeSync
             _port = timeSyncPort;
         }
 
-        private void BroadcastTimeSyncRequest(int port, ushort hostNumber)
+        /// <summary>
+        /// 发送时间同步请求，允许广播
+        /// </summary>
+        /// <param name="target">目标IP地址</param>
+        /// <param name="port">目标主机接收请求的端口</param>
+        /// <param name="hostNumber">本机考场号</param>
+        private void SendTimeSyncRequest(IPAddress target, int port, ushort hostNumber)
         {
             var message = new TimeSyncMessage()
             {
@@ -55,10 +61,10 @@ namespace TimeSync
 
             var data = message.ToBytes();
 
-            var target = new IPEndPoint(IPAddress.Broadcast, port);
+            var destination = new IPEndPoint(target, port);
 
             _udpClient.EnableBroadcast = true;
-            _udpClient.Send(data, data.Length, target);
+            _udpClient.Send(data, data.Length, destination);
         }
 
         /// <summary>
@@ -140,7 +146,7 @@ namespace TimeSync
         public async Task<List<TimeKeeper>> BroadcastAndGetTimeKeepers(int timeSyncPort, ushort hostNumber)
         {
             const int timeout = 1000;
-            BroadcastTimeSyncRequest(timeSyncPort, hostNumber);
+            SendTimeSyncRequest(IPAddress.Broadcast, timeSyncPort, hostNumber);
             var timeKeepers = new List<TimeKeeper>();
 
             // 最多接收50个响应
@@ -154,6 +160,14 @@ namespace TimeSync
                 timeKeepers.Add(keeper);
             }
             return timeKeepers;
+        }
+
+        public async Task<TimeKeeper> UnicastAndGetTimeKeeper(IPAddress target, int timeSyncPort, ushort hostNumber)
+        {
+            const int timeout = 1000;
+            SendTimeSyncRequest(target, timeSyncPort, hostNumber);
+            var keeper = await ReceiveResponse(timeout);
+            return keeper;
         }
 
         public void Dispose()
