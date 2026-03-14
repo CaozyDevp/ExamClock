@@ -63,14 +63,21 @@ namespace TimeSync
 
             var destination = new IPEndPoint(target, port);
 
-            _udpClient.EnableBroadcast = true;
+            if (target.Equals(IPAddress.Broadcast))
+            {
+                _udpClient.EnableBroadcast = true;
+            }
+            else
+            {
+                _udpClient.EnableBroadcast = false;
+            }
             _udpClient.Send(data, data.Length, destination);
         }
 
         /// <summary>
         /// 接收服务端的回复，如果没有收到，返回<see cref="null"/>
         /// </summary>
-        private async Task<TimeKeeper> ReceiveResponse(int timeout)
+        private async Task<TimeKeeper> ReceiveResponseAsync(int timeout)
         {
             IPEndPoint target;
             byte[] data;
@@ -143,7 +150,7 @@ namespace TimeSync
         /// <param name="timeSyncPort"></param>
         /// <param name="hostNumber"></param>
         /// <returns></returns>
-        public async Task<List<TimeKeeper>> BroadcastAndGetTimeKeepers(int timeSyncPort, ushort hostNumber)
+        public async Task<List<TimeKeeper>> BroadcastAndGetTimeKeepersAsync(int timeSyncPort, ushort hostNumber)
         {
             const int timeout = 1000;
             SendTimeSyncRequest(IPAddress.Broadcast, timeSyncPort, hostNumber);
@@ -152,7 +159,7 @@ namespace TimeSync
             // 最多接收50个响应
             for (int i = 0; i < 50; i++)
             {
-                var keeper = await ReceiveResponse(timeout);
+                var keeper = await ReceiveResponseAsync(timeout);
                 if (keeper == null)
                 {
                     break;
@@ -162,11 +169,22 @@ namespace TimeSync
             return timeKeepers;
         }
 
-        public async Task<TimeKeeper> UnicastAndGetTimeKeeper(IPAddress target, int timeSyncPort, ushort hostNumber)
+        /// <summary>
+        /// 单播请求消息，并将接收到的消息转为<see cref="TimeKeeper"/>
+        /// </summary>
+        /// <param name="target">目标主机IP地址</param>
+        /// <param name="timeSyncPort">目标主机接收请求的端口号</param>
+        /// <param name="hostNumber">本机考场号</param>
+        /// <returns></returns>
+        public async Task<TimeKeeper> UnicastAndGetTimeKeeperAsync(IPAddress target, int timeSyncPort, ushort hostNumber)
         {
+            if (target == null)
+            {
+                return null;
+            }
             const int timeout = 1000;
             SendTimeSyncRequest(target, timeSyncPort, hostNumber);
-            var keeper = await ReceiveResponse(timeout);
+            var keeper = await ReceiveResponseAsync(timeout);
             return keeper;
         }
 
