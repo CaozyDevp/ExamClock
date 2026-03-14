@@ -70,7 +70,7 @@ namespace ECGP.Responders
         /// <summary>
         /// 执行指定命令的委托
         /// </summary>
-        public Func<InstructionType, byte[], ReturnCode> ExecuteInstruction
+        public Func<InstructionType, byte[], IPEndPoint, Task<ReturnCode>> ExecuteInstruction
         {
             get => _executeInstruction;
             set
@@ -78,7 +78,7 @@ namespace ECGP.Responders
                 _executeInstruction = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
-        private Func<InstructionType, byte[], ReturnCode> _executeInstruction;
+        private Func<InstructionType, byte[], IPEndPoint, Task<ReturnCode>> _executeInstruction;
 
         /// <summary>
         /// 显示执行结果的委托
@@ -98,13 +98,13 @@ namespace ECGP.Responders
         /// </summary>
         public bool IsRunning { get; private set; }
 
-        public ClientResponder(string rsaPublicKeyXml, Func<InstructionType, byte[], ReturnCode> executeInstruction)
+        public ClientResponder(string rsaPublicKeyXml, Func<InstructionType, byte[], IPEndPoint, Task<ReturnCode>> executeInstruction)
         {
             RsaPublicKeyXml = rsaPublicKeyXml;
             ExecuteInstruction = executeInstruction;
         }
 
-        public ClientResponder(string rsaPublicKeyXml, Func<InstructionType, byte[], ReturnCode> executeInstruction, int port)
+        public ClientResponder(string rsaPublicKeyXml, Func<InstructionType, byte[], IPEndPoint, Task<ReturnCode>> executeInstruction, int port)
         {
             RsaPublicKeyXml = rsaPublicKeyXml;
             ExecuteInstruction = executeInstruction;
@@ -143,7 +143,7 @@ namespace ECGP.Responders
                     {
                         if (message is InstructionMessage msg)
                         {
-                            var ret = ExecuteInstruction(msg.CommandCode, msg.Parameters);
+                            var ret = await ExecuteInstruction(msg.CommandCode, msg.Parameters, endPoint);
                             ShowExecutionResult?.Invoke(ret);
                             ReplyConfirmation(endPoint, ret, msg.Number);
                         }
@@ -154,6 +154,12 @@ namespace ECGP.Responders
                     // [TODO] 这里可以log一下，暂且忽略
                 }
             }
+        }
+
+        public void Stop()
+        {
+            _udpClient?.Close();
+            IsRunning = false;
         }
 
         /// <summary>

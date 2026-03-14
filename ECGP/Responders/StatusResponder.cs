@@ -111,7 +111,7 @@ namespace ECGP.Responders
         private Func<NoticeConfig> _getNoticeConfigFunc;
 
         /// <summary>
-        /// RSA私钥xml
+        /// RSA公钥xml
         /// </summary>
         public string RsaPublicKeyXml
         {
@@ -132,20 +132,20 @@ namespace ECGP.Responders
         /// </summary>
         public bool IsRunning { get; private set; }
 
-        public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc, Func<ClientStatus> getStatusFunc, 
-            Func<byte[]> getScheduleHashFunc, Func<NoticeConfig> getNoticeConfigFunc, string rsaPrivateKeyXml)
+        public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc, Func<ClientStatus> getStatusFunc,
+            Func<byte[]> getScheduleHashFunc, Func<NoticeConfig> getNoticeConfigFunc, string rsaPublicKeyXml)
         {
             GetSystemVolumeFunc = getSystemVolumeFunc;
             GetRoomNumberFunc = getRoomNumberFunc;
             GetStatusFunc = getStatusFunc;
             GetScheduleHashFunc = getScheduleHashFunc;
             GetNoticeConfigFunc = getNoticeConfigFunc;
-            RsaPublicKeyXml = rsaPrivateKeyXml;
+            RsaPublicKeyXml = rsaPublicKeyXml;
         }
 
-        public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc, Func<ClientStatus> getStatusFunc, 
-            Func<byte[]> getScheduleHashFunc, Func<NoticeConfig> getNoticeConfigFunc, int port, string rsaPrivateKeyXml)
-            : this(getSystemVolumeFunc, getRoomNumberFunc, getStatusFunc, getScheduleHashFunc, getNoticeConfigFunc, rsaPrivateKeyXml)
+        public StatusResponder(Func<byte> getSystemVolumeFunc, Func<ushort> getRoomNumberFunc, Func<ClientStatus> getStatusFunc,
+            Func<byte[]> getScheduleHashFunc, Func<NoticeConfig> getNoticeConfigFunc, int port, string rsaPublicKeyXml)
+            : this(getSystemVolumeFunc, getRoomNumberFunc, getStatusFunc, getScheduleHashFunc, getNoticeConfigFunc, rsaPublicKeyXml)
         {
             Port = port;
         }
@@ -180,6 +180,12 @@ namespace ECGP.Responders
                     // [TODO] 这里可以log一下，暂且忽略
                 }
             }
+        }
+
+        public void Stop()
+        {
+            _udpClient?.Close();
+            IsRunning = false;
         }
 
         /// <summary>
