@@ -19,10 +19,11 @@ using ExamClock.Admin.Commands;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ExamClock.Admin.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
         /// <summary>
         /// 应有的总考场数（由配置文件定义）
@@ -206,6 +207,23 @@ namespace ExamClock.Admin.ViewModels
         }
         private string _logoutTimeString = "--:--";
 
+        private DispatcherTimer _timer;
+
+        public MainViewModel()
+        {
+            _timer = new DispatcherTimer()
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            _timer.Tick += Timer_Tick;
+            _timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(LocalTimeString));
+        }
+
         /// <summary>
         /// 刷新命令（重新获取考场信息）
         /// </summary>
@@ -245,5 +263,15 @@ namespace ExamClock.Admin.ViewModels
                 "开源：本软件基于 GNU GPL v3.0 协议开源",
                 "关于软件", MessageBoxButton.OK, MessageBoxImage.Information);
         });
+
+        public void Dispose()
+        {
+            if (_timer != null)
+            {
+                _timer?.Stop();
+                _timer.Tick -= Timer_Tick;
+                _timer = null;
+            }
+        }
     }
 }

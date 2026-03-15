@@ -67,8 +67,7 @@
                         </Button.Template>
                     </Button>
                     <Label Grid.Column="2"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="22"
+                           FontSize="21"
                            Foreground="#657994"
                            Padding="0"
                            Margin="0 0 50 5"
