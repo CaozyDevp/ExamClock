@@ -17,6 +17,7 @@
 
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows;
 
 namespace ExamClock
@@ -34,6 +35,11 @@ namespace ExamClock
         /// RSA公钥的xml
         /// </summary>
         public static string RsaPublicKeyXml { get; private set; }
+
+        /// <summary>
+        /// 是否已经加载了密钥
+        /// </summary>
+        public static bool Loaded => string.IsNullOrEmpty(RsaPublicKeyXml) && IsValidRsaKeyXml(RsaPublicKeyXml);
 
         #endregion
 
@@ -57,6 +63,10 @@ namespace ExamClock
             try
             {
                 var text = File.ReadAllText(path);
+                if (!IsValidRsaKeyXml(text))
+                {
+                    return false;
+                }
                 RsaPublicKeyXml = text;
                 return true;
             }
@@ -100,6 +110,25 @@ namespace ExamClock
         public static bool SaveKeyToDefaultFile()
         {
             return SaveKeyToFile(ConfigPath);
+        }
+
+        /// <summary>
+        /// 判断rsa密钥是否合法
+        /// </summary>
+        private static bool IsValidRsaKeyXml(string keyXml)
+        {
+            try
+            {
+                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                {
+                    rsa.FromXmlString(keyXml);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
