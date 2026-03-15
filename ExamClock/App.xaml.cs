@@ -43,20 +43,6 @@ namespace ExamClock
                 Environment.Exit(0);
                 return;
             }
-
-            // 初始化时间同步响应器
-            IsTimeResponderEnabled = true;
-
-            // 如果公钥信息存在，再去初始化状态响应器和主响应器
-            if (!string.IsNullOrEmpty(KeyManager.RsaPublicKeyXml))
-            {
-                IsStatusResponderEnabled = true;
-                IsClientResponderEnabled = true;
-            }
-            else
-            {
-                MessageBox.Show("未设置密钥，您将无法与管理端交互！", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
         }
 
         /// <summary>

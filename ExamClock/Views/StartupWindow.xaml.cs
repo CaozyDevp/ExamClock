@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System;
 using System.Windows;
-using System.Windows.Input;
 
 namespace ExamClock.Views
 {
@@ -28,6 +28,36 @@ namespace ExamClock.Views
         public StartupWindow()
         {
             InitializeComponent();
+
+            var app = App.Current as App;
+
+            // 要求用户输入考场号
+            while (Configuration.RoomNumber == 0)
+            {
+                var dialog = new UserInputWindow(Configuration.JudgeRoomNumberInput, "请设置考场号", Configuration.RoomNumber.ToString("0000"));
+                if (dialog.ShowDialog() == false)
+                {
+                    Environment.Exit(0);
+                }
+                if (dialog.IsValid)
+                {
+                    Configuration.RoomNumber = Convert.ToUInt16(dialog.InputText);
+                }
+            }
+
+            // 初始化时间同步响应器
+            app.IsTimeResponderEnabled = true;
+
+            // 如果公钥信息存在，再去初始化状态响应器和主响应器
+            if (!string.IsNullOrEmpty(KeyManager.RsaPublicKeyXml))
+            {
+                app.IsStatusResponderEnabled = true;
+                app.IsClientResponderEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show("未设置密钥，您将无法与管理端交互！", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

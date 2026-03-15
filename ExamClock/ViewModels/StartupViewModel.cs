@@ -42,7 +42,6 @@ namespace ExamClock.ViewModels
             timer.Start();
         }
 
-
         private void RefreshExamInfo()
         {
             var currentItem = Configuration.GetCurrentItem();
