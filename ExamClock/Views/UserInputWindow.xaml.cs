@@ -17,7 +17,6 @@
 
 using System;
 using System.Windows;
-using System.Windows.Input;
 
 namespace ExamClock.Views
 {
@@ -26,10 +25,10 @@ namespace ExamClock.Views
     /// </summary>
     public partial class UserInputWindow : Window
     {
-        public UserInputWindow(Func<string, string> isValid, string prompt, string defaultValue)
+        public UserInputWindow(Func<string, string> checkIfValid, string prompt, string defaultValue)
         {
             InitializeComponent();
-            IsValid = isValid;
+            CheckIfValid = checkIfValid;
             PromptLabel.Content = prompt;
             InputTextBox.Text = defaultValue;
         }
@@ -37,28 +36,30 @@ namespace ExamClock.Views
         /// <summary>
         /// 用户输入的字符串
         /// </summary>
-        public string InputText
-        {
-            get; set;
-        }
+        public string InputText { get; set; }
+
+        /// <summary>
+        /// 用户输入是否合法
+        /// </summary>
+        public bool IsValid { get; set; } = false;
 
         /// <summary>
         /// 传入文本内容。如果不通过，返回警告消息；否则返回null
         /// </summary>
-        public Func<string, string> IsValid { get; set; }
+        public Func<string, string> CheckIfValid { get; set; }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            if (IsValid != null)
+            if (CheckIfValid != null)
             {
-                var warning = IsValid.Invoke(InputTextBox.Text);
+                var warning = CheckIfValid.Invoke(InputTextBox.Text);
                 if (warning != null)
                 {
                     WarningLabel.Content = warning;
                     return;
                 }
             }
-
+            IsValid = true;
             InputText = InputTextBox.Text;
             DialogResult = true;
         }
