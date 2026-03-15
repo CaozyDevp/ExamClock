@@ -21,6 +21,29 @@
                       GlassFrameThickness="-1"
                       ResizeBorderThickness="5" />
     </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <Style x:Key="DisplayBorder"
+               TargetType="Border">
+            <Setter Property="Width"
+                    Value="466" />
+            <Setter Property="Height"
+                    Value="86" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
+            <Setter Property="VerticalAlignment"
+                    Value="Top" />
+            <Setter Property="BorderThickness"
+                    Value="2" />
+            <Setter Property="BorderBrush"
+                    Value="#D9D9D9" />
+            <Setter Property="Background"
+                    Value="#F8F8F8" />
+            <Setter Property="CornerRadius"
+                    Value="10" />
+            <Setter Property="Margin"
+                    Value="0 0 0 3" />
+        </Style>
+    </Window.Resources>
 
     <Border BorderThickness="1"
             Background="White"
@@ -129,7 +152,7 @@
                             <ControlTemplate>
                                 <Label HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       Content="同步"
+                                       Content="集控"
                                        FontSize="18"
                                        Foreground="{Binding Grid3TextBrush}" />
                             </ControlTemplate>
@@ -372,7 +395,7 @@
                 </Grid>
             </Grid>
 
-            <!--  【同步】页面  -->
+            <!--  【集控】页面  -->
             <Grid Name="CalibrationGrid"
                   Visibility="{Binding CalibrationGridVisibility}">
                 <Grid Margin="52,0,38,0">
@@ -388,74 +411,112 @@
                     <Label Grid.Row="1"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="系统时间同步"
+                           Content="集控配置"
                            FontFamily="{StaticResource Hei}"
                            FontSize="30"
                            Foreground="#2E4959" />
                     <Label Grid.Row="2"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="选择一个目标主机以同步系统时间"
+                           Content="由考试管理中心统一下发，请勿随意修改"
                            FontFamily="{StaticResource Hei}"
                            FontSize="16"
                            Foreground="#D2D2D2" />
-
-                    <ScrollViewer Grid.Row="3"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
-                                  VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding SyncItemElements, Mode=TwoWay}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </ScrollViewer>
-
-                    <Button Grid.Row="5"
-                            Width="142"
-                            Height="45"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            Command="{Binding FindHostsCommand}">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Border Background="{StaticResource ShallowBlueBrush}"
-                                        BorderBrush="{StaticResource BorderBlueBrush}"
-                                        BorderThickness="2"
-                                        CornerRadius="23">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="41" />
-                                            <ColumnDefinition Width="4" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0"
-                                               Width="20"
-                                               Height="20"
-                                               HorizontalAlignment="Right"
-                                               Source="/Views/Images/Search.png" />
-                                        <Label Grid.Column="2"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Content="{Binding FindButtonText}"
-                                               FontFamily="{StaticResource Hei}"
-                                               FontSize="18"
-                                               Foreground="#0099FF" />
-                                    </Grid>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <Button.Effect>
-                            <DropShadowEffect BlurRadius="10"
-                                              Direction="0"
-                                              Opacity="0.2"
-                                              ShadowDepth="0"
-                                              Color="#0099FF" />
-                        </Button.Effect>
-                    </Button>
-
+                    <StackPanel Grid.Row="3">
+                        <Border Grid.Row="3"
+                                Style="{StaticResource DisplayBorder}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="295" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0"
+                                       Source="/Views/Images/Key.png"
+                                       Width="24" />
+                                <Label Grid.Column="1"
+                                       Content="公钥"
+                                       FontSize="21"
+                                       Foreground="#6B6B6B"
+                                       FontFamily="{StaticResource Hei}"
+                                       Margin="0 15 0 0"
+                                       VerticalContentAlignment="Top"
+                                       HorizontalContentAlignment="Left"
+                                       Padding="0" />
+                                <Label Grid.Column="1"
+                                       Content="用于识别和鉴定管理端发出的指令"
+                                       FontSize="16"
+                                       Foreground="#D2D2D2"
+                                       FontFamily="{StaticResource Hei}"
+                                       Margin="0 0 0 15"
+                                       VerticalContentAlignment="Bottom"
+                                       HorizontalContentAlignment="Left"
+                                       Padding="0" />
+                                <Button Grid.Column="2"
+                                        Height="40"
+                                        Width="80"
+                                        BorderThickness="0">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Label Content="{Binding IsKeyLoadedString}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   FontFamily="{StaticResource Hei}"
+                                                   FontSize="21"
+                                                   Foreground="{Binding IsKeyLoadedBrush}" />
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="3"
+                                Style="{StaticResource DisplayBorder}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="295" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0"
+                                       Source="/Views/Images/Lock.png"
+                                       Width="22" />
+                                <Label Grid.Column="1"
+                                       Content="控制权限"
+                                       FontSize="21"
+                                       Foreground="#6B6B6B"
+                                       FontFamily="{StaticResource Hei}"
+                                       Margin="0 15 0 0"
+                                       VerticalContentAlignment="Top"
+                                       HorizontalContentAlignment="Left"
+                                       Padding="0" />
+                                <Label Grid.Column="1"
+                                       Content="授权管理端对本机的控制权"
+                                       FontSize="16"
+                                       Foreground="#D2D2D2"
+                                       FontFamily="{StaticResource Hei}"
+                                       Margin="0 0 0 15"
+                                       VerticalContentAlignment="Bottom"
+                                       HorizontalContentAlignment="Left"
+                                       Padding="0" />
+                                <Button Grid.Column="2"
+                                        Height="40"
+                                        Width="80"
+                                        BorderThickness="0"
+                                        Command="{Binding PermissionSwitchCommand}">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Label Content="{Binding PermissionString}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   FontSize="21"
+                                                   FontFamily="{StaticResource Hei}"
+                                                   Foreground="{Binding PermissionBrush}" />
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </StackPanel>

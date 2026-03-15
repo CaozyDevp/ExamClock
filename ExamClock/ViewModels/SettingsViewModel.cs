@@ -67,7 +67,7 @@ namespace ExamClock.ViewModels
         #region Pages Switch
 
         /// <summary>
-        /// 0-总览 1-安排 2-提醒 3-同步
+        /// 0-总览 1-安排 2-提醒 3-集控
         /// </summary>
         private int _currentGrid = 0;
         public int CurrentGrid
@@ -777,118 +777,47 @@ namespace ExamClock.ViewModels
 
         #region Grid 3
 
-        /// <summary>
-        /// 显示时间信息的控件列表
-        /// </summary>
-        public ObservableCollection<UIElement> SyncItemElements { get; set; } = new ObservableCollection<UIElement>()
-        {
-            new TextBlock()
-                {
-                    Text = "点击“重新搜索”以搜索主机",
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    FontSize = 18,
-                    Foreground = Brushes.Gray,
-                    TextAlignment = TextAlignment.Center,
-                }
-        };
+        private readonly SolidColorBrush _redBrush = new SolidColorBrush(Color.FromRgb(255, 44, 44));
+        private readonly SolidColorBrush _blueBrush = new SolidColorBrush(Color.FromRgb(44, 142, 255));
 
-        /// <summary>
-        /// 是否可以查找主机（即广播请求报文）
-        /// </summary>
-        public bool CanFind
+        public bool IsKeyLoaded => KeyManager.Loaded;
+        public string IsKeyLoadedString => IsKeyLoaded ? "已装载" : "未装载";
+        public SolidColorBrush IsKeyLoadedBrush => IsKeyLoaded ? _blueBrush : _redBrush;
+
+        public bool Permission
         {
-            get => _canFind;
+            get => Configuration.AllowControl;
             set
             {
-                _canFind = value;
-                OnPropertyChanged(nameof(FindButtonText));
+                if (value == Configuration.AllowControl) return;
 
-                if (_canFind == true)
+                if (value)
                 {
-                    return;
+                    if (!KeyManager.Loaded)
+                    {
+                        MessageBox.Show("无法授权！请确保密钥文件存在且有效！");
+                        return;
+                    }
+                    (Application.Current as App).IsClientResponderEnabled = true;
                 }
-                var timer = new DispatcherTimer
+                else
                 {
-                    Interval = TimeSpan.FromSeconds(1.2)
-                };
-                timer.Tick += (s, e) =>
-                {
-                    CanFind = true;
-                    timer.Stop();
-                    timer = null;
-                };
-                timer.Start();
+                    (Application.Current as App).IsClientResponderEnabled = false;
+                }
+
+                Configuration.AllowControl = value;
+                Configuration.SaveConfig();
+                OnPropertyChanged(nameof(PermissionString));
+                OnPropertyChanged(nameof(PermissionBrush));
             }
         }
-        private bool _canFind = true;
+        public string PermissionString => Permission ? "完全" : "未授权";
+        public SolidColorBrush PermissionBrush => Permission ? _blueBrush : _redBrush;
 
-        public string FindButtonText => CanFind ? "重新搜索" : "搜索中...";
-
-        /// <summary>
-        /// 查找局域网中的可用主机，并显示
-        /// </summary>
-        /// <param name="timeSyncPort">用于时间同步的端口</param>
-        /// <param name="roomNumber">本机的考场号</param>
-        private async Task FindHostAndShow(int timeSyncPort, ushort roomNumber)
+        public ICommand PermissionSwitchCommand => new RelayCommand(execute =>
         {
-            if (SyncItemElements == null)
-            {
-                SyncItemElements = new ObservableCollection<UIElement>();
-            }
-            SyncItemElements.Clear();
-
-            List<TimeKeeper> keepers = new List<TimeKeeper>();
-
-            try
-            {
-                var requester = new TimeSyncRequester(timeSyncPort);
-                keepers = await requester.BroadcastAndGetTimeKeepersAsync(timeSyncPort, roomNumber);
-            }
-            catch
-            {
-                MessageBox.Show($"发送请求失败！");
-            }
-
-            foreach (var keeper in keepers)
-            {
-                var testbox = new HostTimeBox
-                {
-                    TimeKeeper = keeper,
-                    Source = keeper.Address,
-                    HostName = $"{keeper.HostNumber.ToString("0000")}考场",
-                    Height = 60,
-                    Margin = new Thickness(0, 0, 0, 5)
-                };
-                SyncItemElements.Add(testbox);
-            }
-
-            if (keepers.Count == 0)
-            {
-                SyncItemElements.Add(new TextBlock()
-                {
-                    Text = "未找到可用主机\n点击“重新搜索”以重试",
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    FontSize = 18,
-                    Foreground = Brushes.Gray,
-                    TextAlignment = TextAlignment.Center,
-                });
-            }
-
-            OnPropertyChanged(nameof(SyncItemElements));
-        }
-        public ICommand FindHostsCommand
-        {
-            get => new RelayCommand(async execute =>
-            {
-                CanFind = false;
-                await FindHostAndShow(Configuration.TimeSyncPort, Configuration.RoomNumber);
-            }, canExecute =>
-            {
-                return CanFind;
-            });
-        }
+            Permission = !Permission;
+        });
         #endregion
     }
 }

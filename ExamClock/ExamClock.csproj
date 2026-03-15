@@ -226,5 +226,14 @@
   <ItemGroup>
     <Resource Include="Views\Images\Exit.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\Key.png" />
+    <Resource Include="Views\Images\Lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="key.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

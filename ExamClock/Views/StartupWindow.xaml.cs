@@ -51,8 +51,12 @@ namespace ExamClock.Views
             // 如果公钥信息存在，再去初始化状态响应器和主响应器
             if (!string.IsNullOrEmpty(KeyManager.RsaPublicKeyXml))
             {
+                // 如果不允许集控，则只启用状态响应器
                 app.IsStatusResponderEnabled = true;
-                app.IsClientResponderEnabled = true;
+                if (Configuration.AllowControl)
+                {
+                    app.IsClientResponderEnabled = true;
+                }
             }
             else
             {
