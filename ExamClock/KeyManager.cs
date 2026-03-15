@@ -29,7 +29,7 @@ namespace ExamClock
         /// <summary>
         /// 密钥文件的路径
         /// </summary>
-        private static string ConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "key");
+        private static string ConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "key.xml");
 
         /// <summary>
         /// RSA公钥的xml
