@@ -39,7 +39,7 @@ namespace ExamClock
         /// <summary>
         /// 是否已经加载了密钥
         /// </summary>
-        public static bool Loaded => string.IsNullOrEmpty(RsaPublicKeyXml) && IsValidRsaKeyXml(RsaPublicKeyXml);
+        public static bool Loaded => (!string.IsNullOrEmpty(RsaPublicKeyXml)) && IsValidRsaKeyXml(RsaPublicKeyXml);
 
         #endregion
 
@@ -119,7 +119,7 @@ namespace ExamClock
         {
             try
             {
-                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                using (RSA rsa = RSA.Create())
                 {
                     rsa.FromXmlString(keyXml);
                 }
