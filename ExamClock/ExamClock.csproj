@@ -206,6 +206,10 @@
     <Resource Include="Views\Images\Search.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECGP\ECGP.csproj">
+      <Project>{167b8576-2fc2-4c97-84da-c654563e5aba}</Project>
+      <Name>ECGP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ExamClock.Core\ExamClock.Core.csproj">
       <Project>{d26f3314-924b-4a4c-8289-821c18ec301f}</Project>
       <Name>ExamClock.Core</Name>

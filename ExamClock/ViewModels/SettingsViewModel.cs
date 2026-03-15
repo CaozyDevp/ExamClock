@@ -855,7 +855,7 @@ namespace ExamClock.ViewModels
             try
             {
                 var requester = new TimeSyncRequester(timeSyncPort);
-                keepers = await requester.BroadcastAndGetTimeKeepers(timeSyncPort, roomNumber);
+                keepers = await requester.BroadcastAndGetTimeKeepersAsync(timeSyncPort, roomNumber);
             }
             catch
             {

@@ -21,6 +21,8 @@ using Spf;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 
 namespace ExamClock
@@ -361,9 +363,9 @@ namespace ExamClock
             object prgm = "", file = "";
 
             // SETTINGS
-            object beginNotice = false, 
+            object beginNotice = false,
                    beforeEndingNotice = 0,
-                   endingNotice = false, 
+                   endingNotice = false,
                    roomNumber = (ushort)0,
                    allowControl = false;
 
@@ -463,6 +465,24 @@ namespace ExamClock
         public static bool SaveConfig()
         {
             return SaveConfig(ConfigPath);
+        }
+
+        /// <summary>
+        /// 获取日程配置的MD5值（SPF配置项UTF8字符串的MD5）
+        /// </summary>
+        /// <returns></returns>
+        public static byte[] GetScheduleHash()
+        {
+            using (var md5 = MD5.Create())
+            {
+                var table = Config.GetValue("TIMETABLE.items");
+                if (table.GetType() != typeof(Table))
+                {
+                    throw new Exception("Invalid type!");
+                }
+                var bytes = Encoding.UTF8.GetBytes((table as Table).ToString());
+                return md5.ComputeHash(bytes);
+            }
         }
         #endregion
     }
