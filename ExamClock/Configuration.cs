@@ -484,6 +484,21 @@ namespace ExamClock
                 return md5.ComputeHash(bytes);
             }
         }
+
+        /// <summary>
+        /// 判断用户输入的考场号是否正确
+        /// </summary>
+        /// <param name="input">用户输入的考场号</param>
+        /// <returns>如果正确，返回<see langword="null"/>，否则返回警告信息</returns>
+        public static string JudgeRoomNumberInput(string input)
+        {
+            bool succeed = ushort.TryParse(input, out var roomNumber);
+            if (!succeed || roomNumber > 9999)
+            {
+                return "请输入0~9999的整数";
+            }
+            return null;
+        }
         #endregion
     }
 }

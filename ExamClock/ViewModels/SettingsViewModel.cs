@@ -424,25 +424,13 @@ namespace ExamClock.ViewModels
         public ICommand EditRoomNumberCommand =>
             new RelayCommand(execute =>
             {
-                var dialog = new UserInputWindow(JudgeRoomNumberInputAndSet, "请设置考场号", RoomNumber.ToString("0000"));
+                var dialog = new UserInputWindow(Configuration.JudgeRoomNumberInput, "请设置考场号", RoomNumber.ToString("0000"));
                 dialog.ShowDialog();
+                if (dialog.IsValid)
+                {
+                    RoomNumber = Convert.ToUInt16(dialog.InputText);
+                }
             });
-
-        /// <summary>
-        /// 判断用户输入的考场号是否正确
-        /// </summary>
-        /// <param name="input">用户输入的考场号</param>
-        /// <returns>如果正确，返回<see langword="null"/>，否则返回警告信息</returns>
-        public string JudgeRoomNumberInputAndSet(string input)
-        {
-            bool succeed = ushort.TryParse(input, out var roomNumber);
-            if (!succeed || roomNumber > 9999)
-            {
-                return "请输入1~9999的整数";
-            }
-            RoomNumber = roomNumber;
-            return null;
-        }
 
         #endregion
 
