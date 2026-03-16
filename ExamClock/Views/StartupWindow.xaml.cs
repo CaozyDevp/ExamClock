@@ -58,10 +58,6 @@ namespace ExamClock.Views
                     app.IsClientResponderEnabled = true;
                 }
             }
-            else
-            {
-                MessageBox.Show("未设置密钥，您将无法与管理端交互！", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
