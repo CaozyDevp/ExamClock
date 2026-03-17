@@ -18,6 +18,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows;
+using TimeSync;
 
 namespace ExamClock.Admin
 {
@@ -26,7 +27,13 @@ namespace ExamClock.Admin
     /// </summary>
     public partial class App : Application
     {
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private const int TimeSyncPort = 25566;
+        private const ushort HostNumber = 0;
+
+        private readonly TimeSyncResponder _timeResponder = new TimeSyncResponder(
+            () => HostNumber, TimeSyncPort);
+
+        private async void Application_Startup(object sender, StartupEventArgs e)
         {
             var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
             if (processes.Length > 1)
@@ -35,6 +42,20 @@ namespace ExamClock.Admin
                 Environment.Exit(0);
                 return;
             }
+
+            try
+            {
+                await _timeResponder.StartAsync();
+            }
+            catch
+            {
+                MessageBox.Show($"时间同步响应器启动失败，请检查{TimeSyncPort}端口是否被占用，然后重新运行程序。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            _timeResponder?.Stop();
         }
     }
 }

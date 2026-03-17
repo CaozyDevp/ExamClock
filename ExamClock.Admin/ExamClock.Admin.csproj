@@ -116,6 +116,10 @@
       <Project>{167b8576-2fc2-4c97-84da-c654563e5aba}</Project>
       <Name>ECGP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TimeSync\TimeSync.csproj">
+      <Project>{16857237-8de1-4c38-b784-a2107cb839e2}</Project>
+      <Name>TimeSync</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

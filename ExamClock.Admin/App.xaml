@@ -4,7 +4,8 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ExamClock.Admin"
              StartupUri="Views/MainWindow.xaml"
-             Startup="Application_Startup">
+             Startup="Application_Startup"
+             Exit="Application_Exit">
     <Application.Resources>
         <sys:String x:Key="AppVersion">v1.1.3</sys:String>
         <sys:String x:Key="PublishDate">20260219</sys:String>
@@ -16,6 +17,6 @@
 
         <!--  用于显示数字  -->
         <FontFamily x:Key="Num">../Views/Fonts/#OPPO Sans</FontFamily>
-        
+
     </Application.Resources>
 </Application>
