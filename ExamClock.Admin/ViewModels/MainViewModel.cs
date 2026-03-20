@@ -301,7 +301,7 @@ namespace ExamClock.Admin.ViewModels
         /// <returns>用户输入的密码字符串，可能为null</returns>
         private string GetPasswordInput()
         {
-            var dialog = new PasswordInputWindow(Username);
+            var dialog = new PasswordInputWindow(string.IsNullOrEmpty(Username) ? "未设置" : Username);
             try
             {
                 if (dialog.ShowDialog() == true)
