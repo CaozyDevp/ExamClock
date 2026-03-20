@@ -15,8 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using ECGP;
+using ECGP.Requesters;
 using ExamClock.Admin.Commands;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -207,6 +210,16 @@ namespace ExamClock.Admin.ViewModels
         }
         private string _logoutTimeString = "--:--";
 
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string Username
+        {
+            get => _username;
+            set => _username = value ?? string.Empty;
+        }
+        private string _username = string.Empty;
+
         private DispatcherTimer _timer;
 
         public MainViewModel()
@@ -227,9 +240,26 @@ namespace ExamClock.Admin.ViewModels
         /// <summary>
         /// 刷新命令（重新获取考场信息）
         /// </summary>
-        public ICommand RefreshCommand => new RelayCommand(excute =>
+        public ICommand RefreshCommand => new RelayCommand(async (execute) =>
         {
-
+            try
+            {
+                var privateKey = KeyManager.GetKeyXml(Username, GetPasswordInput());
+                if (privateKey == null)
+                {
+                    MessageBox.Show("身份验证失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                using (var requester = new DetectionRequester(Configuration.DetectingPort, privateKey))
+                {
+                    var result = await requester.BroadcastAndGetRoomInfos();
+                    ShowHosts(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"刷新考场信息出现错误！\n错误信息：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         });
 
         /// <summary>
@@ -263,6 +293,25 @@ namespace ExamClock.Admin.ViewModels
                 "开源：本软件基于 GNU GPL v3.0 协议开源",
                 "关于软件", MessageBoxButton.OK, MessageBoxImage.Information);
         });
+
+        /// <summary>
+        /// [TODO]获取用户输入的密码（通过弹窗输入）
+        /// </summary>
+        /// <returns>用户输入的密码字符串</returns>
+        private string GetPasswordInput()
+        {
+            //[TODO]
+            throw new Exception();
+        }
+
+        /// <summary>
+        /// 在UI上显示考场信息
+        /// </summary>
+        /// <param name="rooms">考场列表</param>
+        private void ShowHosts(List<RoomInfo> rooms)
+        {
+
+        }
 
         public void Dispose()
         {
