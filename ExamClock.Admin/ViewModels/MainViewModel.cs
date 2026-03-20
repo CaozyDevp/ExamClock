@@ -18,6 +18,7 @@
 using ECGP;
 using ECGP.Requesters;
 using ExamClock.Admin.Commands;
+using ExamClock.Admin.Views;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -244,7 +245,7 @@ namespace ExamClock.Admin.ViewModels
         {
             try
             {
-                var privateKey = KeyManager.GetKeyXml(Username, GetPasswordInput());
+                var privateKey = KeyManager.GetKeyXml(Username, GetPasswordInput() ?? string.Empty);
                 if (privateKey == null)
                 {
                     MessageBox.Show("身份验证失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -295,13 +296,25 @@ namespace ExamClock.Admin.ViewModels
         });
 
         /// <summary>
-        /// [TODO]获取用户输入的密码（通过弹窗输入）
+        /// 获取用户输入的密码（通过弹窗输入）
         /// </summary>
-        /// <returns>用户输入的密码字符串</returns>
+        /// <returns>用户输入的密码字符串，可能为null</returns>
         private string GetPasswordInput()
         {
-            //[TODO]
-            throw new Exception();
+            var dialog = new PasswordInputWindow(Username);
+            try
+            {
+                if (dialog.ShowDialog() == true)
+                {
+                    return dialog.PasswordString;
+                }
+
+                return null;
+            }
+            finally
+            {
+                dialog.Close();
+            }
         }
 
         /// <summary>
