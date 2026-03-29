@@ -216,10 +216,12 @@ namespace ExamClock.Admin.ViewModels
         /// </summary>
         public string Username
         {
-            get => _username;
-            set => _username = value ?? string.Empty;
+            get => Configuration.Username;
+            set
+            {
+                Configuration.Username = value ?? string.Empty;
+            }
         }
-        private string _username = string.Empty;
 
         private DispatcherTimer _timer;
 
