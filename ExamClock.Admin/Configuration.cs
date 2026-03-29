@@ -38,6 +38,13 @@ namespace ExamClock.Admin
         public static int ControllingPort => _controllingPort;
         private const int _controllingPort = 25584;
 
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public static string Username
+        {
+            get; set;
+        }
         #endregion
     }
 }
