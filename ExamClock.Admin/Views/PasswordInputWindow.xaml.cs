@@ -24,7 +24,8 @@ namespace ExamClock.Admin.Views
         public PasswordInputWindow(string username)
         {
             InitializeComponent();
-            UsernameLabel.Content = username;
+            UsernameString = username;
+            UsernameInputBox.Text = UsernameString;
         }
 
         /// <summary>
@@ -32,9 +33,15 @@ namespace ExamClock.Admin.Views
         /// </summary>
         public string PasswordString { get; set; }
 
+        /// <summary>
+        /// 用户输入的用户名字符串
+        /// </summary>
+        public string UsernameString { get; set; }
+
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
             PasswordString = PasswordInputBox.Password;
+            UsernameString = UsernameInputBox.Text;
             DialogResult = true;
         }
 
