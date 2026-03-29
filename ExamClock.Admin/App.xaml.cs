@@ -43,6 +43,12 @@ namespace ExamClock.Admin
                 return;
             }
 
+            if (!KeyManager.LoadKeyFromDefaultFile())
+            {
+                MessageBox.Show("未检测到密钥文件，程序无法运行\n请确保密钥文件位于程序所在目录下", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                Environment.Exit(0);
+            }
+
             try
             {
                 await _timeResponder.StartAsync();

@@ -41,10 +41,7 @@ namespace ExamClock.Admin
 
         static KeyManager()
         {
-            if (!LoadKeyFromDefaultFile())
-            {
-                MessageBox.Show("密钥文件加载失败！");
-            }
+
         }
 
         /// <summary>
