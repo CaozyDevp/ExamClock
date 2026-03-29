@@ -16,6 +16,7 @@
 */
 
 using System.Windows;
+using System.Windows.Media;
 
 namespace ExamClock.Admin.Views
 {
@@ -42,6 +43,25 @@ namespace ExamClock.Admin.Views
         {
             PasswordString = PasswordInputBox.Password;
             UsernameString = UsernameInputBox.Text;
+
+            if (string.IsNullOrEmpty(UsernameString))
+            {
+                UsernameInputBox.BorderBrush = Brushes.Red;
+                UsernameInputBox.BorderThickness = new Thickness(2);
+                return;
+            }
+            UsernameInputBox.BorderBrush = Brushes.Gray;
+            UsernameInputBox.BorderThickness = new Thickness(1);
+
+            if (string.IsNullOrEmpty(PasswordString))
+            {
+                PasswordInputBox.BorderBrush = Brushes.Red;
+                PasswordInputBox.BorderThickness = new Thickness(2);
+                return;
+            }
+            PasswordInputBox.BorderBrush = Brushes.Gray;
+            PasswordInputBox.BorderThickness = new Thickness(1);
+
             DialogResult = true;
         }
 
