@@ -247,7 +247,18 @@ namespace ExamClock.Admin.ViewModels
         {
             try
             {
-                var privateKey = KeyManager.GetKeyXml(Username, GetPasswordInput() ?? string.Empty);
+                string username = Username;
+                if (!GetPasswordInput(ref username, out string password))
+                {
+                    return;
+                }
+                if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(username))
+                {
+                    return;
+                }
+                Username = username;
+
+                var privateKey = KeyManager.GetKeyXml(Username, password);
                 if (privateKey == null)
                 {
                     MessageBox.Show("身份验证失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -298,20 +309,27 @@ namespace ExamClock.Admin.ViewModels
         });
 
         /// <summary>
-        /// 获取用户输入的密码（通过弹窗输入）
+        /// 弹窗获取用户输入的用户名和密码
         /// </summary>
-        /// <returns>用户输入的密码字符串，可能为null</returns>
-        private string GetPasswordInput()
+        /// <param name="username">
+        /// 以 ref 方式传入的用户名参数，其初始值将显示给用户，并在用户提交后被更新为对话框中输入的用户名。
+        /// </param>
+        /// <param name="password">用户输入的密码</param>
+        /// <returns>是否成功获取。如果为false，说明用户未提交，直接关闭了窗口</returns>
+        private bool GetPasswordInput(ref string username, out string password)
         {
-            var dialog = new PasswordInputWindow(string.IsNullOrEmpty(Username) ? string.Empty : Username);
+            var dialog = new PasswordInputWindow(string.IsNullOrEmpty(username) ? string.Empty : username);
             try
             {
                 if (dialog.ShowDialog() == true)
                 {
-                    return dialog.PasswordString;
+                    username = dialog.UsernameString;
+                    password = dialog.PasswordString;
+                    return true;
                 }
 
-                return null;
+                password = string.Empty;
+                return false;
             }
             finally
             {
