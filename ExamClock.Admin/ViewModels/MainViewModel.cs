@@ -21,6 +21,7 @@ using ExamClock.Admin.Commands;
 using ExamClock.Admin.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -222,6 +223,21 @@ namespace ExamClock.Admin.ViewModels
                 Configuration.Username = value ?? string.Empty;
             }
         }
+
+        /// <summary>
+        /// 在主窗体上显示的考场相关控件
+        /// </summary>
+        public ObservableCollection<UIElement> HostElements
+        {
+            get => _hostElements;
+            private set
+            {
+                if (value == _hostElements) return;
+                _hostElements = value ?? throw new ArgumentNullException(nameof(value));
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<UIElement> _hostElements = new ObservableCollection<UIElement>();
 
         private DispatcherTimer _timer;
 

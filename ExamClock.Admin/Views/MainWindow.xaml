@@ -39,8 +39,8 @@
                       VerticalAlignment="Center"
                       HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="173"/>
-                        <ColumnDefinition Width="48"/>
+                        <ColumnDefinition Width="173" />
+                        <ColumnDefinition Width="48" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0"
@@ -266,11 +266,11 @@
                                    Foreground="#757575" />
 
                             <TextBlock Grid.Column="1"
-                                     FontSize="17"
-                                     Foreground="#757575"
-                                     Background="Transparent"
-                                     VerticalAlignment="Center"
-                                     Margin="5 0 0 0">
+                                       FontSize="17"
+                                       Foreground="#757575"
+                                       Background="Transparent"
+                                       VerticalAlignment="Center"
+                                       Margin="5 0 0 0">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{}{0} / {1}">
                                         <Binding Path="ActualTotalRooms" />
@@ -309,6 +309,19 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
+
+                <ItemsControl Grid.Row="1"
+                              Grid.Column="1"
+                              VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              ItemsSource="{Binding HostElements, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"
+                                       FlowDirection="LeftToRight" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
 
                 <Border Grid.Row="1"
                         Grid.Column="2"
