@@ -25,6 +25,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using TimeSync;
 
 namespace ExamClock.Admin.ViewModels
 {
@@ -280,11 +281,41 @@ namespace ExamClock.Admin.ViewModels
                     MessageBox.Show("身份验证失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+
+                // 获取考场信息
+                List<RoomInfo> rooms;
                 using (var requester = new DetectionRequester(Configuration.DetectingPort, privateKey))
                 {
-                    var result = await requester.BroadcastAndGetRoomInfos();
-                    ShowHosts(result);
+                    rooms = await requester.BroadcastAndGetRoomInfos();
                 }
+
+                // 获取时间信息
+                List<TimeKeeper> times;
+                using (var requester = new TimeSyncRequester(Configuration.TimeSyncPort))
+                {
+                    times = await requester.BroadcastAndGetTimeKeepersAsync(Configuration.TimeSyncPort, 0);
+                }
+
+                // 将时间与考场信息按IP进行匹配
+                List<TimeKeeper> sortedTimes = new List<TimeKeeper>();
+                for (int i = 0; i < rooms.Count; i++)
+                {
+                    foreach (var time in times)
+                    {
+                        if (time.Address == rooms[i].IP)
+                        {
+                            sortedTimes.Add(time);
+                            break;
+                        }
+                    }
+                    if (sortedTimes.Count < i + 1)
+                    {
+                        sortedTimes.Add(null);
+                    }
+                }
+
+                // 在UI上显示考场信息
+                ShowHosts(rooms, sortedTimes);
             }
             catch (Exception ex)
             {
@@ -357,7 +388,8 @@ namespace ExamClock.Admin.ViewModels
         /// 在UI上显示考场信息
         /// </summary>
         /// <param name="rooms">考场列表</param>
-        private void ShowHosts(List<RoomInfo> rooms)
+        /// <param name="times">考场时间，要求与考场按顺序一一对应</param>
+        private void ShowHosts(List<RoomInfo> rooms, List<TimeKeeper> times)
         {
 
         }
