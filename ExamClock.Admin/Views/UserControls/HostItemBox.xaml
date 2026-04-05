@@ -9,9 +9,13 @@
              d:DesignWidth="270">
     <UserControl.Resources>
         <SolidColorBrush Color="#FAFDFF"
-                         x:Key="BackgroundColor" />
+                         x:Key="BlueBackground" />
         <SolidColorBrush Color="#0090FF"
-                         x:Key="BorderColor" />
+                         x:Key="BlueBorder" />
+        <SolidColorBrush Color="#FFF7F7"
+                         x:Key="RedBackground" />
+        <SolidColorBrush Color="#FF0000"
+                         x:Key="RedBorder" />
         <SolidColorBrush Color="#646464"
                          x:Key="DarkGray" />
         <SolidColorBrush Color="#808080"
@@ -22,10 +26,10 @@
                          x:Key="InactiveRed" />
     </UserControl.Resources>
 
-    <Border BorderBrush="{StaticResource BorderColor}"
+    <Border BorderBrush="{Binding BorderColorBrush,RelativeSource={RelativeSource AncestorType=local:HostItemBox}}"
             BorderThickness="2"
             CornerRadius="10"
-            Background="{StaticResource BackgroundColor}">
+            Background="{Binding BackgroundBrush,RelativeSource={RelativeSource AncestorType=local:HostItemBox}}">
         <Grid Margin="27 0 0 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="23" />

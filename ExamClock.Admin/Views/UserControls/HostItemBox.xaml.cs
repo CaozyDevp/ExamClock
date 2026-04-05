@@ -56,7 +56,7 @@ namespace ExamClock.Admin.Views.UserControls
 
         #region Dependency Properties
         /// <summary>
-        /// 考场信息的依赖属性
+        /// 考场信息
         /// </summary>
         public RoomInfo RoomInfo
         {
@@ -68,7 +68,7 @@ namespace ExamClock.Admin.Views.UserControls
                 new PropertyMetadata(OnRoomInfoChanged));
 
         /// <summary>
-        /// 考场时间的依赖属性
+        /// 考场时间
         /// </summary>
         public TimeKeeper RoomTime
         {
@@ -77,6 +77,17 @@ namespace ExamClock.Admin.Views.UserControls
         }
         private static readonly DependencyProperty RoomTimeProperty =
             DependencyProperty.Register(nameof(RoomTime), typeof(TimeKeeper), typeof(HostItemBox));
+
+        /// <summary>
+        /// 配置是否正确
+        /// </summary>
+        public bool IsCorrect
+        {
+            get => (bool)GetValue(IsCorrectProperty);
+            set => SetValue(IsCorrectProperty, value);
+        }
+        private static readonly DependencyProperty IsCorrectProperty =
+            DependencyProperty.Register(nameof(IsCorrect), typeof(bool), typeof(HostItemBox), new PropertyMetadata(false, OnIsCorrectChanged));
         #endregion
 
         #region Properties
@@ -155,6 +166,42 @@ namespace ExamClock.Admin.Views.UserControls
         }
 
         /// <summary>
+        /// 背景色
+        /// </summary>
+        public SolidColorBrush BackgroundBrush
+        {
+            get
+            {
+                if (IsCorrect)
+                {
+                    return (SolidColorBrush)Resources["BlueBackground"];
+                }
+                else
+                {
+                    return (SolidColorBrush)Resources["RedBackground"];
+                }
+            }
+        }
+
+        /// <summary>
+        /// 边框颜色
+        /// </summary>
+        public SolidColorBrush BorderColorBrush
+        {
+            get
+            {
+                if (IsCorrect)
+                {
+                    return (SolidColorBrush)Resources["BlueBorder"];
+                }
+                else
+                {
+                    return (SolidColorBrush)Resources["RedBorder"];
+                }
+            }
+        }
+
+        /// <summary>
         /// 考场时间字符串
         /// </summary>
         public string TimeString
@@ -210,6 +257,14 @@ namespace ExamClock.Admin.Views.UserControls
             box.OnPropertyChanged(nameof(StatusString));
             box.OnPropertyChanged(nameof(StatusBrush));
             box.OnPropertyChanged(nameof(NoticeString));
+        }
+
+        private static void OnIsCorrectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is HostItemBox box)) return;
+
+            box.OnPropertyChanged(nameof(BackgroundBrush));
+            box.OnPropertyChanged(nameof(BorderColorBrush));
         }
 
     }
