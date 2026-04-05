@@ -58,6 +58,9 @@
     <Compile Include="Views\PasswordInputWindow.xaml.cs">
       <DependentUpon>PasswordInputWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserControls\HostItemBox.xaml.cs">
+      <DependentUpon>HostItemBox.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,6 +81,10 @@
     <Page Include="Views\PasswordInputWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserControls\HostItemBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +130,10 @@
     <ProjectReference Include="..\ECGP\ECGP.csproj">
       <Project>{167b8576-2fc2-4c97-84da-c654563e5aba}</Project>
       <Name>ECGP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExamClock.Core\ExamClock.Core.csproj">
+      <Project>{d26f3314-924b-4a4c-8289-821c18ec301f}</Project>
+      <Name>ExamClock.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\TimeSync\TimeSync.csproj">
       <Project>{16857237-8de1-4c38-b784-a2107cb839e2}</Project>
