@@ -19,6 +19,7 @@ using ECGP;
 using ECGP.Requesters;
 using ExamClock.Admin.Commands;
 using ExamClock.Admin.Views;
+using ExamClock.Admin.Views.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -391,7 +392,24 @@ namespace ExamClock.Admin.ViewModels
         /// <param name="times">考场时间，要求与考场按顺序一一对应</param>
         private void ShowHosts(List<RoomInfo> rooms, List<TimeKeeper> times)
         {
+            if (rooms.Count != times.Count)
+            {
+                throw new ArgumentException("The count of rooms must equal to that of times.");
+            }
 
+            HostElements.Clear();
+
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                var element = new HostItemBox()
+                {
+                    RoomInfo = rooms[i],
+                    RoomTime = times[i],
+                    Margin = new Thickness(4),
+                    IsCorrect = false,  // [TODO] 这里日后再实现判断逻辑
+                };
+                HostElements.Add(element);
+            }
         }
 
         public void Dispose()
