@@ -28,7 +28,7 @@ namespace ECGP.Messages
     /// </summary>
     public class StatusResponseMessage : ECGPMessage
     {
-        public StatusResponseMessage(uint numberReceived, ushort roomNumber, ClientStatus status, byte[] scheduleMD5, bool isBeginningNoticeEnabled, 
+        public StatusResponseMessage(uint numberReceived, ushort roomNumber, ClientStatus status, byte[] scheduleMD5, bool isBeginningNoticeEnabled,
             bool isEndingNoticeEnabled, SoundType noticeBeforeEndingType, byte systemVolume, string rsaPublicKeyXml) : base(0x02, null)
         {
             Body = new byte[25];
@@ -53,10 +53,10 @@ namespace ECGP.Messages
         public override byte[] ToBytes()
         {
             byte[] encryptedBody;
-            using (RSA rsa = RSA.Create())
+            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
             {
                 rsa.FromXmlString(RSAPublicKeyXml);
-                encryptedBody = rsa.EncryptValue(Body);
+                encryptedBody = rsa.Encrypt(Body, false);
             }
 
             var byteArrays = new List<byte[]>()
@@ -99,10 +99,10 @@ namespace ECGP.Messages
             ECGPMessage rawMessage = Parse(bytes);
             string publicKeyXml;
             byte[] body;
-            using (var rsa = RSA.Create())
+            using (var rsa = new RSACryptoServiceProvider())
             {
                 rsa.FromXmlString(RSAPrivateKeyXml);
-                body = rsa.DecryptValue(rawMessage.Body);
+                body = rsa.Decrypt(rawMessage.Body, false);
                 publicKeyXml = rsa.ToXmlString(false);
             }
 
