@@ -69,16 +69,21 @@ namespace ECGP.Messages
                 unchecked
                 {
                     uint tempSum = 0;
-                    foreach (char c in HeaderString)
+                    var arrayList = new List<byte[]>()
                     {
-                        tempSum += (byte)c;
-                    }
-                    tempSum += Version;
-                    tempSum += Number;
-                    tempSum += Type;
-                    foreach (var b in Body)
+                        BitConverter.GetBytes(Head),
+                        BitConverter.GetBytes(Version),
+                        BitConverter.GetBytes(Number),
+                        BitConverter.GetBytes(Type),
+                        Body ?? (new byte[0])
+                    };
+
+                    foreach (var array in arrayList)
                     {
-                        tempSum += b;
+                        foreach (var b in array)
+                        {
+                            tempSum += b;
+                        }
                     }
                     return tempSum;
                 }
