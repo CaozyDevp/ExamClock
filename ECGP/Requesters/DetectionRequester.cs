@@ -50,7 +50,7 @@ namespace ECGP.Requesters
             {
                 throw new ArgumentNullException(nameof(rsaPrivateKeyXml));
             }
-            _udpClient = new UdpClient();
+            _udpClient = new UdpClient(port);
             _port = port;
             _rsaPrivateKeyXml = rsaPrivateKeyXml;
         }
@@ -58,12 +58,11 @@ namespace ECGP.Requesters
         /// <summary>
         /// 向指定端口广播存在探测消息
         /// </summary>
-        /// <param name="port"></param>
-        private void BroadcastDetectionRequest(int port)
+        private void BroadcastDetectionRequest()
         {
             var messageBytes = new DetectionMessage().ToBytes();
 
-            var target = new IPEndPoint(IPAddress.Broadcast, port);
+            var target = new IPEndPoint(IPAddress.Broadcast, Port);
 
             _udpClient.EnableBroadcast = true;
             _udpClient.Send(messageBytes, messageBytes.Length, target);
@@ -128,7 +127,7 @@ namespace ECGP.Requesters
             const int timeout = 1000;
             const int maxResponses = 64;
 
-            BroadcastDetectionRequest(Port);
+            BroadcastDetectionRequest();
             var roomInfos = new List<RoomInfo>();
 
             // 最多接收64个响应
