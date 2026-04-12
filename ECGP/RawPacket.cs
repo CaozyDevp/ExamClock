@@ -30,5 +30,11 @@ namespace ECGP
         /// 数据来源
         /// </summary>
         IPEndPoint Source { get; set; }
+
+        public RawPacket(byte[] data, IPEndPoint source)
+        {
+            Data = data;
+            Source = source;
+        }
     }
 }
