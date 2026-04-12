@@ -24,12 +24,12 @@ namespace ECGP
         /// <summary>
         /// 接收到的数据
         /// </summary>
-        byte[] Data { get; set; }
+        public byte[] Data { get; set; }
 
         /// <summary>
         /// 数据来源
         /// </summary>
-        IPEndPoint Source { get; set; }
+        public IPEndPoint Source { get; set; }
 
         public RawPacket(byte[] data, IPEndPoint source)
         {
