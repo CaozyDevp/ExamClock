@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace ECGP.Requesters
 {
@@ -69,52 +68,63 @@ namespace ECGP.Requesters
         }
 
         /// <summary>
-        /// 接收客户端的响应，如果没有收到，返回<see cref="null"/>
+        /// 接收单个原始UDP数据包。如果在超时时间内没有接收到，返回null
         /// </summary>
         /// <param name="timeout">超时时间</param>
-        private async Task<RoomInfo> ReceiveResponse(int timeout)
+        /// <returns></returns>
+        private async Task<RawPacket?> ReceiveRawPacket(int timeout)
         {
-            IPEndPoint target;
-            byte[] data;
-
             try
             {
                 var receiveTask = _udpClient.ReceiveAsync();
                 var delayTask = Task.Delay(timeout);
 
-                // 已经完成的任务，用于实现超时检测
                 var completedTask = await Task.WhenAny(receiveTask, delayTask);
                 if (completedTask == delayTask)
-                {
                     return null;
-                }
 
                 var result = await receiveTask;
-                data = result.Buffer;
-                target = result.RemoteEndPoint;
+                return new RawPacket(result.Buffer, result.RemoteEndPoint);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"接收时间同步响应消息时发生错误，错误信息：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-
-            if (data == null || !StatusResponseMessage.TryParse(data, RsaPrivateKeyXml, out var message))
+            catch
             {
                 return null;
             }
+        }
 
-            return new RoomInfo()
+        /// <summary>
+        /// 将接收到的数据包解析为<see cref="RoomInfo"/>
+        /// </summary>
+        /// <param name="packets">接收到的原始数据包</param>
+        /// <returns>解析结果</returns>
+        private List<RoomInfo> ParsePackets(List<RawPacket> packets)
+        {
+            var rooms = new List<RoomInfo>();
+            foreach (var packet in packets)
             {
-                RoomNumber = message.RoomNumber,
-                IP = target.Address,
-                ScheduleHash = message.ScheduleMD5,
-                Status = message.Status,
-                Volume = message.SystemVolume,
-                NoticeBeforeEndingType = message.NoticeBeforeEndingType,
-                IsExamBeginNoticeEnabled = message.IsBeginningNoticeEnabled,
-                IsExamEndNoticeEnabled = message.IsEndingNoticeEnabled,
-            };
+                // 数据包为空
+                if (packet.Data == null || packet.Data.Length == 0)
+                    continue;
+
+                // 解析失败
+                if (!StatusResponseMessage.TryParse(packet.Data, RsaPrivateKeyXml, out var message))
+                    continue;
+
+                var room = new RoomInfo()
+                {
+                    RoomNumber = message.RoomNumber,
+                    IP = packet.Source.Address,
+                    ScheduleHash = message.ScheduleMD5,
+                    Status = message.Status,
+                    Volume = message.SystemVolume,
+                    NoticeBeforeEndingType = message.NoticeBeforeEndingType,
+                    IsExamBeginNoticeEnabled = message.IsBeginningNoticeEnabled,
+                    IsExamEndNoticeEnabled = message.IsEndingNoticeEnabled,
+                };
+                rooms.Add(room);
+            }
+
+            return rooms;
         }
 
         /// <summary>
@@ -124,25 +134,24 @@ namespace ECGP.Requesters
         public async Task<List<RoomInfo>> BroadcastAndGetRoomInfos()
         {
             const int totalTimeout = 1000;
-            var roomInfos = new List<RoomInfo>();
 
             BroadcastDetectionRequest();
 
             var endTime = DateTime.UtcNow.AddMilliseconds(totalTimeout);
-
+            var rawPackets = new List<RawPacket>();
             while (DateTime.UtcNow < endTime)
             {
                 var remaining = (int)(endTime - DateTime.UtcNow).TotalMilliseconds;
                 if (remaining <= 0) break;
 
-                var room = await ReceiveResponse(remaining);
-                if (room != null)
+                var packet = await ReceiveRawPacket(remaining);
+                if (packet != null)
                 {
-                    roomInfos.Add(room);
+                    rawPackets.Add((RawPacket)packet);
                 }
             }
 
-            return roomInfos;
+            return ParsePackets(rawPackets);
         }
 
         public void Dispose()
