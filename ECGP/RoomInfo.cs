@@ -17,6 +17,7 @@
 
 using ExamClock.Core.Enums;
 using System.Net;
+using ECGP.Enums;
 
 namespace ECGP
 {

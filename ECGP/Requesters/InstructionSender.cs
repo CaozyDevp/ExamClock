@@ -16,6 +16,7 @@
 */
 
 using ECGP.Messages;
+using ECGP.Enums;
 using System;
 using System.Net;
 using System.Net.Sockets;

@@ -43,9 +43,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientStatus.cs" />
+    <Compile Include="Enums\ClientStatus.cs" />
     <Compile Include="DynamicKeyManager.cs" />
-    <Compile Include="InstructionType.cs" />
+    <Compile Include="Enums\InstructionType.cs" />
     <Compile Include="Messages\ConfirmationMessage.cs" />
     <Compile Include="Messages\DetectionMessage.cs" />
     <Compile Include="Messages\DynamicKeyRequestMessage.cs" />
@@ -62,7 +62,7 @@
     <Compile Include="Requesters\InstructionSender.cs" />
     <Compile Include="Responders\ClientResponder.cs" />
     <Compile Include="Responders\StatusResponder.cs" />
-    <Compile Include="ReturnCode.cs" />
+    <Compile Include="Enums\ReturnCode.cs" />
     <Compile Include="RoomInfo.cs" />
   </ItemGroup>
   <ItemGroup>

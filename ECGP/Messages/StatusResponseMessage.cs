@@ -18,6 +18,7 @@
 using ECGP.Exceptions;
 using ExamClock.Core.Enums;
 using System;
+using ECGP.Enums;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 

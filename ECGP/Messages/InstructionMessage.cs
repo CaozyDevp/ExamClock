@@ -16,6 +16,7 @@
 */
 
 using System;
+using ECGP.Enums;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;

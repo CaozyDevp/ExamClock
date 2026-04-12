@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace ECGP
+namespace ECGP.Enums
 {
     /// <summary>
-    /// 控制指令的类型
+    /// 客户端的状态
     /// </summary>
-    public enum InstructionType : ushort
+    public enum ClientStatus : byte
     {
-        ModeSwitch = 0x01,
-        SetSystemVolume = 0x02,
-        SyncTimeWithController = 0x03,
-        SetRoomNumber = 0x04
+        Unknown,
+        Exiting,
+        Examining,
+        Editing
     }
 }
