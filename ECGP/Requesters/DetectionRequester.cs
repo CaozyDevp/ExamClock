@@ -120,26 +120,28 @@ namespace ECGP.Requesters
         /// <summary>
         /// 广播存在探测消息，并将接收到的消息转为<see cref="RoomInfo"/>，最多接收64个响应
         /// </summary>
-        /// <param name="port">客户端接收消息的端口</param>
         /// <returns>接收到的响应信息</returns>
         public async Task<List<RoomInfo>> BroadcastAndGetRoomInfos()
         {
-            const int timeout = 1000;
-            const int maxResponses = 64;
-
-            BroadcastDetectionRequest();
+            const int totalTimeout = 1000;
             var roomInfos = new List<RoomInfo>();
 
-            // 最多接收64个响应
-            for (int i = 0; i < maxResponses; i++)
+            BroadcastDetectionRequest();
+
+            var endTime = DateTime.UtcNow.AddMilliseconds(totalTimeout);
+
+            while (DateTime.UtcNow < endTime)
             {
-                var room = await ReceiveResponse(timeout);
-                if (room == null)
+                var remaining = (int)(endTime - DateTime.UtcNow).TotalMilliseconds;
+                if (remaining <= 0) break;
+
+                var room = await ReceiveResponse(remaining);
+                if (room != null)
                 {
-                    break;
+                    roomInfos.Add(room);
                 }
-                roomInfos.Add(room);
             }
+
             return roomInfos;
         }
 
