@@ -96,7 +96,7 @@ namespace ExamClock.Admin.Views.UserControls
         /// </summary>
         public string RoomNumberString
         {
-            get => $"# {RoomInfo?.RoomNumber}";
+            get => $"# {RoomInfo?.RoomNumber.ToString("0000")}";
         }
 
         /// <summary>
