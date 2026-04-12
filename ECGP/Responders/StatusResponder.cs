@@ -20,6 +20,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ECGP.Responders
 {
@@ -172,7 +173,7 @@ namespace ECGP.Responders
                     var message = ECGPMessage.Parse(data);
                     if (message.Type == 0x01)
                     {
-                        ReplyStatusMessage(message.Number, endPoint.Address);
+                        await ReplyStatusMessage(message.Number, endPoint);
                     }
                 }
                 catch
@@ -192,8 +193,8 @@ namespace ECGP.Responders
         /// 回复状态响应信息
         /// </summary>
         /// <param name="numReceived">接收到的请求信息中包含的特征码</param>
-        /// <param name="target">目标IP地址</param>
-        private void ReplyStatusMessage(uint numReceived, IPAddress target)
+        /// <param name="targetEndPoint">目标端点</param>
+        private async Task ReplyStatusMessage(uint numReceived, IPEndPoint targetEndPoint)
         {
             var roomNumber = GetRoomNumberFunc();
             var status = GetStatusFunc();
@@ -205,7 +206,11 @@ namespace ECGP.Responders
                 notice.EnableEnding, notice.BeforeEnding, volume, RsaPublicKeyXml);
             var msgBytes = message.ToBytes();
 
-            _udpClient.Send(msgBytes, msgBytes.Length, new IPEndPoint(target, Port));
+            using (var client = new UdpClient())
+            {
+                client.EnableBroadcast = true;
+                await client.SendAsync(msgBytes, msgBytes.Length, targetEndPoint);
+            }
         }
 
         private bool IsLocalAddress(IPAddress address)
