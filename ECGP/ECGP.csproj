@@ -43,6 +43,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CryptoHelper.cs" />
     <Compile Include="Enums\ClientStatus.cs" />
     <Compile Include="DynamicKeyManager.cs" />
     <Compile Include="Enums\InstructionType.cs" />
