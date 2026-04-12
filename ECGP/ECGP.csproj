@@ -56,6 +56,7 @@
     <Compile Include="NoticeConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Messages\StatusResponseMessage.cs" />
+    <Compile Include="RawPacket.cs" />
     <Compile Include="Requesters\DynamicKeyRequester.cs" />
     <Compile Include="Requesters\DetectionRequester.cs" />
     <Compile Include="Requesters\InstructionSender.cs" />
