@@ -86,12 +86,7 @@ namespace ECGP.Messages
         /// <returns></returns>
         public override byte[] ToBytes()
         {
-            byte[] encryptedBody;
-            using (RSA rsa = RSA.Create())
-            {
-                rsa.FromXmlString(RSAPublicKeyXml);
-                encryptedBody = rsa.EncryptValue(Body);
-            }
+            byte[] encryptedBody = CryptoHelper.RsaEncrypt(Body, RSAPublicKeyXml);
 
             var byteArrays = new List<byte[]>()
             {
@@ -130,11 +125,10 @@ namespace ECGP.Messages
         {
             ECGPMessage rawMessage = ECGPMessage.Parse(bytes);
             string publicKeyXml;
-            byte[] body;
+            byte[] body = CryptoHelper.RsaDecrypt(rawMessage.Body, rsaPrivateKeyXml);
             using (var rsa = RSA.Create())
             {
                 rsa.FromXmlString(rsaPrivateKeyXml);
-                body = rsa.DecryptValue(rawMessage.Body);
                 publicKeyXml = rsa.ToXmlString(false);
             }
 

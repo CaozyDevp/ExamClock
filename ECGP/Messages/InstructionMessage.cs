@@ -18,7 +18,6 @@
 using System;
 using ECGP.Enums;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Cryptography;
 
 namespace ECGP.Messages
@@ -155,26 +154,9 @@ namespace ECGP.Messages
         /// <returns></returns>
         public override byte[] ToBytes()
         {
-            byte[] encrypted;
-            using (Aes aes = Aes.Create())
-            {
-                aes.Key = DynamicKey;
-                aes.Mode = CipherMode.CBC;
-                aes.Padding = PaddingMode.PKCS7;
-                aes.IV = AesIV;
-
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(
-                        ms,
-                        aes.CreateEncryptor(aes.Key, aes.IV),
-                        CryptoStreamMode.Write))
-                    {
-                        cs.Write(Body, 16, Body.Length - 16);
-                    }
-                    encrypted = ms.ToArray();
-                }
-            }
+            byte[] data = new byte[Body.Length - 16];
+            Buffer.BlockCopy(Body, 16, data, 0, data.Length);
+            byte[] encrypted = CryptoHelper.AesEncrypt(data, DynamicKey, AesIV);
 
             var byteArrays = new List<byte[]>()
             {
@@ -221,27 +203,7 @@ namespace ECGP.Messages
             byte[] encrypted = new byte[rawMessage.Body.Length - 16];
             Buffer.BlockCopy(rawMessage.Body, 16, encrypted, 0, rawMessage.Body.Length - 16);
 
-            byte[] decrypted;
-            using (Aes aes = Aes.Create())
-            {
-                aes.Key = dynamicKey;
-                aes.Mode = CipherMode.CBC;
-                aes.IV = aesIV;
-                aes.Padding = PaddingMode.PKCS7;
-
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(
-                        ms,
-                        aes.CreateDecryptor(),
-                        CryptoStreamMode.Write))
-                    {
-                        cs.Write(encrypted, 0, encrypted.Length);
-                        cs.FlushFinalBlock();
-                        decrypted = ms.ToArray();
-                    }
-                }
-            }
+            byte[] decrypted = CryptoHelper.AesDecrypt(encrypted, dynamicKey, aesIV);
 
             var cmdCode = (InstructionType)BitConverter.ToUInt16(decrypted, 0);
             var paras = new byte[decrypted.Length - 2];
