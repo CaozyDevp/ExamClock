@@ -49,7 +49,7 @@ namespace ECGP.Requesters
             {
                 throw new ArgumentNullException(nameof(rsaPrivateKeyXml));
             }
-            _udpClient = new UdpClient(port);
+            _udpClient = new UdpClient(0);
             _port = port;
             _rsaPrivateKeyXml = rsaPrivateKeyXml;
         }
