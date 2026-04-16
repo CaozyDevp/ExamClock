@@ -23,6 +23,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ECGP;
+using ECGP.Enums;
 using ExamClock.Core.Enums;
 using TimeSync;
 

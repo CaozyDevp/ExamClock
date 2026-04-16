@@ -16,6 +16,7 @@
 */
 
 using ECGP;
+using ECGP.Enums;
 using ECGP.Responders;
 using ExamClock.Core.System;
 using ExamClock.Views;
