@@ -259,19 +259,26 @@ namespace ECGP.Messages
         /// <returns>加和校验字段是否正确</returns>
         private static bool VerifySum(byte[] bytes, int sumOffset, out uint sum)
         {
+            // 最小有效ECGP消息为20字节
+            if (bytes == null || bytes.Length < 20)
+            {
+                sum = 0;
+                return false;
+            }
+            byte[] buffer = new byte[bytes.Length - 4];
+            Buffer.BlockCopy(bytes, 0, buffer, 0, 16);
+            Buffer.BlockCopy(bytes, 20, buffer, 16, bytes.Length - 20);
+
             uint calculatedSum = 0;   // 期望的加和校验值（实际计算出的）
             unchecked
             {
-                foreach (var b in bytes)
+                foreach (var b in buffer)
                 {
                     calculatedSum += b;
                 }
-                for (var i = sumOffset; i < sumOffset + 4; i++)
-                {
-                    calculatedSum -= bytes[i];
-                }
             }
 
+            // 提取报文中给出的加和校验值
             var sumBytes = new byte[4];
             Buffer.BlockCopy(bytes, sumOffset, sumBytes, 0, sumBytes.Length);
             sum = BitConverter.ToUInt32(sumBytes, 0);
