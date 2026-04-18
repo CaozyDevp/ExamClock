@@ -15,29 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System;
-using System.Runtime.InteropServices;
+using NAudio.CoreAudioApi;
 
 namespace ExamClock.Core.System
 {
     public class SystemVolumeManager
     {
-        [DllImport("winmm.dll")]
-        private static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume);
-
-        [DllImport("winmm.dll")]
-        private static extern int waveOutGetVolume(IntPtr hwo, out uint dwVolume);
-
         /// <summary>
         /// 获取系统音量
         /// </summary>
         /// <returns>系统音量值，范围0~100</returns>
         public static int GetVolume()
         {
-            waveOutGetVolume(IntPtr.Zero, out uint volume);
-            ushort leftChannel = (ushort)(volume & 0xFFFF);
-            ushort rightChannel = (ushort)((volume >> 16) & 0xFFFF);
-            return (leftChannel + rightChannel) / 2 * 100 / 65536;
+            var enumerator = new MMDeviceEnumerator();
+            var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            return (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
         }
 
         /// <summary>
@@ -46,12 +38,10 @@ namespace ExamClock.Core.System
         /// <param name="volume">音量值，范围0~100</param>
         public static void SetVolume(int volume)
         {
-            if (volume < 0) volume = 0;
-            if (volume > 100) volume = 100;
-
-            uint actualVolume = (uint)(volume * 65536 / 100);
-            uint combinedVolume = (actualVolume << 16) | actualVolume;
-            waveOutSetVolume(IntPtr.Zero, combinedVolume);
+            var enumerator = new MMDeviceEnumerator();
+            var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            device.AudioEndpointVolume.MasterVolumeLevelScalar = volume / 100.0f;
+            device.AudioEndpointVolume.Mute = volume == 0;
         }
     }
 }
