@@ -19,7 +19,6 @@ using ECGP.Exceptions;
 using ExamClock.Core.Enums;
 using System;
 using ECGP.Enums;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace ECGP.Messages
@@ -54,7 +53,7 @@ namespace ECGP.Messages
         public override byte[] ToBytes()
         {
             byte[] encryptedBody = CryptoHelper.RsaEncrypt(Body, RSAPublicKeyXml);
-
+            
             var message = new ECGPMessage(Version, Number, Type, encryptedBody);
             return message.ToBytes();
         }
