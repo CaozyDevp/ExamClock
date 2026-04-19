@@ -17,6 +17,7 @@
 
 using IWshRuntimeLibrary;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -57,6 +58,19 @@ namespace ExamClockInstaller
                 else
                 {
                     Console.WriteLine("\n桌面快捷方式创建失败");
+                }
+            }
+
+            if (Configuration.AutoRun)
+            {
+                try
+                {
+                    string path = Path.Combine(Configuration.TargetPath, Configuration.ExeRelativePath);
+                    Process.Start(path);
+                }
+                catch
+                {
+                    Console.WriteLine("无法自动运行程序");
                 }
             }
         }
@@ -141,10 +155,10 @@ namespace ExamClockInstaller
         {
             // 源程序的路径
             var source = Path.Combine(Configuration.TargetPath, Configuration.ExeRelativePath);
-            
+
             // 快捷方式的路径
             var target = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Configuration.LnkName}.lnk");
-            
+
             if (!System.IO.File.Exists(source))
             {
                 return false;
