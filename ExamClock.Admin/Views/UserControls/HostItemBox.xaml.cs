@@ -213,7 +213,7 @@ namespace ExamClock.Admin.Views.UserControls
                 {
                     return "未知时间";
                 }
-                return RoomTime.CurrentTime.ToString("yyyy/MM/dd HH:mm:ss");
+                return RoomTime.CurrentTime.ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
             }
         }
 
