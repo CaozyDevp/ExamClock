@@ -16,10 +16,8 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 
 namespace ExamClockInstaller
 {
@@ -27,6 +25,99 @@ namespace ExamClockInstaller
     {
         static void Main(string[] args)
         {
+            ShowWelcome();
+            if (!Configuration.AutoInstall)
+            {
+                ShowInstallationInfo();
+                Console.WriteLine("\n是否继续安装？（Y/N）");
+                if (Console.ReadKey().Key != ConsoleKey.Y)
+                {
+                    Console.WriteLine("\n安装已取消");
+                    return;
+                }
+            }
+
+            var succeeded = CopyFiles();
+            if (succeeded)
+            {
+                Console.WriteLine("\n安装成功");
+            }
+            else
+            {
+                Console.WriteLine("\n安装失败");
+            }
+        }
+
+        /// <summary>
+        /// 显示欢迎信息
+        /// </summary>
+        static void ShowWelcome()
+        {
+            Console.WriteLine("\t================\t");
+            Console.WriteLine("\t考试时钟安装程序\t");
+            Console.WriteLine("\t================\t");
+        }
+
+        /// <summary>
+        /// 显示安装程序的配置信息
+        /// </summary>
+        static void ShowInstallationInfo()
+        {
+            Console.WriteLine("\n-----程序安装信息-----");
+            Console.WriteLine($"目标版本号：\t{Configuration.AppVersion}");
+            Console.WriteLine($"程序安装路径：\t{Configuration.TargetPath}");
+            Console.WriteLine($"桌面快捷方式：\t{(Configuration.CreateDesktopLnk ? "创建" : "不创建")}");
+            Console.WriteLine($"安装后运行：\t{(Configuration.AutoRun ? "是" : "否")}");
+            Console.WriteLine($"安装后退出：\t{(Configuration.AutoExit ? "是" : "否")}");
+        }
+
+        /// <summary>
+        /// 将文件复制到指定目录
+        /// </summary>
+        /// <returns>是否成功复制</returns>
+        static bool CopyFiles()
+        {
+            const string prefix = "ExamClockInstaller.Resources.";
+            if (string.IsNullOrEmpty(Configuration.TargetPath)) return false;
+
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceNames = assembly.GetManifestResourceNames();
+            if (resourceNames.Length == 0)
+            {
+                Console.Error.WriteLine("\n没有需要安装的内容");
+                return false;
+            }
+
+            try
+            {
+                foreach (var name in resourceNames)
+                {
+                    if (!name.StartsWith(prefix)) continue;
+
+                    if (!Directory.Exists(Configuration.TargetPath))
+                    {
+                        Directory.CreateDirectory(Configuration.TargetPath);
+                    }
+
+                    using (var stream = assembly.GetManifestResourceStream(name))
+                    {
+                        if (stream == null) continue;
+
+                        string fileName = name.Substring(prefix.Length);
+                        string filePath = Path.Combine(Configuration.TargetPath, fileName);
+                        using (var destination = File.Create(filePath))
+                        {
+                            stream.CopyTo(destination);
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"\n安装过程中发生错误：{ex.Message}");
+                return false;
+            }
         }
     }
 }
