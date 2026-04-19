@@ -69,5 +69,10 @@ namespace TimeSync
         /// 考场号
         /// </summary>
         public ushort HostNumber { get; set; }
+
+        /// <summary>
+        /// 与本机的时间差值
+        /// </summary>
+        public TimeSpan Offset { get => CurrentTime.ToLocalTime() - DateTime.Now.ToLocalTime(); }
     }
 }
