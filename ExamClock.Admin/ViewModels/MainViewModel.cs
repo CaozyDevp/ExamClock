@@ -23,6 +23,7 @@ using ExamClock.Admin.Views.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -324,6 +325,7 @@ namespace ExamClock.Admin.ViewModels
                 // 显示时间和配置情况
                 ushort timeSynced = 0, timeWandered = 0, timeWrong = 0;
                 ushort configRight = 0, configWrong = 0;
+                var hash = Configuration.GetScheduleHash();     // 本机时间表配置的哈希值
                 for (int i = 0; i < rooms.Count; i++)
                 {
                     // 判断时间
@@ -341,8 +343,14 @@ namespace ExamClock.Admin.ViewModels
                         timeWrong++;
                     }
 
-                    // [TODO]比较配置哈希
-                    configWrong++;
+                    if (rooms[i].ScheduleHash != null && hash.SequenceEqual(rooms[i].ScheduleHash))
+                    {
+                        configRight++;
+                    }
+                    else
+                    {
+                        configWrong++;
+                    }
                 }
                 TimeSyncedRooms = timeSynced;
                 TimeWanderedRooms = timeWandered;
@@ -431,6 +439,7 @@ namespace ExamClock.Admin.ViewModels
 
             HostElements.Clear();
 
+            var hash = Configuration.GetScheduleHash();
             for (int i = 0; i < rooms.Count; i++)
             {
                 var element = new HostItemBox()
@@ -438,7 +447,7 @@ namespace ExamClock.Admin.ViewModels
                     RoomInfo = rooms[i],
                     RoomTime = times[i],
                     Margin = new Thickness(4),
-                    IsCorrect = false,  // [TODO] 这里日后再实现判断逻辑
+                    IsCorrect = rooms[i].ScheduleHash != null && hash.SequenceEqual(rooms[i].ScheduleHash)
                 };
                 HostElements.Add(element);
             }
