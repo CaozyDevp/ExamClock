@@ -16,6 +16,7 @@
 */
 
 using System;
+using System.IO;
 
 namespace ExamClockInstaller
 {
@@ -24,7 +25,7 @@ namespace ExamClockInstaller
         /// <summary>
         /// 程序安装的目标路径，所需文件将被复制到该目录下
         /// </summary>
-        public static string TargetPath { get; } = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        public static string TargetPath { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ExamClock");
 
         /// <summary>
         /// 是否自动安装，即不需要用户确认
