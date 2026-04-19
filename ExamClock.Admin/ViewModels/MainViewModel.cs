@@ -303,7 +303,7 @@ namespace ExamClock.Admin.ViewModels
                 {
                     foreach (var time in times)
                     {
-                        if (time.Address == rooms[i].IP)
+                        if (time.Address.Equals(rooms[i].IP))
                         {
                             sortedTimes.Add(time);
                             break;
