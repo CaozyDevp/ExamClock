@@ -55,6 +55,12 @@ namespace ExamClockInstaller
         public static string ExeRelativePath { get; } = "ExamClock.exe";
 
         /// <summary>
+        /// 桌面快捷方式的名称（不包含扩展名）
+        /// 仅当<see cref="CreateDesktopLnk"/>为true时有效
+        /// </summary>
+        public static string LnkName { get; } = "考试时钟";
+
+        /// <summary>
         /// 软件版本号
         /// </summary>
         public static string AppVersion { get; } = "V1.1.3";
