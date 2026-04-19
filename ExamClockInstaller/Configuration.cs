@@ -52,5 +52,10 @@ namespace ExamClockInstaller
         /// 仅当<see cref="AutoRun"/>为true时有效
         /// </summary>
         public static string ExeRelativePath { get; } = "ExamClock.exe";
+
+        /// <summary>
+        /// 软件版本号
+        /// </summary>
+        public static string AppVersion { get; } = "V1.1.3";
     }
 }
