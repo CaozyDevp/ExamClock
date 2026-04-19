@@ -15,9 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using IWshRuntimeLibrary;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace ExamClockInstaller
 {
@@ -37,14 +39,25 @@ namespace ExamClockInstaller
                 }
             }
 
-            var succeeded = CopyFiles();
-            if (succeeded)
+            if (CopyFiles())
             {
                 Console.WriteLine("\n安装成功");
             }
             else
             {
                 Console.WriteLine("\n安装失败");
+            }
+
+            if (Configuration.CreateDesktopLnk)
+            {
+                if (CreateDesktopShortcut())
+                {
+                    Console.WriteLine("\n桌面快捷方式创建成功");
+                }
+                else
+                {
+                    Console.WriteLine("\n桌面快捷方式创建失败");
+                }
             }
         }
 
@@ -105,7 +118,7 @@ namespace ExamClockInstaller
 
                         string fileName = name.Substring(prefix.Length);
                         string filePath = Path.Combine(Configuration.TargetPath, fileName);
-                        using (var destination = File.Create(filePath))
+                        using (var destination = System.IO.File.Create(filePath))
                         {
                             stream.CopyTo(destination);
                         }
@@ -117,6 +130,52 @@ namespace ExamClockInstaller
             {
                 Console.Error.WriteLine($"\n安装过程中发生错误：{ex.Message}");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 创建桌面快捷方式
+        /// </summary>
+        /// <returns></returns>
+        static bool CreateDesktopShortcut()
+        {
+            // 源程序的路径
+            var source = Path.Combine(Configuration.TargetPath, Configuration.ExeRelativePath);
+            
+            // 快捷方式的路径
+            var target = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{Configuration.LnkName}.lnk");
+            
+            if (!System.IO.File.Exists(source))
+            {
+                return false;
+            }
+
+            WshShell shell = new WshShell();
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(target);
+            try
+            {
+                shortcut.TargetPath = source;
+                shortcut.Save();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"\n创建桌面快捷方式时发生错误：{ex.Message}");
+                return false;
+            }
+            finally
+            {
+                // 手动释放资源
+                if (shortcut != null)
+                {
+                    try { Marshal.FinalReleaseComObject(shortcut); } catch { }
+                    shortcut = null;
+                }
+                if (shell != null)
+                {
+                    try { Marshal.FinalReleaseComObject(shell); } catch { }
+                    shell = null;
+                }
             }
         }
     }
