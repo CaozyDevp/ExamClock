@@ -55,7 +55,7 @@ namespace ExamClock.Admin.ViewModels
             get => _actualTotalRooms;
             set
             {
-                if (_actualTotalRooms != value) return;
+                if (_actualTotalRooms == value) return;
                 _actualTotalRooms = value;
                 OnPropertyChanged(nameof(ActualTotalRooms));
             }
