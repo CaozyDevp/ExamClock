@@ -15,6 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Spf;
+using System;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using System.Windows;
+
 namespace ExamClock.Admin
 {
     public static class Configuration
@@ -45,6 +52,64 @@ namespace ExamClock.Admin
         {
             get; set;
         }
+
+        /// <summary>
+        /// 考试日程表
+        /// </summary>
+        private static Table TimeTable
+        {
+            get; set;
+        }
         #endregion
+
+        /// <summary>
+        /// 获取日程配置的MD5值（SPF配置项UTF8字符串的MD5）
+        /// </summary>
+        /// <returns></returns>
+        public static byte[] GetScheduleHash()
+        {
+            using (var md5 = MD5.Create())
+            {
+                var timeTableText = (TimeTable ?? new Table()).ToString();
+                var bytes = Encoding.UTF8.GetBytes(timeTableText);
+                return md5.ComputeHash(bytes);
+            }
+        }
+
+        /// <summary>
+        /// 从文件加载时间表配置文件
+        /// </summary>
+        /// <returns>如果文件不存在，返回<see langword="false"/></returns>
+        public static bool LoadTimeTable(string configFile)
+        {
+            // 如果配置文件不存在，则返回false
+            if (configFile == null || !File.Exists(configFile))
+            {
+                return false;
+            }
+
+            try
+            {
+                string rawText = File.ReadAllText(configFile);
+                TimeTable = Table.Parse(rawText);
+            }
+            catch
+            {
+                MessageBox.Show("配置文件可能损坏，无法读取。\n注意：原有的所有配置将被覆盖！");
+                return false;
+            }
+
+            return true;
+        }
+
+        static Configuration()
+        {
+            const string defaultConfigFile = "timeTable.spf";
+            if (!LoadTimeTable(Path.Combine(Environment.CurrentDirectory, defaultConfigFile)))
+            {
+                MessageBox.Show("无法找到配置文件");
+                TimeTable = new Table();
+            }
+        }
     }
 }

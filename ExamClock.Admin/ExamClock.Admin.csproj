@@ -135,6 +135,10 @@
       <Project>{d26f3314-924b-4a4c-8289-821c18ec301f}</Project>
       <Name>ExamClock.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Spf\Spf.csproj">
+      <Project>{29F6436E-39CA-45BA-AD95-ED307F29230E}</Project>
+      <Name>Spf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TimeSync\TimeSync.csproj">
       <Project>{16857237-8de1-4c38-b784-a2107cb839e2}</Project>
       <Name>TimeSync</Name>
