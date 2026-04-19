@@ -33,7 +33,7 @@
             Background="{Binding BackgroundBrush,RelativeSource={RelativeSource AncestorType=local:HostItemBox}}">
         <Grid Margin="27 0 0 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="23" />
+                <RowDefinition Height="20" />
                 <RowDefinition Height="38" />
                 <RowDefinition />
                 <RowDefinition Height="39" />
@@ -55,7 +55,7 @@
                   Height="55"
                   VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="29" />
+                    <ColumnDefinition Width="20" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -71,7 +71,7 @@
                        Content="{Binding TimeString,RelativeSource={RelativeSource AncestorType=local:HostItemBox}}"
                        FontSize="18"
                        VerticalAlignment="Center"
-                       Padding="0"
+                       Padding="5 0 0 0"
                        FontFamily="{StaticResource Hei}"
                        Foreground="{StaticResource LightGray}" />
                 <Image Source="/Assets/Images/Bell.png"
@@ -81,7 +81,7 @@
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        VerticalAlignment="Center"
-                       Padding="0"
+                       Padding="5 0 0 0"
                        Content="{Binding NoticeString,RelativeSource={RelativeSource AncestorType=local:HostItemBox}}"
                        FontSize="18"
                        FontFamily="{StaticResource Hei}"
