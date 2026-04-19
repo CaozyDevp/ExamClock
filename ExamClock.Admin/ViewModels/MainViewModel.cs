@@ -317,6 +317,38 @@ namespace ExamClock.Admin.ViewModels
 
                 // 在UI上显示考场信息
                 ShowHosts(rooms, sortedTimes);
+
+                // 显示实际考场数量
+                ActualTotalRooms = (ushort)rooms.Count;
+
+                // 显示时间和配置情况
+                ushort timeSynced = 0, timeWandered = 0, timeWrong = 0;
+                ushort configRight = 0, configWrong = 0;
+                for (int i = 0; i < rooms.Count; i++)
+                {
+                    // 判断时间
+                    var offset = Math.Abs(sortedTimes[i].Offset.TotalMilliseconds);
+                    if (offset < 1000)
+                    {
+                        timeSynced++;
+                    }
+                    else if (offset <= 10 * 1000)
+                    {
+                        timeWandered++;
+                    }
+                    else
+                    {
+                        timeWrong++;
+                    }
+
+                    // [TODO]比较配置哈希
+                    configWrong++;
+                }
+                TimeSyncedRooms = timeSynced;
+                TimeWanderedRooms = timeWandered;
+                TimeWrongRooms = timeWrong;
+                WrongConfiguredRooms = configWrong;
+                RightConfiguredRooms = configRight;
             }
             catch (Exception ex)
             {
