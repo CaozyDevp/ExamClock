@@ -71,10 +71,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="app.manifest" />
+    <EmbeddedResource Include="Resources\config.spf" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
       <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
@@ -88,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <EmbeddedResource Include="Resources\ExamClock.exe" />
+    <EmbeddedResource Include="Resources\Spf.dll" />
+    <EmbeddedResource Include="Resources\TimeSync.dll" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
