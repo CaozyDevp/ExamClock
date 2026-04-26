@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\InstructionClient.cs" />
     <Compile Include="Views\PasswordInputWindow.xaml.cs">
       <DependentUpon>PasswordInputWindow.xaml</DependentUpon>
     </Compile>
@@ -144,8 +145,6 @@
       <Name>TimeSync</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
