@@ -1,0 +1,299 @@
+﻿<Window x:Class="ExamClock.Admin.Views.RoomControlWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExamClock.Admin.Views"
+        xmlns:vm="clr-namespace:ExamClock.Admin.ViewModels"
+        mc:Ignorable="d"
+        Width="380"
+        FontFamily="{StaticResource Hei}"
+        Height="385"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:RoomControlViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <SolidColorBrush x:Key="LightGray"
+                         Color="#808080"/>
+        <SolidColorBrush x:Key="DarkGray"
+                         Color="#646464"/>
+        <Style TargetType="Border"
+               x:Key="ButtonBorderStyle">
+            <Setter Property="BorderBrush" Value="{StaticResource DarkGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="19"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Width" Value="125"/>
+            <Setter Property="Background" Value="#F3F3F3"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black"
+                                      Opacity="0.1"
+                                      Direction="0"
+                                      BlurRadius="6"
+                                      ShadowDepth="0"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="30"
+                      CornerRadius="10"
+                      GlassFrameThickness="-1"
+                      ResizeBorderThickness="5"
+                      UseAeroCaptionButtons="True" />
+    </WindowChrome.WindowChrome>
+
+    <Border BorderThickness="1"
+            Background="White"
+            BorderBrush="LightGray">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="118"/>
+                <RowDefinition Height="170" />
+                <RowDefinition Height="67" />
+            </Grid.RowDefinitions>
+            <!--  标题栏  -->
+            <Border Grid.Row="0"
+                    Height="30"
+                    Background="#F3F3F3">
+                <Grid>
+                    <Label Margin="14,0,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontFamily="微软雅黑"
+                           Content="考场控制"
+                           FontSize="14" />
+                    <Button Name="CloseWindowButton"
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Right"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Click="CloseWindowButton_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Source="/Assets/Images/Close.png"
+                                       Width="9" />
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1"
+                  Margin="35 0 35 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="41"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
+                           Text="{Binding RoomNumberText}"
+                           FontSize="23" />
+                <TextBlock Grid.Row="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
+                           Margin="90 0 0 0 "
+                           Text="{Binding StatusText}"
+                           Foreground="{StaticResource LightGray}"
+                           FontSize="18" />
+                <TextBlock Grid.Row="0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Text="{Binding Ip}"
+                           Foreground="{StaticResource DarkGray}"
+                           FontSize="18" />
+
+                <Image Grid.Row="2"
+                       Height="18"
+                       Source="/Assets/Images/Clock.png"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center" />
+                <TextBlock Grid.Row="2"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center" 
+                           Margin="26 0 0 0 "
+                           Text="{Binding TimeText}"
+                           Foreground="{StaticResource LightGray}"
+                           FontSize="18" />
+
+                <Image Grid.Row="3"
+                       Height="16"
+                       Source="/Assets/Images/Bell.png"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center" />
+                <TextBlock Grid.Row="3"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center" 
+                           Margin="26 0 0 0 "
+                           Text="{Binding NoticeConfigText}"
+                           Foreground="{StaticResource LightGray}"
+                           FontSize="18" />
+
+                <Image Grid.Row="3"
+                       Height="14"
+                       Source="/Assets/Images/Volume.png"
+                       HorizontalAlignment="Right" 
+                       Margin="0 0 48 0"
+                       VerticalAlignment="Center" />
+                <TextBlock Grid.Row="3"
+                           HorizontalAlignment="Right" 
+                           VerticalAlignment="Center"
+                           Text="{Binding VolumeText}"
+                           Foreground="{StaticResource LightGray}"
+                           FontSize="18" />
+
+                <Rectangle Height="1"
+                           Width="325"
+                           Grid.Row="4"
+                           VerticalAlignment="Bottom"
+                           Fill="{StaticResource DarkGray}"/>
+            </Grid>
+
+            <Grid Grid.Row="2"
+                  Margin="35 0 35 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3.2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Text="{Binding LocalTimeText}"
+                           FontSize="18"
+                           Foreground="{StaticResource LightGray}"/>
+                <Button Grid.Row="1"
+                        Grid.Column="1"
+                        Command="{Binding SyncTimeCommand}"
+                        HorizontalAlignment="Right">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Style="{StaticResource ButtonBorderStyle}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="18"
+                                           Foreground="{StaticResource DarkGray}"
+                                           Text="同步时间"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Slider Grid.Row="2"
+                        Grid.Column="0"
+                        Width="160"
+                        VerticalAlignment="Center"
+                        Maximum="100"
+                        Minimum="0"
+                        Value="{Binding VolumeBarValue}"/>
+                <Button Grid.Row="2"
+                        Grid.Column="1"
+                        Command="{Binding SetVolumeCommand}"
+                        HorizontalAlignment="Right">        
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Style="{StaticResource ButtonBorderStyle}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="18"
+                                           Foreground="{StaticResource DarkGray}"
+                                           Text="设置音量"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Grid.Row="3"
+                        Grid.Column="1"
+                        Command="{Binding SetRoomNumberCommand}"
+                        HorizontalAlignment="Right">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Style="{StaticResource ButtonBorderStyle}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="18"
+                                           Foreground="{StaticResource DarkGray}"
+                                           Text="修改考场号"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <TextBox Grid.Row="3"
+                         Grid.Column="0"
+                         HorizontalAlignment="Center"
+                         Height="30"
+                         Width="170"
+                         VerticalAlignment="Center"
+                         TextAlignment="Center"
+                         Padding="2"
+                         Text="{Binding UserInputRoomNumberText}"
+                         FontSize="18"
+                         Foreground="{StaticResource LightGray}"/>
+
+                <Rectangle Height="1"
+                           Width="325"
+                           Grid.ColumnSpan="2"
+                           Grid.Row="4"
+                           VerticalAlignment="Bottom"
+                           Fill="{StaticResource DarkGray}"/>
+            </Grid>
+
+            <Grid Grid.Row="3"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Width="280">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Command="{Binding SwitchStatusCommand}"
+                        HorizontalAlignment="Center">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Style="{StaticResource ButtonBorderStyle}"
+                                    Background="{Binding StatusSwitchButtonBackground}"
+                                    BorderBrush="{Binding StatusSwitchButtonForeground}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="18"
+                                           Foreground="{Binding StatusSwitchButtonForeground}"
+                                           Text="{Binding StatusSwitchButtonText}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Grid.Column="1"
+                        Command="{Binding PushScheduleCommand}"
+                        HorizontalAlignment="Center">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Style="{StaticResource ButtonBorderStyle}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="18"
+                                           Foreground="{StaticResource DarkGray}"
+                                           Text="推送配置"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
