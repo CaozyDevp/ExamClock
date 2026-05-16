@@ -25,6 +25,8 @@ namespace ECGP.Enums
         ModeSwitch = 0x01,
         SetSystemVolume = 0x02,
         SyncTimeWithController = 0x03,
-        SetRoomNumber = 0x04
+        SetRoomNumber = 0x04,
+        SetNotice = 0x05,
+        PushSchedule = 0x06
     }
 }
