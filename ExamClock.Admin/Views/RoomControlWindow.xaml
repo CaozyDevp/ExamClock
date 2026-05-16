@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Width="380"
         FontFamily="{StaticResource Hei}"
-        Height="385"
+        Height="485"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -54,6 +54,7 @@
                 <RowDefinition Height="30" />
                 <RowDefinition Height="118"/>
                 <RowDefinition Height="170" />
+                <RowDefinition Height="100" />
                 <RowDefinition Height="67" />
             </Grid.RowDefinitions>
             <!--  标题栏  -->
@@ -204,7 +205,7 @@
                 <Button Grid.Row="2"
                         Grid.Column="1"
                         Command="{Binding SetVolumeCommand}"
-                        HorizontalAlignment="Right">        
+                        HorizontalAlignment="Right">
                     <Button.Template>
                         <ControlTemplate>
                             <Border Style="{StaticResource ButtonBorderStyle}">
@@ -254,6 +255,66 @@
             </Grid>
 
             <Grid Grid.Row="3"
+                  Margin="35 0 35 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <ComboBox Grid.Row="1"
+                          Grid.Column="0"
+                          ItemsSource="{Binding BeginNoticeItems}"
+                          SelectedIndex="{Binding BeginNoticeIndex}"
+                          Height="30"
+                          Width="73"
+                          HorizontalAlignment="Left"/>
+                <ComboBox Grid.Row="1"
+                          Grid.Column="0"
+                          ItemsSource="{Binding EndNoticeItems}"
+                          SelectedIndex="{Binding EndNoticeIndex}"
+                          Height="30"
+                          Width="73"
+                          Margin="0 0 20 0"
+                          HorizontalAlignment="Right" />
+                <ComboBox Grid.Row="2"
+                          Grid.Column="0"
+                          ItemsSource="{Binding BeforeEndingNoticeItems}"
+                          SelectedIndex="{Binding BeforeEndingNoticeIndex}"
+                          Height="30"
+                          Width="151"
+                          HorizontalAlignment="Left"/>
+
+                <Button Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.RowSpan="2"
+                        Command="{Binding SetNoticeCommand}"
+                        HorizontalAlignment="Right" >
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border Style="{StaticResource ButtonBorderStyle}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="18"
+                                           Foreground="{StaticResource DarkGray}"
+                                           Text="设置提醒"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Rectangle Height="1"
+                           Width="325"
+                           Grid.ColumnSpan="2"
+                           Grid.Row="3"
+                           VerticalAlignment="Bottom"
+                           Fill="{StaticResource DarkGray}"/>
+            </Grid>
+
+            <Grid Grid.Row="4"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Width="280">

@@ -246,6 +246,55 @@ namespace ExamClock.Admin.ViewModels
             get => Status == ClientStatus.Examining ? _backgroundRed : _backgroundGreen;
         }
 
+        public string[] BeginNoticeItems => _beginNoticeItems;
+        private readonly string[] _beginNoticeItems = { "无", "开考铃" };
+        public string[] EndNoticeItems => _endNoticeItems;
+        private readonly string[] _endNoticeItems = { "无", "结束铃" };
+        public string[] BeforeEndingNoticeItems => _beforeEndingNoticeItems;
+        private readonly string[] _beforeEndingNoticeItems = { "无提醒", "收卷前10分钟", "收卷前15分钟" };
+
+        /// <summary>
+        /// 选中的开考铃下标
+        /// </summary>
+        public int BeginNoticeIndex
+        {
+            get => _beginNoticeIndex;
+            set
+            {
+                _beginNoticeIndex = value;
+                OnPropertyChanged();
+            }
+        }
+        private int _beginNoticeIndex = 0;
+
+        /// <summary>
+        /// 选中的结束铃下标
+        /// </summary>
+        public int EndNoticeIndex
+        {
+            get => _endNoticeIndex;
+            set
+            {
+                _endNoticeIndex = value;
+                OnPropertyChanged();
+            }
+        }
+        private int _endNoticeIndex = 0;
+
+        /// <summary>
+        /// 选中的结束前提醒下标
+        /// </summary>
+        public int BeforeEndingNoticeIndex
+        {
+            get => _beforeEndingNoticeIndex;
+            set
+            {
+                _beforeEndingNoticeIndex = value;
+                OnPropertyChanged();
+            }
+        }
+        private int _beforeEndingNoticeIndex = 0;
+
         /// <summary>
         /// 切换状态命令
         /// </summary>
@@ -399,6 +448,60 @@ namespace ExamClock.Admin.ViewModels
         });
 
         /// <summary>
+        /// 设置提醒命令
+        /// </summary>
+        public ICommand SetNoticeCommand => new RelayCommand(async (_) =>
+        {
+            // data字节：0b_0000_DCBA
+            // A置1=开启开考铃；B置1=开启收卷铃；C置1=开启结束前提醒；D置1=15分钟提醒，0=10分钟提醒
+            byte data = 0;
+            if (BeginNoticeIndex != 0)
+            {
+                data |= 0b_0000_0001;
+            }
+            if (EndNoticeIndex != 0)
+            {
+                data |= 0b_0000_0010;
+            }
+            switch (BeforeEndingNoticeIndex)
+            {
+                case 1:
+                    data |= 0b_0000_0100;
+                    break;
+                case 2:
+                    data |= 0b_0000_1100;
+                    break;
+            }
+
+            try
+            {
+                var privateKey = GetPrivateKeyXmlAndUpdateUsername();
+
+                if (privateKey == null)
+                {
+                    MessageBox.Show("身份验证失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                var instructor = new InstructionClient(privateKey);
+                var result = await instructor.SendInstructionAsync(new IPEndPoint(Ip, Configuration.ControllingPort), InstructionType.SetNotice, new byte[] { data });
+
+                if (result == ReturnCode.Success)
+                {
+                    MessageBox.Show("提醒设置成功", "信息", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("提醒设置失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("提醒设置过程中发生错误", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        });
+
+        /// <summary>
         /// 初始化ViewModel，设置显示信息并启动更新时间的定时器
         /// </summary>
         /// <param name="info">获取到的考场信息</param>
@@ -424,19 +527,23 @@ namespace ExamClock.Admin.ViewModels
             if (info.IsExamBeginNoticeEnabled)
             {
                 NoticeConfigText += "开考 ";
+                BeginNoticeIndex = 1;
             }
             switch (info.NoticeBeforeEndingType)
             {
                 case Core.Enums.SoundType._10MinBeforeEnding:
                     NoticeConfigText += "10' ";
+                    BeforeEndingNoticeIndex = 1;
                     break;
                 case Core.Enums.SoundType._15MinBeforeEnding:
                     NoticeConfigText += "15' ";
+                    BeforeEndingNoticeIndex = 2;
                     break;
             }
             if (info.IsExamEndNoticeEnabled)
             {
                 NoticeConfigText += "收卷";
+                EndNoticeIndex = 1;
             }
         }
 
