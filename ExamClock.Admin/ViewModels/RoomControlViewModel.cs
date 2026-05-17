@@ -512,6 +512,26 @@ namespace ExamClock.Admin.ViewModels
 
                 if (result == ReturnCode.Success)
                 {
+                    // 语音提醒配置
+                    NoticeConfigText = string.Empty;
+                    if (BeginNoticeIndex != 0)
+                    {
+                        NoticeConfigText += "开考 ";
+                    }
+                    switch (BeforeEndingNoticeIndex)
+                    {
+                        case 1:
+                            NoticeConfigText += "10' ";
+                            break;
+                        case 2:
+                            NoticeConfigText += "15' ";
+                            break;
+                    }
+                    if (EndNoticeIndex != 0)
+                    {
+                        NoticeConfigText += "结束";
+                    }
+
                     MessageBox.Show("提醒设置成功", "信息", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
