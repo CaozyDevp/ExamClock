@@ -245,6 +245,42 @@ namespace ExamClock
 
         #region Methods
         /// <summary>
+        /// 直接设置考试时间表，设置后需要调用<see cref="SaveConfig"/>方法保存配置
+        /// </summary>
+        /// <param name="table">考试时间表，需要满足格式要求</param>
+        /// <returns>是否设置成功</returns>
+        public static bool SetTimeTable(Table table)
+        {
+            var list = new List<ExamItem>();
+            try
+            {
+                for (int i = 0; i < table.Count; i++)
+                {
+                    var subjectObj = table[i][0];
+                    var beginTimeObj = table[i][1];
+                    var durationObj = table[i][2];
+
+                    if (!(subjectObj is string &&
+                        beginTimeObj is DateTime &&
+                        durationObj is int))
+                    {
+                        throw new Exception("Invalid type!");
+                    }
+
+                    list.Add(new ExamItem((string)subjectObj,
+                        (DateTime)beginTimeObj,
+                        TimeSpan.FromMinutes((int)durationObj)));
+                }
+                TimeTable = list;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 获取当前考试项，如果没有则返回<see langword="null"/>
         /// </summary>
         public static ExamItem GetCurrentItem()

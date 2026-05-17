@@ -19,6 +19,7 @@ using ECGP;
 using ECGP.Enums;
 using ECGP.Responders;
 using ExamClock.Core.System;
+using ExamClock.Core.Enums;
 using ExamClock.Views;
 using System;
 using System.Diagnostics;
@@ -26,6 +27,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using TimeSync;
+using System.Text;
 
 namespace ExamClock
 {
@@ -297,6 +299,42 @@ namespace ExamClock
                     case InstructionType.SetRoomNumber:
                         Configuration.RoomNumber = BitConverter.ToUInt16(paras, 0);
                         Configuration.SaveConfig();
+                        break;
+
+                    case InstructionType.SetNotice:
+                        const byte examBeginningFlag = 0b_0000_0001;
+                        const byte examEndingFlag = 0b_0000_0010;
+                        const byte _10MinFlag = 0b_0000_0100;
+                        const byte _15MinFlag = 0b_0000_1100;
+                        var noticeFlags = paras[0];
+                        Configuration.ExamBeginningNotice = ((noticeFlags & examBeginningFlag) == examBeginningFlag) ? SoundType.ExamBeginning : SoundType.None;
+                        Configuration.ExamEndingNotice = ((noticeFlags & examEndingFlag) == examEndingFlag) ? SoundType.ExamEnding : SoundType.None;
+                        switch (noticeFlags & _15MinFlag)
+                        {
+                            case _10MinFlag:
+                                Configuration.NoticeBeforeEnding = SoundType._10MinBeforeEnding;
+                                break;
+                            case _15MinFlag:
+                                Configuration.NoticeBeforeEnding = SoundType._15MinBeforeEnding;
+                                break;
+                            default:
+                                Configuration.NoticeBeforeEnding = SoundType.None;
+                                break;
+                        }
+                        Configuration.SaveConfig();
+                        break;
+
+                    case InstructionType.PushSchedule:
+                        string scheduleStr = Encoding.UTF8.GetString(paras);
+                        var timetable = Spf.Table.Parse(scheduleStr);
+                        if (Configuration.SetTimeTable(timetable))
+                        {
+                            Configuration.SaveConfig();
+                        }
+                        else
+                        {
+                            throw new Exception("Set schedule failed due to unknown reason.");
+                        }
                         break;
 
                     default:
