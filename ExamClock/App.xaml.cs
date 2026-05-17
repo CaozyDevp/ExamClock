@@ -290,6 +290,7 @@ namespace ExamClock
                             var requester = new TimeSyncRequester(Configuration.TimeSyncPort);
                             var keeper = await requester.UnicastAndGetTimeKeeperAsync(source.Address, Configuration.TimeSyncPort, Configuration.RoomNumber);
                             SystemTimeManager.SetSystemTime(keeper.CurrentTime.ToUniversalTime());
+                            Reload();
                         }
                         catch (Exception ex)
                         {
@@ -300,6 +301,7 @@ namespace ExamClock
                     case InstructionType.SetRoomNumber:
                         Configuration.RoomNumber = BitConverter.ToUInt16(paras, 0);
                         Configuration.SaveConfig();
+                        Reload();
                         break;
 
                     case InstructionType.SetNotice:
@@ -323,6 +325,7 @@ namespace ExamClock
                                 break;
                         }
                         Configuration.SaveConfig();
+                        Reload();
                         break;
 
                     case InstructionType.PushSchedule:
@@ -336,6 +339,7 @@ namespace ExamClock
                         {
                             throw new Exception("Set schedule failed due to unknown reason.");
                         }
+                        Reload();
                         break;
 
                     default:
@@ -347,6 +351,20 @@ namespace ExamClock
             {
                 return ReturnCode.UnknownFailure;
             }
+        }
+
+        /// <summary>
+        /// 用于在执行指令后重新加载界面
+        /// </summary>
+        private void Reload()
+        {
+            var currentStatus = Status;
+            if (currentStatus == ClientStatus.Exiting)
+            {
+                return;
+            }
+            Status = ClientStatus.Exiting;
+            Status = currentStatus;
         }
     }
 }
