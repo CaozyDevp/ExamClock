@@ -70,10 +70,19 @@ namespace ExamClock.Admin
         {
             using (var md5 = MD5.Create())
             {
-                var timeTableText = (TimeTable ?? new Table()).ToString();
+                var timeTableText = GetScheduleString();
                 var bytes = Encoding.UTF8.GetBytes(timeTableText);
                 return md5.ComputeHash(bytes);
             }
+        }
+
+        /// <summary>
+        /// 获取日程配置的SPF字符串
+        /// </summary>
+        /// <returns></returns>
+        public static string GetScheduleString()
+        {
+            return (TimeTable ?? new Table()).ToString();
         }
 
         /// <summary>
