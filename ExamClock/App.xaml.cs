@@ -105,6 +105,7 @@ namespace ExamClock
                                 win.Close();
                             }
                         }
+                        new SettingsWindow().ShowDialog();
                         break;
                     case ClientStatus.Examining:
                         foreach (var winItem in Current.Windows)
