@@ -24,6 +24,7 @@ using ExamClock.Admin.Models;
 using ExamClock.Admin.Views;
 using System;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -302,8 +303,6 @@ namespace ExamClock.Admin.ViewModels
         {
             try
             {
-
-
                 var privateKey = GetPrivateKeyXmlAndUpdateUsername();
 
                 if (privateKey == null)
@@ -335,9 +334,34 @@ namespace ExamClock.Admin.ViewModels
         /// <summary>
         /// 推送日程配置命令
         /// </summary>
-        public ICommand PushScheduleCommand => new RelayCommand(execute =>
+        public ICommand PushScheduleCommand => new RelayCommand(async (_) =>
         {
-            MessageBox.Show("推送日程配置功能尚未实现", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                var privateKey = GetPrivateKeyXmlAndUpdateUsername();
+                if (privateKey == null)
+                {
+                    MessageBox.Show("身份验证失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                string scheduleStr = Configuration.GetScheduleString(); // 日程配置的SPF字符串
+                var instructor = new InstructionClient(privateKey);
+                var result = await instructor.SendInstructionAsync(new IPEndPoint(Ip, Configuration.ControllingPort), InstructionType.PushSchedule, Encoding.UTF8.GetBytes(scheduleStr));
+
+                if (result == ReturnCode.Success)
+                {
+                    MessageBox.Show("日程配置推送成功", "信息", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("日程配置推送失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("日程配置推送过程中发生错误", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         });
 
         /// <summary>
