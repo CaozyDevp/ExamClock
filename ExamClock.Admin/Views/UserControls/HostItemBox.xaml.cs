@@ -20,10 +20,12 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ECGP;
 using ECGP.Enums;
+using ExamClock.Admin.Commands;
 using ExamClock.Core.Enums;
 using TimeSync;
 
@@ -236,6 +238,18 @@ namespace ExamClock.Admin.Views.UserControls
                 return noticeSettings;
             }
         }
+
+        /// <summary>
+        /// 显示考场控制窗口的命令
+        /// </summary>
+        public ICommand ControlRoomCommand => new RelayCommand((_) =>
+        {
+            var window = new RoomControlWindow(RoomInfo, RoomTime.Offset)
+            {
+                Owner = Window.GetWindow(this)
+            };
+            window.ShowDialog();
+        });
         #endregion
 
         /// <summary>
