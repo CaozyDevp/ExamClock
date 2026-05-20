@@ -85,32 +85,8 @@ namespace ECGP.Messages
         {
             byte[] encryptedBody = CryptoHelper.RsaEncrypt(Body, RSAPublicKeyXml);
 
-            var byteArrays = new List<byte[]>()
-            {
-                BitConverter.GetBytes(Head),
-                BitConverter.GetBytes(Version),
-                BitConverter.GetBytes(Number),
-                BitConverter.GetBytes(Type),
-                BitConverter.GetBytes(Sum),
-                encryptedBody
-            };
-
-            int totalLength = 0;
-            foreach (var array in byteArrays)
-            {
-                totalLength += array.Length;
-            }
-            var result = new byte[totalLength];
-
-            // 拼合数组
-            int offset = 0;
-            foreach (var array in byteArrays)
-            {
-                Buffer.BlockCopy(array, 0, result, offset, array.Length);
-                offset += array.Length;
-            }
-
-            return result;
+            var message = new ECGPMessage(Version, Number, Type, encryptedBody);
+            return message.ToBytes();
         }
 
         /// <summary>

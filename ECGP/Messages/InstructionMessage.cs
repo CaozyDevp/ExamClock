@@ -157,34 +157,12 @@ namespace ECGP.Messages
             byte[] data = new byte[Body.Length - 16];
             Buffer.BlockCopy(Body, 16, data, 0, data.Length);
             byte[] encrypted = CryptoHelper.AesEncrypt(data, DynamicKey, AesIV);
+            byte[] encryptedBody = new byte[AesIV.Length + encrypted.Length];
+            Buffer.BlockCopy(AesIV, 0, encryptedBody, 0, AesIV.Length);
+            Buffer.BlockCopy(encrypted, 0, encryptedBody, AesIV.Length, encrypted.Length);
 
-            var byteArrays = new List<byte[]>()
-            {
-                BitConverter.GetBytes(Head),
-                BitConverter.GetBytes(Version),
-                BitConverter.GetBytes(Number),
-                BitConverter.GetBytes(Type),
-                BitConverter.GetBytes(Sum),
-                AesIV,
-                encrypted
-            };
-
-            int totalLength = 0;
-            foreach (var array in byteArrays)
-            {
-                totalLength += array.Length;
-            }
-            var result = new byte[totalLength];
-
-            // 拼合数组
-            int offset = 0;
-            foreach (var array in byteArrays)
-            {
-                Buffer.BlockCopy(array, 0, result, offset, array.Length);
-                offset += array.Length;
-            }
-
-            return result;
+            var message = new ECGPMessage(Version, Number, Type, encryptedBody);
+            return message.ToBytes();
         }
 
         /// <summary>
