@@ -21,6 +21,7 @@ using ECGP.Enums;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ECGP.Responders
 {
@@ -134,25 +135,20 @@ namespace ECGP.Responders
                     var message = ECGPMessage.Parse(data);
                     if (message.Type == 0x03)       // 动态密钥请求报文
                     {
-                        if (message is DynamicKeyRequestMessage)
-                        {
-                            uint number = message.Number;
-                            ReplyDynamicKey(endPoint, number);
-                        }
+                        uint number = message.Number;
+                        ReplyDynamicKey(endPoint, number);
                     }
                     else if (message.Type == 0x05)  // 控制指令报文
                     {
-                        if (message is InstructionMessage msg)
-                        {
-                            var ret = await ExecuteInstruction(msg.CommandCode, msg.Parameters, endPoint);
-                            ShowExecutionResult?.Invoke(ret);
-                            ReplyConfirmation(endPoint, ret, msg.Number);
-                        }
+                        var msg = InstructionMessage.Parse(data, _keyManager.Keys);
+                        var ret = await ExecuteInstruction(msg.CommandCode, msg.Parameters, endPoint);
+                        ShowExecutionResult?.Invoke(ret);
+                        ReplyConfirmation(endPoint, ret, msg.Number);
                     }
                 }
                 catch
                 {
-                    // [TODO] 这里可以log一下，暂且忽略
+                        // [TODO] 这里可以log一下，暂且忽略
                 }
             }
         }
