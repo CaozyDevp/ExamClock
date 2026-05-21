@@ -188,7 +188,10 @@ namespace ECGP.Messages
             var paras = new byte[decrypted.Length - 2];
             Buffer.BlockCopy(decrypted, 2, paras, 0, paras.Length);
 
-            return new InstructionMessage(cmdCode, dynamicKey, paras, aesIV);
+            return new InstructionMessage(cmdCode, dynamicKey, paras, aesIV)
+            {
+                Number = rawMessage.Number
+            };
         }
 
         /// <summary>
