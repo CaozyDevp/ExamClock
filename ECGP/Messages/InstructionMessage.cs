@@ -19,6 +19,7 @@ using System;
 using ECGP.Enums;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using ECGP.Exceptions;
 
 namespace ECGP.Messages
 {
@@ -188,6 +189,24 @@ namespace ECGP.Messages
             Buffer.BlockCopy(decrypted, 2, paras, 0, paras.Length);
 
             return new InstructionMessage(cmdCode, dynamicKey, paras, aesIV);
+        }
+
+        /// <summary>
+        /// 将字节数组解析为控制指令消息
+        /// </summary>
+        /// <param name="bytes">源字节数组</param>
+        /// <param name="dynamicKeys">动态AES密钥，其中必须有一个可用的</param>
+        /// <returns></returns>
+        public static InstructionMessage Parse(byte[] bytes, List<byte[]> dynamicKeys)
+        {
+            foreach (var key in dynamicKeys)
+            {
+                if (TryParse(bytes, key, out var result))
+                {
+                    return result;
+                }
+            }
+            throw new ECGPFormatException("Failed to parse instruction message with provided dynamic keys.");
         }
 
         /// <summary>
