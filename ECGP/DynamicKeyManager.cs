@@ -16,6 +16,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
@@ -31,6 +32,11 @@ namespace ECGP
         /// 保存5个可用密钥，每个密钥的失效时间间隔1s
         /// </summary>
         private byte[][] _keys = new byte[5][];
+
+        public List<byte[]> Keys
+        {
+            get => _keys.ToList();
+        }
 
         /// <summary>
         /// 指向最新的密钥
