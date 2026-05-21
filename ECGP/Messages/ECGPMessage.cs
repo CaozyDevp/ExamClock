@@ -52,7 +52,7 @@ namespace ECGP.Messages
         /// <summary>
         /// 特征码
         /// </summary>
-        public uint Number { get; private set; }
+        public uint Number { get; set; }
 
         /// <summary>
         /// 类型
