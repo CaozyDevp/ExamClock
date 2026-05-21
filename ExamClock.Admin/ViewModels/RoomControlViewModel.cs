@@ -153,11 +153,20 @@ namespace ExamClock.Admin.ViewModels
             get
             {
                 string offsetStr = string.Empty;
-                if (TimeOffset.TotalSeconds >= 0)
+                double offset = TimeOffset.TotalSeconds;
+                if (offset >= 0)
                 {
                     offsetStr += "+";
                 }
-                offsetStr += $"{TimeOffset.TotalSeconds}\"";
+
+                if (Math.Abs(offset) > 100)
+                {
+                    offsetStr += "偏差过大";
+                }
+                else
+                {
+                    offsetStr += $"{offset:0.0}s";
+                }
                 return $"{(DateTime.Now + TimeOffset):yyyy/MM/dd HH:mm:ss}（{offsetStr}）";
             }
         }
