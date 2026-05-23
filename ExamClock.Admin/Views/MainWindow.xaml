@@ -310,6 +310,13 @@
                     </Button.Template>
                 </Button>
 
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           FontSize="18"
+                           Foreground="Gray"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="{Binding DetectingStatusString}" />
                 <ItemsControl Grid.Row="1"
                               Grid.Column="1"
                               VerticalAlignment="Top"

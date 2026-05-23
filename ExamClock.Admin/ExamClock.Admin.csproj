@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\DetectingStatus.cs" />
     <Compile Include="Models\InstructionClient.cs" />
     <Compile Include="ViewModels\RoomControlViewModel.cs" />
     <Compile Include="Views\PasswordInputWindow.xaml.cs">

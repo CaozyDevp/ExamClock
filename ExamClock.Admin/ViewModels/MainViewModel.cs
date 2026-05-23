@@ -18,6 +18,7 @@
 using ECGP;
 using ECGP.Requesters;
 using ExamClock.Admin.Commands;
+using ExamClock.Admin.Enums;
 using ExamClock.Admin.Views;
 using ExamClock.Admin.Views.UserControls;
 using System;
@@ -228,6 +229,45 @@ namespace ExamClock.Admin.ViewModels
         }
 
         /// <summary>
+        /// 当前的考场检测状态
+        /// </summary>
+        public DetectingStatus DetectingStatus
+        {
+            get => _detectingStatus;
+            set
+            {
+                if (_detectingStatus == value) return;
+                _detectingStatus = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DetectingStatusString));
+            }
+        }
+        private DetectingStatus _detectingStatus = DetectingStatus.None;
+
+        /// <summary>
+        /// 考场查找状态的字符串，显示在UI上
+        /// </summary>
+        public string DetectingStatusString
+        {
+            get
+            {
+                switch (DetectingStatus)
+                {
+                    case DetectingStatus.None:
+                        return "";
+                    case DetectingStatus.Detecting:
+                        return "正在查找考场...";
+                    case DetectingStatus.Empty:
+                        return "未找到任何考场";
+                    case DetectingStatus.Failed:
+                        return "查找考场失败";
+                    default:
+                        return "";
+                }
+            }
+        }
+
+        /// <summary>
         /// 在主窗体上显示的考场相关控件
         /// </summary>
         public ObservableCollection<UIElement> HostElements
@@ -284,6 +324,9 @@ namespace ExamClock.Admin.ViewModels
                     return;
                 }
 
+                HostElements.Clear();
+                DetectingStatus = DetectingStatus.Detecting;
+
                 // 获取考场信息
                 List<RoomInfo> rooms;
                 using (var requester = new DetectionRequester(Configuration.DetectingPort, privateKey))
@@ -321,6 +364,15 @@ namespace ExamClock.Admin.ViewModels
 
                 // 显示实际考场数量
                 ActualTotalRooms = (ushort)rooms.Count;
+
+                if (ActualTotalRooms == 0)
+                {
+                    DetectingStatus = DetectingStatus.Empty;
+                }
+                else
+                {
+                    DetectingStatus = DetectingStatus.None;
+                }
 
                 // 显示时间和配置情况
                 ushort timeSynced = 0, timeWandered = 0, timeWrong = 0;
@@ -360,6 +412,7 @@ namespace ExamClock.Admin.ViewModels
             }
             catch (Exception ex)
             {
+                DetectingStatus = DetectingStatus.Failed;
                 MessageBox.Show($"刷新考场信息出现错误！\n错误信息：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         });
