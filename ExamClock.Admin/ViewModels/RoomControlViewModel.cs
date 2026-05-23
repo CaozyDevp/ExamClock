@@ -466,6 +466,7 @@ namespace ExamClock.Admin.ViewModels
                 if (result == ReturnCode.Success)
                 {
                     MessageBox.Show("音量设置成功", "信息", MessageBoxButton.OK, MessageBoxImage.Information);
+                    VolumeText = $"{VolumeBarValue}%";
                 }
                 else
                 {
