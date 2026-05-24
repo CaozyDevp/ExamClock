@@ -42,6 +42,14 @@ namespace ExamClock.Views
                 if (dialog.IsValid)
                 {
                     Configuration.RoomNumber = Convert.ToUInt16(dialog.InputText);
+                    try
+                    {
+                        Configuration.SaveConfig();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("考场号保存失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
 
