@@ -31,5 +31,7 @@ namespace ExamClock.Core.Enums
         ExamBeginning,
         [Description("考试结束")]
         ExamEnding,
+        [Description("考生进场")]
+        EnteringRoom,
     }
 }
