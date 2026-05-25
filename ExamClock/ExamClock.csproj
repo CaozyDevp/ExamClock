@@ -236,7 +236,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\EnteringRoom.mp3" />
+    <EmbeddedResource Include="Assets\EnteringRoom.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
