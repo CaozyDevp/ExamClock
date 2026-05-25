@@ -46,6 +46,7 @@ namespace ExamClock.Models
             { SoundType.ExamEnding, "ExamClock.Assets.ExamEnding.mp3" },
             { SoundType._10MinBeforeEnding, "ExamClock.Assets.10MinBeforeEnding.mp3" },
             { SoundType._15MinBeforeEnding, "ExamClock.Assets.15MinBeforeEnding.mp3" },
+            { SoundType.EnteringRoom, "ExamClock.Assets.EnteringRoom.mp3" },
         };
 
         /// <summary>
@@ -57,6 +58,7 @@ namespace ExamClock.Models
             { SoundType.ExamEnding, 23 },
             { SoundType._10MinBeforeEnding, 10 },
             { SoundType._15MinBeforeEnding, 10 },
+            { SoundType.EnteringRoom, 18 },
             { SoundType.None, 0 },
         };
 
