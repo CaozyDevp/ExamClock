@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\SpecialSubject.cs" />
     <Compile Include="Enums\SoundType.cs" />
     <Compile Include="ExamItem.cs" />
     <Compile Include="NoticeItem.cs" />
