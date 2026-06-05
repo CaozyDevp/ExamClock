@@ -16,6 +16,7 @@
 */
 
 using ExamClock.Commands;
+using ExamClock.Core.Constants;
 using ExamClock.Views;
 using System;
 using System.Windows;
@@ -64,11 +65,25 @@ namespace ExamClock.ViewModels
 
                     if (minutes < 1)
                     {
-                        ExamDateText = $"下一场：{nextItem.Subject}，即将开始";
+                        if (nextItem.Subject == SpecialSubject.EnteringRoom)
+                        {
+                            ExamDateText = "考生即将进场";
+                        }
+                        else
+                        {
+                            ExamDateText = $"下一场：{nextItem.Subject}，即将开始";
+                        }
                     }
                     else
                     {
-                        ExamDateText = $"下一场：{nextItem.Subject}，还有{minutes}分钟开始";
+                        if (nextItem.Subject == SpecialSubject.EnteringRoom)
+                        {
+                            ExamDateText = $"考生还有{minutes}分钟进场";
+                        }
+                        else
+                        {
+                            ExamDateText = $"下一场：{nextItem.Subject}，还有{minutes}分钟开始";
+                        }
                     }
                 }
                 // 如果下一场考试不在今天

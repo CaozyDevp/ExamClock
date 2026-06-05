@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using ExamClock.Core.Constants;
 using System;
 
 namespace ExamClock.Core
@@ -81,9 +82,14 @@ namespace ExamClock.Core
 
         /// <summary>
         /// 返回“HH:mm - HH:mm”格式的字符串，表示考试的开始时间和结束时间
+        /// 如果为进场提醒，只返回开始时间“HH:mm”
         /// </summary>
         public string GetTimeString()
         {
+            if (Subject == SpecialSubject.EnteringRoom)
+            {
+                return $"{BeginTime:HH:mm}";
+            }
             return $"{BeginTime:HH:mm} - {BeginTime + Duration:HH:mm}";
         }
 

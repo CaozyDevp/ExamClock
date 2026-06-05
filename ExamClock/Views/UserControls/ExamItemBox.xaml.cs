@@ -16,6 +16,7 @@
 */
 
 using ExamClock.Core;
+using ExamClock.Core.Constants;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -74,13 +75,27 @@ namespace ExamClock.Views.UserControls
                 {
                     return "未知科目";
                 }
-
+                if (Item.Subject == SpecialSubject.EnteringRoom)
+                {
+                    return "[进场铃]";
+                }
                 return Item?.Subject;
             }
         }
 
         public string TimeText => Item == null ? "未知时间" : Item?.GetTimeString();
 
-        public string DurationText => Item == null ? "未知时长" : (int)Item.Duration.TotalMinutes + " min";
+        public string DurationText
+        {
+            get
+            {
+                if (Item == null)
+                    return "未知时长";
+                if (Item.Subject == SpecialSubject.EnteringRoom)
+                    return $"[{(int)Item.Duration.TotalMinutes} min]";
+                else
+                    return $"{(int)Item.Duration.TotalMinutes} min";
+            }
+        }
     }
 }

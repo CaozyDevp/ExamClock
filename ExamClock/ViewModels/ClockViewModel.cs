@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Threading;
+using ExamClock.Core.Constants;
 
 namespace ExamClock.ViewModels
 {
@@ -160,6 +161,12 @@ namespace ExamClock.ViewModels
             var next = Configuration.GetNextItem();
             if (current != null)
             {
+                if (current.Subject == SpecialSubject.EnteringRoom)
+                {
+                    EventNameText = "考生进场";
+                    EventTimeText = "请考生有序进入考场";
+                    return;
+                }
                 EventNameText = current.Subject;
                 EventTimeText = current.GetTimeString();
             }
@@ -168,6 +175,12 @@ namespace ExamClock.ViewModels
                 if (next.BeginTime.Date == DateTime.Now.Date)
                 {
                     var minutes = (int)(next.BeginTime - DateTime.Now).TotalMinutes;
+                    if (next.Subject == SpecialSubject.EnteringRoom)
+                    {
+                        EventNameText = "--";
+                        EventTimeText = $"距离进场：{(minutes > 0 ? minutes.ToString() : "<1")}分钟";
+                        return;
+                    }
                     EventNameText = "下一场  " + next.Subject;
                     EventTimeText = $"距离开考：{(minutes > 0 ? minutes.ToString() : "<1")}分钟";
                 }
@@ -231,6 +244,13 @@ namespace ExamClock.ViewModels
 
             foreach (var item in sortedTimeTable)
             {
+                // 考生入场铃
+                if (item.Subject == SpecialSubject.EnteringRoom && item.BeginTime > DateTime.Now)
+                {
+                    _noticeTimes.Add(new NoticeItem(item.BeginTime, SoundType.EnteringRoom));
+                    continue;
+                }
+
                 // 开考铃
                 if (item.BeginTime > DateTime.Now && beginningNotice)
                 {
