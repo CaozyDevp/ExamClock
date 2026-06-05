@@ -236,7 +236,7 @@ namespace ExamClock.ViewModels
                     Mode = ClockDisplayMode.EnteringRoom;
                     EventNameText = next?.Subject ?? "--";
                     EventTimeText = "请考生有序进入考场";
-                    if(next == null)
+                    if (next == null)
                     {
                         TimeToBeginningText = "--:--";
                     }
@@ -322,8 +322,12 @@ namespace ExamClock.ViewModels
             foreach (var item in sortedTimeTable)
             {
                 // 考生入场铃
-                if (item.Subject == SpecialSubject.EnteringRoom && item.BeginTime > DateTime.Now)
+                if (item.Subject == SpecialSubject.EnteringRoom)
                 {
+                    if (item.BeginTime < DateTime.Now)
+                    {
+                        continue;
+                    }
                     _noticeTimes.Add(new NoticeItem(item.BeginTime, SoundType.EnteringRoom));
                     continue;
                 }
