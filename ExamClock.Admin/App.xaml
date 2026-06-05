@@ -7,16 +7,23 @@
              Startup="Application_Startup"
              Exit="Application_Exit">
     <Application.Resources>
-        <sys:String x:Key="AppVersion">v1.1.3</sys:String>
-        <sys:String x:Key="PublishDate">20260219</sys:String>
-        <sys:String x:Key="Author">Zachary Cao</sys:String>
-        <sys:String x:Key="Account">CaozyDevp@Github</sys:String>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <!--  用于显示一般文字  -->
-        <FontFamily x:Key="Hei">../Views/Fonts/#OPPO Sans</FontFamily>
+            <sys:String x:Key="AppVersion">v1.1.3</sys:String>
+            <sys:String x:Key="PublishDate">20260219</sys:String>
+            <sys:String x:Key="Author">Zachary Cao</sys:String>
+            <sys:String x:Key="Account">CaozyDevp@Github</sys:String>
 
-        <!--  用于显示数字  -->
-        <FontFamily x:Key="Num">../Views/Fonts/#OPPO Sans</FontFamily>
+            <!--  用于显示一般文字  -->
+            <FontFamily x:Key="Hei">../Views/Fonts/#OPPO Sans</FontFamily>
 
+            <!--  用于显示数字  -->
+            <FontFamily x:Key="Num">../Views/Fonts/#OPPO Sans</FontFamily>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

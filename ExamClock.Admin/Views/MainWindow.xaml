@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:ExamClock.Admin.ViewModels"
         xmlns:local="clr-namespace:ExamClock.Admin"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
         MinHeight="700"
         MinWidth="1020"
@@ -43,10 +44,10 @@
                         <ColumnDefinition Width="48" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0"
-                           Content="考试管理中心"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="27" />
+                    <TextBlock Grid.Column="0"
+                               Text="考试管理中心"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="27" />
                     <Button Grid.Column="1"
                             Width="32"
                             Command="{Binding ShowInfoCommand}"
@@ -66,14 +67,14 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Label Grid.Column="2"
-                           FontSize="21"
-                           Foreground="#657994"
-                           Padding="0"
-                           Margin="0 0 50 5"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Bottom"
-                           Content="{Binding LocalTimeString}" />
+                    <TextBlock Grid.Column="2"
+                               FontSize="21"
+                               Foreground="#657994"
+                               Padding="0"
+                               Margin="0 0 50 5"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Bottom"
+                               Text="{Binding LocalTimeString}" />
                 </Grid>
             </Border>
             <Button Grid.Row="0"
@@ -127,12 +128,12 @@
                                 <ColumnDefinition Width="90" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"
-                                   Content="配置"
-                                   Margin="28 0 0 0"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   Foreground="#757575" />
+                            <TextBlock Grid.Column="0"
+                                       Text="配置"
+                                       Margin="28 0 0 0"
+                                       FontSize="18"
+                                       VerticalAlignment="Center"
+                                       Foreground="#757575" />
 
                             <Border Grid.Column="1"
                                     HorizontalAlignment="Left"
@@ -146,6 +147,8 @@
                                    Content="{Binding Path=RightConfiguredRooms}"
                                    ContentStringFormat="正确 {0}"
                                    FontSize="17"
+                                   Padding="0"
+                                   BorderThickness="0"
                                    Foreground="#0090FF"
                                    VerticalAlignment="Center"
                                    Margin="15 0 0 0" />
@@ -162,6 +165,8 @@
                                    Content="{Binding WrongConfiguredRooms}"
                                    ContentStringFormat="错误 {0}"
                                    FontSize="17"
+                                   Padding="0"
+                                   BorderThickness="0"
                                    Foreground="#FF0000"
                                    VerticalAlignment="Center"
                                    Margin="15 0 0 0" />
@@ -185,12 +190,12 @@
                                 <ColumnDefinition Width="100" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"
-                                   Content="时间"
-                                   Margin="28 0 0 0"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   Foreground="#757575" />
+                            <TextBlock Grid.Column="0"
+                                       Text="时间"
+                                       Margin="28 0 0 0"
+                                       FontSize="18"
+                                       VerticalAlignment="Center"
+                                       Foreground="#757575" />
 
                             <Border Grid.Column="1"
                                     HorizontalAlignment="Left"
@@ -204,6 +209,8 @@
                                    Content="{Binding TimeSyncedRooms}"
                                    ContentStringFormat="同步 {0}"
                                    FontSize="17"
+                                   Padding="0"
+                                   BorderThickness="0"
                                    Foreground="#0090FF"
                                    VerticalAlignment="Center"
                                    Margin="15 0 0 0" />
@@ -220,6 +227,8 @@
                                    Content="{Binding TimeWanderedRooms}"
                                    ContentStringFormat="偏移 {0}"
                                    FontSize="17"
+                                   Padding="0"
+                                   BorderThickness="0"
                                    Foreground="#FFA000"
                                    VerticalAlignment="Top"
                                    Margin="15,4,0,0" />
@@ -236,6 +245,8 @@
                                    Content="{Binding TimeWrongRooms}"
                                    ContentStringFormat="错误 {0}"
                                    FontSize="17"
+                                   Padding="0"
+                                   BorderThickness="0"
                                    Foreground="#FF0000"
                                    VerticalAlignment="Top"
                                    Margin="15,4,0,0" />
@@ -258,15 +269,16 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0"
-                                   Content="考场"
-                                   Margin="28 0 0 0"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   Foreground="#757575" />
+                            <TextBlock Grid.Column="0"
+                                       Text="考场"
+                                       Margin="28 0 0 0"
+                                       FontSize="18"
+                                       VerticalAlignment="Center"
+                                       Foreground="#757575" />
 
                             <TextBlock Grid.Column="1"
                                        FontSize="17"
+                                       Padding="0"
                                        Foreground="#757575"
                                        Background="Transparent"
                                        VerticalAlignment="Center"
@@ -286,6 +298,7 @@
                 <Button Grid.Row="0"
                         Grid.Column="2"
                         Grid.ColumnSpan="2"
+                        Height="40"
                         Command="{Binding RefreshCommand}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
@@ -343,54 +356,54 @@
                             Orientation="Vertical"
                             VerticalAlignment="Top"
                             Margin="19 15 0 0">
-                    <Label Content="{Binding EventTitle}"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="18"
-                           Margin="0 0 0 3"
-                           Foreground="#757575"
-                           Padding="0" />
-                    <Label Content="{Binding EventName}"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="25"
-                           Foreground="#757575"
-                           Margin="0 0 0 28"
-                           Padding="0" />
-                    <Label Content="开考时间"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="18"
-                           Margin="0 0 0 3"
-                           Foreground="#757575"
-                           Padding="0" />
-                    <Label Content="{Binding EventTimeString}"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="25"
-                           Foreground="#757575"
-                           Margin="0 0 0 28"
-                           Padding="0" />
-                    <Label Content="管理权限"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="18"
-                           Margin="0 0 0 3"
-                           Foreground="#757575"
-                           Padding="0" />
-                    <Label Content="{Binding PermissionString}"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="25"
-                           Foreground="#757575"
-                           Margin="0 0 0 28"
-                           Padding="0" />
-                    <Label Content="自动登出"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="18"
-                           Margin="0 0 0 3"
-                           Foreground="#757575"
-                           Padding="0" />
-                    <Label Content="{Binding LogoutTimeString}"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="25"
-                           Foreground="#757575"
-                           Margin="0 0 0 28"
-                           Padding="0" />
+                    <TextBlock Text="{Binding EventTitle}"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="18"
+                               Margin="0 0 0 3"
+                               Foreground="#757575"
+                               Padding="0" />
+                    <TextBlock Text="{Binding EventName}"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="25"
+                               Foreground="#757575"
+                               Margin="0 0 0 28"
+                               Padding="0" />
+                    <TextBlock Text="开考时间"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="18"
+                               Margin="0 0 0 3"
+                               Foreground="#757575"
+                               Padding="0" />
+                    <TextBlock Text="{Binding EventTimeString}"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="25"
+                               Foreground="#757575"
+                               Margin="0 0 0 28"
+                               Padding="0" />
+                    <TextBlock Text="管理权限"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="18"
+                               Margin="0 0 0 3"
+                               Foreground="#757575"
+                               Padding="0" />
+                    <TextBlock Text="{Binding PermissionString}"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="25"
+                               Foreground="#757575"
+                               Margin="0 0 0 28"
+                               Padding="0" />
+                    <TextBlock Text="自动登出"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="18"
+                               Margin="0 0 0 3"
+                               Foreground="#757575"
+                               Padding="0" />
+                    <TextBlock Text="{Binding LogoutTimeString}"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="25"
+                               Foreground="#757575"
+                               Margin="0 0 0 28"
+                               Padding="0" />
                 </StackPanel>
                 <StackPanel Grid.Row="1"
                             Grid.Column="2"
@@ -400,62 +413,19 @@
                     <Button Height="38"
                             Command="{Binding PushCommand}"
                             Width="82"
+                            FontSize="16"
+                            hc:BorderElement.CornerRadius="19"
+                            Content="推送"
                             HorizontalAlignment="Left"
                             Margin="0 0 0 13">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Border Background="#F3F3F3"
-                                        BorderThickness="1"
-                                        BorderBrush="#707070"
-                                        Height="38"
-                                        Width="82"
-                                        CornerRadius="19">
-                                    <Label Foreground="#707070"
-                                           FontFamily="{StaticResource Hei}"
-                                           FontSize="18"
-                                           Content="推送"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Padding="0" />
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <Button.Effect>
-                            <DropShadowEffect Color="Black"
-                                              Opacity="0.1"
-                                              BlurRadius="6"
-                                              ShadowDepth="0" />
-                        </Button.Effect>
                     </Button>
                     <Button Height="38"
                             Width="82"
                             Command="{Binding SettingsCommand}"
-                            HorizontalAlignment="Left">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Border Background="#F3F3F3"
-                                        BorderThickness="1"
-                                        BorderBrush="#707070"
-                                        Height="38"
-                                        Width="82"
-                                        CornerRadius="19">
-                                    <Label Foreground="#707070"
-                                           FontFamily="{StaticResource Hei}"
-                                           FontSize="18"
-                                           Content="设置"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Padding="0" />
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <Button.Effect>
-                            <DropShadowEffect Color="Black"
-                                              Opacity="0.1"
-                                              BlurRadius="6"
-                                              ShadowDepth="0" />
-                        </Button.Effect>
-                    </Button>
+                            HorizontalAlignment="Left"
+                            FontSize="16"
+                            Content="设置"
+                            hc:BorderElement.CornerRadius="18"/>
                 </StackPanel>
             </Grid>
         </Grid>

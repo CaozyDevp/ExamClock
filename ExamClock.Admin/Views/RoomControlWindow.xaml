@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExamClock.Admin.Views"
         xmlns:vm="clr-namespace:ExamClock.Admin.ViewModels"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
         Width="380"
         FontFamily="{StaticResource Hei}"
@@ -62,12 +63,12 @@
                     Height="30"
                     Background="#F3F3F3">
                 <Grid>
-                    <Label Margin="14,0,0,0"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontFamily="微软雅黑"
-                           Content="考场控制"
-                           FontSize="14" />
+                    <TextBlock Margin="14,0,0,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="微软雅黑"
+                               Text="考场控制"
+                               FontSize="14" />
                     <Button Name="CloseWindowButton"
                             Width="30"
                             Height="30"
@@ -120,7 +121,7 @@
                        VerticalAlignment="Center" />
                 <TextBlock Grid.Row="2"
                            HorizontalAlignment="Left"
-                           VerticalAlignment="Center" 
+                           VerticalAlignment="Center"
                            Margin="26 0 0 0 "
                            Text="{Binding TimeText}"
                            Foreground="{StaticResource LightGray}"
@@ -133,7 +134,7 @@
                        VerticalAlignment="Center" />
                 <TextBlock Grid.Row="3"
                            HorizontalAlignment="Left"
-                           VerticalAlignment="Center" 
+                           VerticalAlignment="Center"
                            Margin="26 0 0 0 "
                            Text="{Binding NoticeConfigText}"
                            Foreground="{StaticResource LightGray}"
@@ -142,11 +143,11 @@
                 <Image Grid.Row="3"
                        Height="14"
                        Source="/Assets/Images/Volume.png"
-                       HorizontalAlignment="Right" 
+                       HorizontalAlignment="Right"
                        Margin="0 0 48 0"
                        VerticalAlignment="Center" />
                 <TextBlock Grid.Row="3"
-                           HorizontalAlignment="Right" 
+                           HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Text="{Binding VolumeText}"
                            Foreground="{StaticResource LightGray}"
@@ -181,19 +182,13 @@
                            Foreground="{StaticResource LightGray}"/>
                 <Button Grid.Row="1"
                         Grid.Column="1"
+                        Height="36"
+                        hc:BorderElement.CornerRadius="18"
+                        Content="同步时间"
+                        FontSize="16"
+                        Width="120"
                         Command="{Binding SyncTimeCommand}"
                         HorizontalAlignment="Right">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Border Style="{StaticResource ButtonBorderStyle}">
-                                <TextBlock HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="18"
-                                           Foreground="{StaticResource DarkGray}"
-                                           Text="同步时间"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
                 </Button>
                 <Slider Grid.Row="2"
                         Grid.Column="0"
@@ -204,35 +199,23 @@
                         Value="{Binding VolumeBarValue}"/>
                 <Button Grid.Row="2"
                         Grid.Column="1"
+                        Height="36"
+                        Width="120"
+                        hc:BorderElement.CornerRadius="18"
+                        Content="设置音量"
+                        FontSize="16"
                         Command="{Binding SetVolumeCommand}"
                         HorizontalAlignment="Right">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Border Style="{StaticResource ButtonBorderStyle}">
-                                <TextBlock HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="18"
-                                           Foreground="{StaticResource DarkGray}"
-                                           Text="设置音量"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
                 </Button>
                 <Button Grid.Row="3"
                         Grid.Column="1"
                         Command="{Binding SetRoomNumberCommand}"
-                        HorizontalAlignment="Right">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Border Style="{StaticResource ButtonBorderStyle}">
-                                <TextBlock HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="18"
-                                           Foreground="{StaticResource DarkGray}"
-                                           Text="修改考场号"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
+                        HorizontalAlignment="Right"
+                        Height="36"
+                        Width="120"
+                        hc:BorderElement.CornerRadius="18"
+                        Content="修改考场号"
+                        FontSize="16">
                 </Button>
                 <TextBox Grid.Row="3"
                          Grid.Column="0"
@@ -276,7 +259,7 @@
                           HorizontalAlignment="Left"/>
                 <ComboBox Grid.Row="1"
                           Grid.Column="0"
-                          
+
                           FontSize="17"
                           ItemsSource="{Binding EndNoticeItems}"
                           SelectedIndex="{Binding EndNoticeIndex}"
@@ -296,19 +279,14 @@
                 <Button Grid.Row="1"
                         Grid.Column="1"
                         Grid.RowSpan="2"
+                        Height="36"
+                        Width="120"
+                        hc:BorderElement.CornerRadius="18"
+                        Content="设置提醒"
+                        FontSize="16"
                         Command="{Binding SetNoticeCommand}"
                         HorizontalAlignment="Right" >
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Border Style="{StaticResource ButtonBorderStyle}">
-                                <TextBlock HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="18"
-                                           Foreground="{StaticResource DarkGray}"
-                                           Text="设置提醒"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
+
                 </Button>
                 <Rectangle Height="1"
                            Width="325"
@@ -328,35 +306,22 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0"
                         Command="{Binding SwitchStatusCommand}"
-                        HorizontalAlignment="Center">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Border Style="{StaticResource ButtonBorderStyle}"
-                                    Background="{Binding StatusSwitchButtonBackground}"
-                                    BorderBrush="{Binding StatusSwitchButtonForeground}">
-                                <TextBlock HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="18"
-                                           Foreground="{Binding StatusSwitchButtonForeground}"
-                                           Text="{Binding StatusSwitchButtonText}"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
+                        HorizontalAlignment="Center"
+                        Height="36"
+                        Width="120"
+                        Foreground="{Binding StatusSwitchButtonForeground}"
+                        Background="{Binding StatusSwitchButtonBackground}"
+                        BorderBrush="{Binding StatusSwitchButtonForeground}"
+                        Content="{Binding StatusSwitchButtonText}"
+                        FontSize="16">
                 </Button>
                 <Button Grid.Column="1"
                         Command="{Binding PushScheduleCommand}"
-                        HorizontalAlignment="Center">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Border Style="{StaticResource ButtonBorderStyle}">
-                                <TextBlock HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="18"
-                                           Foreground="{StaticResource DarkGray}"
-                                           Text="推送配置"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
+                        HorizontalAlignment="Center"
+                        Height="36"
+                        Width="120"
+                        Content="推送配置"
+                        FontSize="16">
                 </Button>
             </Grid>
         </Grid>
