@@ -53,7 +53,14 @@ namespace ExamClock.ViewModels
             if (currentItem != null)
             {
                 var endTime = currentItem.BeginTime + currentItem.Duration;
-                ExamDateText = $"当前考试：{currentItem.Subject}，还有{(int)(endTime - nowTime).TotalMinutes}分钟结束";
+                if (currentItem.Subject == SpecialSubject.EnteringRoom)
+                {
+                    ExamDateText = $"考生正在进场";
+                }
+                else
+                {
+                    ExamDateText = $"当前考试：{currentItem.Subject}，还有{(int)(endTime - nowTime).TotalMinutes}分钟结束";
+                }
             }
             else if (nextItem != null)
             {
