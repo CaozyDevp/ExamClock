@@ -82,6 +82,7 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="KeyManager.cs" />
+    <Compile Include="Models\ClockDisplayMode.cs" />
     <Compile Include="Models\ExamVoiceReminder.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -237,6 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\EnteringRoom.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\Alarm.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

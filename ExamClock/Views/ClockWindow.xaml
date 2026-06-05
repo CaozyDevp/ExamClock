@@ -18,74 +18,7 @@
         <vm:ClockViewModel />
     </Window.DataContext>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="{Binding ElementName=ClockGrid, Path=Width}" />
-            <ColumnDefinition Width="4*" />
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="65 56 0 0">
-            <Label FontSize="50"
-                   FontFamily="{StaticResource Hei}"
-                   Name="EventLabel"
-                   Content="{Binding EventNameText}"
-                   Foreground="#DADADA" />
-            <Label FontSize="40"
-                   FontFamily="{StaticResource Hei}"
-                   Name="TimeLabel"
-                   Content="{Binding EventTimeText}"
-                   Foreground="#A9A9A9" />
-        </StackPanel>
-
-        <Grid Grid.Column="1"
-              Name="ClockGrid"
-              Height="650"
-              Width="650"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center">
-            <Image Source="/Views/Images/Clock/Clock.png"
-                   Width="650"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center">
-            </Image>
-
-            <!--Hour-->
-            <Image Source="/Views/Images/Clock/Hour.png"
-                   Height="617.5"
-                   RenderTransformOrigin="0.5,0.5">
-                <Image.RenderTransform>
-                    <RotateTransform x:Name="HourAngle"
-                                     Angle="{Binding HourAngle}" />
-                </Image.RenderTransform>
-            </Image>
-
-            <!--Minute-->
-            <Image Source="/Views/Images/Clock/Minute.png"
-                   Height="617.5"
-                   RenderTransformOrigin="0.5,0.5">
-                <Image.RenderTransform>
-                    <RotateTransform x:Name="MinuteAngle"
-                                     Angle="{Binding MinuteAngle}" />
-                </Image.RenderTransform>
-            </Image>
-
-            <!--Second-->
-            <Image Source="/Views/Images/Clock/Second.png"
-                   Height="617.5"
-                   RenderTransformOrigin="0.5,0.5">
-                <Image.RenderTransform>
-                    <RotateTransform x:Name="SecondAngle"
-                                     Angle="{Binding SecondAngle}" />
-                </Image.RenderTransform>
-            </Image>
-        </Grid>
-
-        <StackPanel Grid.Column="2"
-                    Margin="0 36 42 0"
+        <StackPanel Margin="0 36 42 0"
                     Height="52"
                     VerticalAlignment="Top"
                     Orientation="Horizontal"
@@ -139,5 +72,163 @@
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center"/>
         </StackPanel>
+        <Grid Visibility="{Binding ClockGridVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="{Binding ElementName=ClockGrid, Path=Width}" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="65 56 0 0">
+                <Label FontSize="50"
+                       FontFamily="{StaticResource Hei}"
+                       Name="EventLabel"
+                       Content="{Binding EventNameText}"
+                       Foreground="#DADADA" />
+                <Label FontSize="40"
+                       FontFamily="{StaticResource Hei}"
+                       Name="TimeLabel"
+                       Content="{Binding EventTimeText}"
+                       Foreground="#A9A9A9" />
+            </StackPanel>
+
+            <Grid Grid.Column="1"
+                  Name="ClockGrid"
+                  Height="650"
+                  Width="650"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <Image Source="/Views/Images/Clock/Clock.png"
+                       Width="650"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+                </Image>
+
+                <!--Hour-->
+                <Image Source="/Views/Images/Clock/Hour.png"
+                       Height="617.5"
+                       RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <RotateTransform x:Name="HourAngle"
+                                         Angle="{Binding HourAngle}" />
+                    </Image.RenderTransform>
+                </Image>
+
+                <!--Minute-->
+                <Image Source="/Views/Images/Clock/Minute.png"
+                       Height="617.5"
+                       RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <RotateTransform x:Name="MinuteAngle"
+                                         Angle="{Binding MinuteAngle}" />
+                    </Image.RenderTransform>
+                </Image>
+
+                <!--Second-->
+                <Image Source="/Views/Images/Clock/Second.png"
+                       Height="617.5"
+                       RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <RotateTransform x:Name="SecondAngle"
+                                         Angle="{Binding SecondAngle}" />
+                    </Image.RenderTransform>
+                </Image>
+            </Grid>
+        </Grid>
+        <Grid Visibility="{Binding EnteringGridVisibility}">
+            <Border Width="336"
+                    Height="85"
+                    Background="#1B1B1B"
+                    BorderThickness="2"
+                    CornerRadius="43"
+                    BorderBrush="#515151"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Left"
+                    Margin="47 36 0 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="距开考"
+                               Grid.Column="0"
+                               Foreground="#A9A9A9"
+                               FontSize="40"
+                               FontFamily="{StaticResource Hei}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding TimeToBeginningText}"
+                               Grid.Column="1"
+                               Foreground="White"
+                               FontSize="40"
+                               Margin="13 0 0 0"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"/>
+                </Grid>
+            </Border>
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <Image Source="/Views/Images/Alarm.png"
+                       Height="108"
+                       Margin="30"/>
+                <TextBlock Foreground="White"
+                           Text="考生进入考场"
+                           FontFamily="{StaticResource Hei}"
+                           TextAlignment="Center"
+                           FontSize="60"/>
+                <Rectangle Width="547"
+                           Margin="0 40 0 67"
+                           Height="2"
+                           Fill="#707070"/>
+                <Grid HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="科目"
+                               Foreground="Gray"
+                               FontSize="45"
+                               FontFamily="{StaticResource Hei}"
+                               Grid.Row="0"
+                               Grid.Column="0"
+                               HorizontalAlignment="Right"
+                               Margin="0 20 40 20"/>
+                    <TextBlock Text="{Binding EventNameText}"
+                               Foreground="White"
+                               FontSize="45"
+                               Grid.Row="0"
+                               FontFamily="{StaticResource Hei}"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"/>
+                    <TextBlock Text="考场"
+                               Foreground="Gray"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="45"
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               HorizontalAlignment="Right"
+                               Margin="0 20 40 20"/>
+                    <TextBlock Text="{Binding RoomNumberText}"
+                               Foreground="White"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="45"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

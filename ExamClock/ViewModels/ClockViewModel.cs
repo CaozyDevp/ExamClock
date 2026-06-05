@@ -96,6 +96,62 @@ namespace ExamClock.ViewModels
         public double SecondAngle => Time.Second * 6.0;
 
         /// <summary>
+        /// 当前的显示模式
+        /// </summary>
+        public ClockDisplayMode Mode
+        {
+            get => _mode;
+            set
+            {
+                if (value == _mode) return;
+                _mode = value;
+                switch (_mode)
+                {
+                    case ClockDisplayMode.Clock:
+                        ClockGridVisibility = Visibility.Visible;
+                        EnteringGridVisibility = Visibility.Collapsed;
+                        break;
+                    case ClockDisplayMode.EnteringRoom:
+                        ClockGridVisibility = Visibility.Collapsed;
+                        EnteringGridVisibility = Visibility.Visible;
+                        break;
+                }
+                OnPropertyChanged();
+            }
+        }
+        private ClockDisplayMode _mode;
+
+        /// <summary>
+        /// 时钟页面的可见性（模式切换时使用）
+        /// </summary>
+        public Visibility ClockGridVisibility
+        {
+            get => _clockGridVisibility;
+            set
+            {
+                if (value == _clockGridVisibility) return;
+                _clockGridVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+        private Visibility _clockGridVisibility = Visibility.Visible;
+
+        /// <summary>
+        /// 进场页面的可见性（模式切换时使用）
+        /// </summary>
+        public Visibility EnteringGridVisibility
+        {
+            get => _enteringGridVisibility;
+            set
+            {
+                if (value == _enteringGridVisibility) return;
+                _enteringGridVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+        private Visibility _enteringGridVisibility = Visibility.Collapsed;
+
+        /// <summary>
         /// 考试项目名称
         /// </summary>
         public string EventNameText
@@ -155,6 +211,20 @@ namespace ExamClock.ViewModels
             }
         }
 
+        /// <summary>
+        /// 距离考试开始的时间文本，仅在进场页面时显示
+        /// </summary>
+        public string TimeToBeginningText
+        {
+            get => _timeToBeginningText;
+            set
+            {
+                _timeToBeginningText = value;
+                OnPropertyChanged();
+            }
+        }
+        private string _timeToBeginningText = "";
+
         private void SetEventNameAndTime()
         {
             var current = Configuration.GetCurrentItem();
@@ -163,8 +233,14 @@ namespace ExamClock.ViewModels
             {
                 if (current.Subject == SpecialSubject.EnteringRoom)
                 {
-                    EventNameText = "考生进场";
+                    Mode = ClockDisplayMode.EnteringRoom;
+                    EventNameText = next?.Subject ?? "--";
                     EventTimeText = "请考生有序进入考场";
+                    if(next == null)
+                    {
+                        TimeToBeginningText = "--:--";
+                    }
+                    TimeToBeginningText = (next.BeginTime - DateTime.Now).ToString(@"mm\:ss");
                     return;
                 }
                 EventNameText = current.Subject;
@@ -195,6 +271,7 @@ namespace ExamClock.ViewModels
                 EventNameText = "暂无考试";
                 EventTimeText = "所有考试已结束";
             }
+            Mode = ClockDisplayMode.Clock;
         }
 
         private void RefreshClock()
