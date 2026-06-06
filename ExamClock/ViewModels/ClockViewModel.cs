@@ -21,6 +21,7 @@ using ExamClock.Core;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using ExamClock.Mvvm;
 using System.Windows.Threading;
 using ExamClock.Core.Constants;
 
@@ -103,20 +104,20 @@ namespace ExamClock.ViewModels
             get => _mode;
             set
             {
-                if (value == _mode) return;
-                _mode = value;
-                switch (_mode)
+                if (SetProperty(ref _mode, value))
                 {
-                    case ClockDisplayMode.Clock:
-                        ClockGridVisibility = Visibility.Visible;
-                        EnteringGridVisibility = Visibility.Collapsed;
-                        break;
-                    case ClockDisplayMode.EnteringRoom:
-                        ClockGridVisibility = Visibility.Collapsed;
-                        EnteringGridVisibility = Visibility.Visible;
-                        break;
+                    switch (_mode)
+                    {
+                        case ClockDisplayMode.Clock:
+                            ClockGridVisibility = Visibility.Visible;
+                            EnteringGridVisibility = Visibility.Collapsed;
+                            break;
+                        case ClockDisplayMode.EnteringRoom:
+                            ClockGridVisibility = Visibility.Collapsed;
+                            EnteringGridVisibility = Visibility.Visible;
+                            break;
+                    }
                 }
-                OnPropertyChanged();
             }
         }
         private ClockDisplayMode _mode;
@@ -129,9 +130,7 @@ namespace ExamClock.ViewModels
             get => _clockGridVisibility;
             set
             {
-                if (value == _clockGridVisibility) return;
-                _clockGridVisibility = value;
-                OnPropertyChanged();
+                SetProperty(ref _clockGridVisibility, value);
             }
         }
         private Visibility _clockGridVisibility = Visibility.Visible;
@@ -144,9 +143,7 @@ namespace ExamClock.ViewModels
             get => _enteringGridVisibility;
             set
             {
-                if (value == _enteringGridVisibility) return;
-                _enteringGridVisibility = value;
-                OnPropertyChanged();
+                SetProperty(ref _enteringGridVisibility, value);
             }
         }
         private Visibility _enteringGridVisibility = Visibility.Collapsed;
@@ -159,9 +156,8 @@ namespace ExamClock.ViewModels
             get => _eventNameText;
             private set
             {
-                if (value == _eventNameText || value == null) return;
-                _eventNameText = value;
-                OnPropertyChanged();
+                if (value == null) value = "";
+                SetProperty(ref _eventNameText, value);
             }
         }
         private string _eventNameText = "";
@@ -174,9 +170,7 @@ namespace ExamClock.ViewModels
             get => _eventTimeText;
             private set
             {
-                if (value == _eventTimeText || value == null) return;
-                _eventTimeText = value;
-                OnPropertyChanged();
+                SetProperty(ref _eventTimeText, value);
             }
         }
         private string _eventTimeText = "";
@@ -219,8 +213,7 @@ namespace ExamClock.ViewModels
             get => _timeToBeginningText;
             set
             {
-                _timeToBeginningText = value;
-                OnPropertyChanged();
+                SetProperty(ref _timeToBeginningText, value);
             }
         }
         private string _timeToBeginningText = "";

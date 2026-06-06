@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using ExamClock.Commands;
 using ExamClock.Core.Constants;
 using ExamClock.Views;
 using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using ExamClock.Mvvm;
 
 namespace ExamClock.ViewModels
 {
@@ -105,17 +105,13 @@ namespace ExamClock.ViewModels
             }
             OnPropertyChanged(nameof(ExamDateText));
         }
-
-        private string _examDateText;
+        
         public string ExamDateText
         {
             get => _examDateText;
-            set
-            {
-                _examDateText = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _examDateText, value);
         }
+        private string _examDateText;
 
         public ICommand ShowInfoCommand => new RelayCommand(execute =>
             {

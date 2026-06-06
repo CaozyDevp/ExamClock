@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using ExamClock.Commands;
 using ExamClock.Core;
 using ExamClock.Core.Enums;
 using ExamClock.Views;
@@ -25,13 +24,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
-using TimeSync;
+using ExamClock.Mvvm;
 
 namespace ExamClock.ViewModels
 {
@@ -197,12 +194,7 @@ namespace ExamClock.ViewModels
         public List<List<ExamItem>> ExamItems
         {
             get => _examItems;
-            set
-            {
-                if (value == _examItems) return;
-                _examItems = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _examItems, value);
         }
         private List<List<ExamItem>> _examItems = new List<List<ExamItem>>();
 
@@ -212,12 +204,7 @@ namespace ExamClock.ViewModels
         public ObservableCollection<UIElement> ExamElements
         {
             get => _examElements;
-            set
-            {
-                if (value == _examElements) return;
-                _examElements = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _examElements, value);
         }
         private ObservableCollection<UIElement> _examElements = new ObservableCollection<UIElement>();
 

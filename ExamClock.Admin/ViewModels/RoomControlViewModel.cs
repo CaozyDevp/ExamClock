@@ -17,7 +17,7 @@
 
 using ECGP;
 using ECGP.Enums;
-using ExamClock.Admin.Commands;
+using ExamClock.Mvvm;
 using ExamClock.Admin.Models;
 using ExamClock.Admin.Views;
 using System;
@@ -69,12 +69,13 @@ namespace ExamClock.Admin.ViewModels
             get => _status;
             set
             {
-                _status = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(StatusSwitchButtonBackground));
-                OnPropertyChanged(nameof(StatusSwitchButtonForeground));
-                OnPropertyChanged(nameof(StatusSwitchButtonText));
-                OnPropertyChanged(nameof(StatusText));
+                if (SetProperty(ref _status, value))
+                {
+                    OnPropertyChanged(nameof(StatusSwitchButtonBackground));
+                    OnPropertyChanged(nameof(StatusSwitchButtonForeground));
+                    OnPropertyChanged(nameof(StatusSwitchButtonText));
+                    OnPropertyChanged(nameof(StatusText));
+                }
             }
         }
         private ClientStatus _status;
@@ -87,9 +88,10 @@ namespace ExamClock.Admin.ViewModels
             get => _roomNumber;
             set
             {
-                _roomNumber = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(RoomNumberText));
+                if (SetProperty(ref _roomNumber, value))
+                {
+                    OnPropertyChanged(nameof(RoomNumberText));
+                }
             }
         }
         private ushort _roomNumber;
@@ -129,11 +131,7 @@ namespace ExamClock.Admin.ViewModels
         public IPAddress Ip
         {
             get => _ip;
-            set
-            {
-                _ip = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _ip, value);
         }
         private IPAddress _ip;
 
@@ -177,11 +175,7 @@ namespace ExamClock.Admin.ViewModels
         public string NoticeConfigText
         {
             get => _noticeConfigText;
-            set
-            {
-                _noticeConfigText = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _noticeConfigText, value);
         }
         private string _noticeConfigText;
 
@@ -191,11 +185,7 @@ namespace ExamClock.Admin.ViewModels
         public string VolumeText
         {
             get => _volumeText;
-            set
-            {
-                _volumeText = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _volumeText, value);
         }
         private string _volumeText;
 
@@ -216,11 +206,7 @@ namespace ExamClock.Admin.ViewModels
         public int VolumeBarValue
         {
             get => _volumeBarValue;
-            set
-            {
-                _volumeBarValue = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _volumeBarValue, value);
         }
         private int _volumeBarValue;
 
@@ -230,11 +216,7 @@ namespace ExamClock.Admin.ViewModels
         public string UserInputRoomNumberText
         {
             get => _userInputRoomNumberText;
-            set
-            {
-                _userInputRoomNumberText = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _userInputRoomNumberText, value);
         }
         private string _userInputRoomNumberText;
 
@@ -267,11 +249,7 @@ namespace ExamClock.Admin.ViewModels
         public int BeginNoticeIndex
         {
             get => _beginNoticeIndex;
-            set
-            {
-                _beginNoticeIndex = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _beginNoticeIndex, value);
         }
         private int _beginNoticeIndex = 0;
 
@@ -281,11 +259,7 @@ namespace ExamClock.Admin.ViewModels
         public int EndNoticeIndex
         {
             get => _endNoticeIndex;
-            set
-            {
-                _endNoticeIndex = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _endNoticeIndex, value);
         }
         private int _endNoticeIndex = 0;
 
@@ -295,11 +269,7 @@ namespace ExamClock.Admin.ViewModels
         public int BeforeEndingNoticeIndex
         {
             get => _beforeEndingNoticeIndex;
-            set
-            {
-                _beforeEndingNoticeIndex = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _beforeEndingNoticeIndex, value);
         }
         private int _beforeEndingNoticeIndex = 0;
 

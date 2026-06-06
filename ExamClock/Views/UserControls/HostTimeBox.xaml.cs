@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using ExamClock.Commands;
 using ExamClock.Core.System;
 using System;
 using System.ComponentModel;
@@ -23,6 +22,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using ExamClock.Mvvm;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TimeSync;

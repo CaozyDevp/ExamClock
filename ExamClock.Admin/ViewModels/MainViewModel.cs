@@ -17,7 +17,6 @@
 
 using ECGP;
 using ECGP.Requesters;
-using ExamClock.Admin.Commands;
 using ExamClock.Admin.Enums;
 using ExamClock.Admin.Views;
 using ExamClock.Admin.Views.UserControls;
@@ -26,6 +25,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using ExamClock.Mvvm;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TimeSync;
@@ -40,12 +40,7 @@ namespace ExamClock.Admin.ViewModels
         public ushort ExpectedTotalRooms
         {
             get => _expectedTotalRooms;
-            set
-            {
-                if (_expectedTotalRooms == value) return;
-                _expectedTotalRooms = value;
-                OnPropertyChanged(nameof(ExpectedTotalRooms));
-            }
+            set => SetProperty(ref _expectedTotalRooms, value);
         }
         private ushort _expectedTotalRooms;
 
@@ -55,12 +50,7 @@ namespace ExamClock.Admin.ViewModels
         public ushort ActualTotalRooms
         {
             get => _actualTotalRooms;
-            set
-            {
-                if (_actualTotalRooms == value) return;
-                _actualTotalRooms = value;
-                OnPropertyChanged(nameof(ActualTotalRooms));
-            }
+            set => SetProperty(ref _actualTotalRooms, value);
         }
         private ushort _actualTotalRooms;
 
@@ -78,12 +68,7 @@ namespace ExamClock.Admin.ViewModels
         public ushort RightConfiguredRooms
         {
             get => _rightConfiguredRooms;
-            set
-            {
-                if (_rightConfiguredRooms == value) return;
-                _rightConfiguredRooms = value;
-                OnPropertyChanged(nameof(RightConfiguredRooms));
-            }
+            set => SetProperty(ref _rightConfiguredRooms, value);
         }
         private ushort _rightConfiguredRooms;
 
@@ -93,12 +78,7 @@ namespace ExamClock.Admin.ViewModels
         public ushort WrongConfiguredRooms
         {
             get => _wrongConfiguredRooms;
-            set
-            {
-                if (_wrongConfiguredRooms == value) return;
-                _wrongConfiguredRooms = value;
-                OnPropertyChanged(nameof(WrongConfiguredRooms));
-            }
+            set => SetProperty(ref _wrongConfiguredRooms, value);
         }
         private ushort _wrongConfiguredRooms;
 
@@ -108,12 +88,7 @@ namespace ExamClock.Admin.ViewModels
         public ushort TimeSyncedRooms
         {
             get => _timeSyncedRooms;
-            set
-            {
-                if (_timeSyncedRooms == value) return;
-                _timeSyncedRooms = value;
-                OnPropertyChanged(nameof(TimeSyncedRooms));
-            }
+            set => SetProperty(ref _timeSyncedRooms, value);
         }
         private ushort _timeSyncedRooms;
 
@@ -123,12 +98,7 @@ namespace ExamClock.Admin.ViewModels
         public ushort TimeWanderedRooms
         {
             get => _timeWanderedRooms;
-            set
-            {
-                if (_timeWanderedRooms == value) return;
-                _timeWanderedRooms = value;
-                OnPropertyChanged(nameof(TimeWanderedRooms));
-            }
+            set => SetProperty(ref _timeWanderedRooms, value);
         }
         private ushort _timeWanderedRooms;
 
@@ -138,12 +108,7 @@ namespace ExamClock.Admin.ViewModels
         public ushort TimeWrongRooms
         {
             get => _timeWrongRooms;
-            set
-            {
-                if (_timeWrongRooms == value) return;
-                _timeWrongRooms = value;
-                OnPropertyChanged(nameof(TimeWrongRooms));
-            }
+            set => SetProperty(ref _timeWrongRooms, value);
         }
         private ushort _timeWrongRooms;
 
@@ -154,6 +119,7 @@ namespace ExamClock.Admin.ViewModels
         {
             get => _isEventContinuing ? "正在进行" : "下一场";
         }
+
         private bool _isEventContinuing = false;
 
         /// <summary>
@@ -162,12 +128,7 @@ namespace ExamClock.Admin.ViewModels
         public string EventName
         {
             get => _eventName;
-            set
-            {
-                if (_eventName == value) return;
-                _eventName = value;
-                OnPropertyChanged(nameof(EventName));
-            }
+            set => SetProperty(ref _eventName, value);
         }
         private string _eventName = "--";
 
@@ -177,12 +138,7 @@ namespace ExamClock.Admin.ViewModels
         public string EventTimeString
         {
             get => _eventTimeString;
-            set
-            {
-                if (_eventTimeString == value) return;
-                _eventTimeString = value;
-                OnPropertyChanged(nameof(EventTimeString));
-            }
+            set => SetProperty(ref _eventTimeString, value);
         }
         private string _eventTimeString = "--:--";
 
@@ -192,12 +148,7 @@ namespace ExamClock.Admin.ViewModels
         public string PermissionString
         {
             get => _permissionString;
-            set
-            {
-                if (_permissionString == value) return;
-                _permissionString = value;
-                OnPropertyChanged(nameof(PermissionString));
-            }
+            set => SetProperty(ref _permissionString, value);
         }
         private string _permissionString = "--";
 
@@ -207,12 +158,7 @@ namespace ExamClock.Admin.ViewModels
         public string LogoutTimeString
         {
             get => _logoutTimeString;
-            set
-            {
-                if (_logoutTimeString == value) return;
-                _logoutTimeString = value;
-                OnPropertyChanged(nameof(LogoutTimeString));
-            }
+            set => SetProperty(ref _logoutTimeString, value);
         }
         private string _logoutTimeString = "--:--";
 
@@ -236,10 +182,10 @@ namespace ExamClock.Admin.ViewModels
             get => _detectingStatus;
             set
             {
-                if (_detectingStatus == value) return;
-                _detectingStatus = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(DetectingStatusString));
+                if (SetProperty(ref _detectingStatus, value))
+                {
+                    OnPropertyChanged(nameof(DetectingStatusString));
+                }
             }
         }
         private DetectingStatus _detectingStatus = DetectingStatus.None;

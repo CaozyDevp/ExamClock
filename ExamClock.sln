@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamClock.Core", "ExamClock
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamClockInstaller", "ExamClockInstaller\ExamClockInstaller.csproj", "{D14C1890-FC4C-43BD-AD85-FE1C3D10C395}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamClock.Mvvm", "ExamClock.Mvvm\ExamClock.Mvvm.csproj", "{94953504-8F0A-4A6C-BBF6-CD5DC115EA05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{D14C1890-FC4C-43BD-AD85-FE1C3D10C395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D14C1890-FC4C-43BD-AD85-FE1C3D10C395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D14C1890-FC4C-43BD-AD85-FE1C3D10C395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94953504-8F0A-4A6C-BBF6-CD5DC115EA05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94953504-8F0A-4A6C-BBF6-CD5DC115EA05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94953504-8F0A-4A6C-BBF6-CD5DC115EA05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94953504-8F0A-4A6C-BBF6-CD5DC115EA05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
