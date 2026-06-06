@@ -15,8 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using ExamClock.Core;
 using Spf;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -109,6 +111,30 @@ namespace ExamClock.Admin
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// 获取所有有效考试项目
+        /// </summary>
+        public static List<ExamItem> GetExamItems()
+        {
+            var examItems = new List<ExamItem>();
+            for (int i = 0; i < TimeTable.Count; i++)
+            {
+                try
+                {
+                    var item = TimeTable[i];
+                    var subject = (string)item[0];
+                    var beginTime = (DateTime)item[1];
+                    var duration = (int)item[2];
+                    examItems.Add(new ExamItem(subject, beginTime, TimeSpan.FromMinutes(duration)));
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+            return examItems;
         }
 
         static Configuration()
