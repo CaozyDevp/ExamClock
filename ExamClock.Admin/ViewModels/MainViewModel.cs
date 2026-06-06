@@ -418,9 +418,14 @@ namespace ExamClock.Admin.ViewModels
         });
 
         /// <summary>
-        /// 推送命令
+        /// 同步时间命令
         /// </summary>
-        public ICommand PushCommand => new RelayCommand(excute =>
+        public ICommand PushTimeCommand => new RelayCommand(excute =>
+        {
+
+        });
+
+        public ICommand PushConfigCommand => new RelayCommand(excute =>
         {
 
         });

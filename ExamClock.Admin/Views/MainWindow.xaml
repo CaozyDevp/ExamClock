@@ -411,14 +411,21 @@
                             VerticalAlignment="Bottom"
                             Margin="19 0 0 25">
                     <Button Height="38"
-                            Command="{Binding PushCommand}"
+                            Command="{Binding PushConfigCommand}"
                             Width="82"
                             FontSize="16"
                             hc:BorderElement.CornerRadius="19"
-                            Content="推送"
+                            Content="配置"
                             HorizontalAlignment="Left"
-                            Margin="0 0 0 13">
-                    </Button>
+                            Margin="0 0 0 13"/>
+                    <Button Height="38"
+                            Command="{Binding PushTimeCommand}"
+                            Width="82"
+                            FontSize="16"
+                            hc:BorderElement.CornerRadius="19"
+                            Content="同步"
+                            HorizontalAlignment="Left"
+                            Margin="0 0 0 13"/>
                     <Button Height="38"
                             Width="82"
                             Command="{Binding SettingsCommand}"
