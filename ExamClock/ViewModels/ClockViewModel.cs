@@ -106,17 +106,8 @@ namespace ExamClock.ViewModels
             {
                 if (SetProperty(ref _mode, value))
                 {
-                    switch (_mode)
-                    {
-                        case ClockDisplayMode.Clock:
-                            ClockGridVisibility = Visibility.Visible;
-                            EnteringGridVisibility = Visibility.Collapsed;
-                            break;
-                        case ClockDisplayMode.EnteringRoom:
-                            ClockGridVisibility = Visibility.Collapsed;
-                            EnteringGridVisibility = Visibility.Visible;
-                            break;
-                    }
+                    OnPropertyChanged(nameof(ClockGridVisibility));
+                    OnPropertyChanged(nameof(EnteringGridVisibility));
                 }
             }
         }
@@ -125,28 +116,12 @@ namespace ExamClock.ViewModels
         /// <summary>
         /// 时钟页面的可见性（模式切换时使用）
         /// </summary>
-        public Visibility ClockGridVisibility
-        {
-            get => _clockGridVisibility;
-            set
-            {
-                SetProperty(ref _clockGridVisibility, value);
-            }
-        }
-        private Visibility _clockGridVisibility = Visibility.Visible;
+        public Visibility ClockGridVisibility => Mode == ClockDisplayMode.Clock ? Visibility.Visible : Visibility.Collapsed;
 
         /// <summary>
         /// 进场页面的可见性（模式切换时使用）
         /// </summary>
-        public Visibility EnteringGridVisibility
-        {
-            get => _enteringGridVisibility;
-            set
-            {
-                SetProperty(ref _enteringGridVisibility, value);
-            }
-        }
-        private Visibility _enteringGridVisibility = Visibility.Collapsed;
+        public Visibility EnteringGridVisibility => Mode == ClockDisplayMode.EnteringRoom ? Visibility.Visible : Visibility.Collapsed;
 
         /// <summary>
         /// 考试项目名称
