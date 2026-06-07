@@ -16,16 +16,19 @@
 */
 
 using ECGP;
+using ECGP.Enums;
 using ECGP.Requesters;
 using ExamClock.Admin.Enums;
+using ExamClock.Admin.Models;
 using ExamClock.Admin.Views;
 using ExamClock.Admin.Views.UserControls;
+using ExamClock.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Windows;
-using ExamClock.Mvvm;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TimeSync;
@@ -214,6 +217,16 @@ namespace ExamClock.Admin.ViewModels
         }
 
         /// <summary>
+        /// 查找到的考场列表，不绑定到UI
+        /// </summary>
+        private List<RoomInfo> Rooms
+        {
+            get => _rooms;
+            set => _rooms = value ?? new List<RoomInfo>();
+        }
+        private List<RoomInfo> _rooms = new List<RoomInfo>();
+
+        /// <summary>
         /// 在主窗体上显示的考场相关控件
         /// </summary>
         public ObservableCollection<UIElement> HostElements
@@ -279,6 +292,7 @@ namespace ExamClock.Admin.ViewModels
                 {
                     rooms = await requester.BroadcastAndGetRoomInfos();
                 }
+                Rooms = rooms;
 
                 // 获取时间信息
                 List<TimeKeeper> times;
@@ -366,9 +380,45 @@ namespace ExamClock.Admin.ViewModels
         /// <summary>
         /// 同步时间命令
         /// </summary>
-        public ICommand PushTimeCommand => new RelayCommand(excute =>
+        public ICommand PushTimeCommand => new RelayCommand(async (_) =>
         {
+            var result = MessageBox.Show("确定要将时间同步到所有在线考场吗？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            try
+            {
+                var privateKey = GetPrivateKeyXmlAndUpdateUsername();
 
+                if (privateKey == null)
+                {
+                    MessageBox.Show("身份验证失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                var instructor = new InstructionClient(privateKey);
+
+                int succeeded = 0;
+                for (int i = 0; i < Rooms.Count; i++)
+                {
+                    if (Rooms[i].IP == null)
+                    {
+                        continue;
+                    }
+                    var ret = await instructor.SendInstructionAsync(new IPEndPoint(Rooms[i].IP, Configuration.ControllingPort), InstructionType.SyncTimeWithController, new byte[] { });
+                    if (ret == ReturnCode.Success)
+                    {
+                        succeeded++;
+                    }
+                }
+
+                MessageBox.Show($"时间同步指令已发送！{succeeded}个成功，{Rooms.Count - succeeded}个失败\n请刷新以查看结果", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch
+            {
+                MessageBox.Show("时间同步过程中发生错误", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         });
 
         public ICommand PushConfigCommand => new RelayCommand(excute =>
@@ -455,6 +505,27 @@ namespace ExamClock.Admin.ViewModels
                 };
                 HostElements.Add(element);
             }
+        }
+
+        /// <summary>
+        /// 通过用户输入的用户名和密码，获取私钥xml字符串，并将用户名保存在配置类中
+        /// </summary>
+        /// <returns>私钥xml字符串。如果获取失败，返回null</returns>
+        private string GetPrivateKeyXmlAndUpdateUsername()
+        {
+            var username = Configuration.Username;
+            if (!GetPasswordInput(ref username, out string password))
+            {
+                return null;
+            }
+            if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(username))
+            {
+                return null;
+            }
+            Configuration.Username = username;
+
+            var privateKey = KeyManager.GetKeyXml(Configuration.Username, password);
+            return privateKey;
         }
 
         public void Dispose()
