@@ -421,11 +421,6 @@ namespace ExamClock.Admin.ViewModels
             }
         });
 
-        public ICommand PushConfigCommand => new RelayCommand(excute =>
-        {
-
-        });
-
         /// <summary>
         /// 打开设置窗口命令
         /// </summary>
