@@ -207,6 +207,7 @@ namespace ExamClock.ViewModels
                     if (next == null)
                     {
                         TimeToBeginningText = "--:--";
+                        return;
                     }
                     TimeToBeginningText = (next.BeginTime - DateTime.Now).ToString(@"mm\:ss");
                     return;
