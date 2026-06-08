@@ -499,6 +499,37 @@
                             </Grid>
                         </hc:Card>
                     </StackPanel>
+
+                    <Button Grid.Row="5"
+                            Width="160"
+                            Height="45"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Command="{Binding ShowTimeSyncWindowCommand}">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border Background="{StaticResource ShallowBlueBrush}"
+                                        BorderBrush="{StaticResource BorderBlueBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="23">
+                                    <TextBlock Grid.Column="2"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Text="手动时间同步"
+                                               FontFamily="{StaticResource Hei}"
+                                               FontSize="18"
+                                               Foreground="#0099FF" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="10"
+                                              Direction="0"
+                                              Opacity="0.2"
+                                              ShadowDepth="0"
+                                              Color="#0099FF" />
+                        </Button.Effect>
+                    </Button>
                 </Grid>
             </Grid>
         </StackPanel>

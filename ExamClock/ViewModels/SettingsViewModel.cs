@@ -805,6 +805,11 @@ namespace ExamClock.ViewModels
         {
             Permission = !Permission;
         });
+
+        public ICommand ShowTimeSyncWindowCommand => new RelayCommand(execute =>
+        {
+            new ManualTimeSyncWindow().ShowDialog();
+        });
         #endregion
     }
 }
