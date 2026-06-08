@@ -63,14 +63,14 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Label Foreground="#5E5E5E"
-                   Content="{Binding RoomNumberText}"
-                   FontFamily="{StaticResource Hei}"
-                   FontSize="30"
-                   Margin="13 0 0 0"
-                   FlowDirection="LeftToRight"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Center"/>
+            <TextBlock Foreground="#5E5E5E"
+                       Text="{Binding RoomNumberText}"
+                       FontFamily="{StaticResource Hei}"
+                       FontSize="30"
+                       Margin="13 0 0 0"
+                       FlowDirection="LeftToRight"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"/>
         </StackPanel>
         <Grid Visibility="{Binding ClockGridVisibility}">
             <Grid.ColumnDefinitions>
@@ -84,16 +84,14 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="65 56 0 0">
-                <Label FontSize="50"
-                       FontFamily="{StaticResource Hei}"
-                       Name="EventLabel"
-                       Content="{Binding EventNameText}"
-                       Foreground="#DADADA" />
-                <Label FontSize="40"
-                       FontFamily="{StaticResource Hei}"
-                       Name="TimeLabel"
-                       Content="{Binding EventTimeText}"
-                       Foreground="#A9A9A9" />
+                <TextBlock FontSize="50"
+                           FontFamily="{StaticResource Hei}"
+                           Text="{Binding EventNameText}"
+                           Foreground="#DADADA" />
+                <TextBlock FontSize="40"
+                           FontFamily="{StaticResource Hei}"
+                           Text="{Binding EventTimeText}"
+                           Foreground="#A9A9A9" />
             </StackPanel>
 
             <Grid Grid.Column="1"

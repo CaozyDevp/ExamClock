@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:ExamClock.Views.UserControls"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:vm="clr-namespace:ExamClock.ViewModels"
         Title="SettingsWindow"
         Width="570"
@@ -53,11 +54,11 @@
             <Border Height="30"
                     Background="#F3F3F3">
                 <Grid>
-                    <Label Margin="14,0,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           Content="设置"
-                           FontSize="14" />
+                    <TextBlock Margin="14,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Text="设置"
+                               FontSize="14" />
                     <Button Width="30"
                             Height="30"
                             HorizontalAlignment="Right"
@@ -105,11 +106,11 @@
                             WindowChrome.IsHitTestVisibleInChrome="True">
                         <Button.Template>
                             <ControlTemplate>
-                                <Label HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Content="总览"
-                                       FontSize="18"
-                                       Foreground="{Binding Grid0TextBrush}" />
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="总览"
+                                           FontSize="18"
+                                           Foreground="{Binding Grid0TextBrush}" />
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
@@ -120,11 +121,11 @@
                             WindowChrome.IsHitTestVisibleInChrome="True">
                         <Button.Template>
                             <ControlTemplate>
-                                <Label HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Content="安排"
-                                       FontSize="18"
-                                       Foreground="{Binding Grid1TextBrush}" />
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="安排"
+                                           FontSize="18"
+                                           Foreground="{Binding Grid1TextBrush}" />
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
@@ -135,11 +136,11 @@
                             WindowChrome.IsHitTestVisibleInChrome="True">
                         <Button.Template>
                             <ControlTemplate>
-                                <Label HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Content="提醒"
-                                       FontSize="18"
-                                       Foreground="{Binding Grid2TextBrush}" />
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="提醒"
+                                           FontSize="18"
+                                           Foreground="{Binding Grid2TextBrush}" />
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
@@ -150,11 +151,11 @@
                             WindowChrome.IsHitTestVisibleInChrome="True">
                         <Button.Template>
                             <ControlTemplate>
-                                <Label HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Content="集控"
-                                       FontSize="18"
-                                       Foreground="{Binding Grid3TextBrush}" />
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="集控"
+                                           FontSize="18"
+                                           Foreground="{Binding Grid3TextBrush}" />
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
@@ -170,13 +171,13 @@
                         <RowDefinition Height="413" />
                         <RowDefinition Height="62" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Bottom"
-                           Content="{Binding NoticeText}"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="20"
-                           Foreground="#8D8D8D" />
+                    <TextBlock Grid.Row="0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Bottom"
+                               Text="{Binding NoticeText}"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="20"
+                               Foreground="#8D8D8D" />
                     <Border Grid.Row="1"
                             Width="514"
                             Height="393"
@@ -217,10 +218,10 @@
                             Command="{Binding EditRoomNumberCommand}">
                         <Button.Template>
                             <ControlTemplate>
-                                <Label Content="{Binding RoomNumberText}"
-                                       FontFamily="{StaticResource Hei}"
-                                       FontSize="20"
-                                       Foreground="#8D8D8D" />
+                                <TextBlock Text="{Binding RoomNumberText}"
+                                           FontFamily="{StaticResource Hei}"
+                                           FontSize="20"
+                                           Foreground="#8D8D8D" />
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
@@ -249,13 +250,13 @@
                                                Height="19"
                                                HorizontalAlignment="Right"
                                                Source="/Views/Images/Import.png" />
-                                        <Label Grid.Column="2"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Content="导入配置"
-                                               FontFamily="{StaticResource Hei}"
-                                               FontSize="18"
-                                               Foreground="#0099FF" />
+                                        <TextBlock Grid.Column="2"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Text="导入配置"
+                                                   FontFamily="{StaticResource Hei}"
+                                                   FontSize="18"
+                                                   Foreground="#0099FF" />
                                     </Grid>
                                 </Border>
                             </ControlTemplate>
@@ -284,23 +285,25 @@
                         <RowDefinition Height="62" />
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="考试日程安排"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="30"
-                           Foreground="#2E4959" />
-                    <Label Grid.Row="2"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="格式：科目 日期 开始时间 时长"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="16"
-                           Foreground="#D2D2D2" />
+                    <TextBlock Grid.Row="1"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Text="考试日程安排"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="30"
+                               Foreground="#2E4959" />
+                    <TextBlock Grid.Row="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Text="格式：科目 日期 开始时间 时长"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="16"
+                               Foreground="#D2D2D2" />
                     <TextBox Grid.Row="3"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Top"
+                             Padding="5"
                              AcceptsReturn="True"
                              FontFamily="微软雅黑"
                              FontSize="18"
@@ -332,13 +335,13 @@
                                                Height="19"
                                                HorizontalAlignment="Right"
                                                Source="/Views/Images/Save.png" />
-                                        <Label Grid.Column="2"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Content="保存修改"
-                                               FontFamily="{StaticResource Hei}"
-                                               FontSize="18"
-                                               Foreground="#0099FF" />
+                                        <TextBlock Grid.Column="2"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Text="保存修改"
+                                                   FontFamily="{StaticResource Hei}"
+                                                   FontSize="18"
+                                                   Foreground="#0099FF" />
                                     </Grid>
                                 </Border>
                             </ControlTemplate>
@@ -351,8 +354,6 @@
                                               Color="#0099FF" />
                         </Button.Effect>
                     </Button>
-
-
                 </Grid>
             </Grid>
 
@@ -367,13 +368,13 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="语音提醒"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="30"
-                           Foreground="#2E4959" />
+                    <TextBlock Grid.Row="1"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Text="语音提醒"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="30"
+                               Foreground="#2E4959" />
                     <StackPanel Grid.Row="2">
                         <uc:AnnouncementEditor Height="50"
                                                AnnouncementName="开考铃声"
@@ -408,20 +409,20 @@
                         <RowDefinition Height="62" />
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="集控配置"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="30"
-                           Foreground="#2E4959" />
-                    <Label Grid.Row="2"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="由考试管理中心统一下发，请勿随意修改"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="16"
-                           Foreground="#D2D2D2" />
+                    <TextBlock Grid.Row="1"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Text="集控配置"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="30"
+                               Foreground="#2E4959" />
+                    <TextBlock Grid.Row="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Text="由考试管理中心统一下发，请勿随意修改"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="16"
+                               Foreground="#D2D2D2" />
                     <StackPanel Grid.Row="3">
                         <Border Grid.Row="3"
                                 Style="{StaticResource DisplayBorder}">
@@ -434,36 +435,36 @@
                                 <Image Grid.Column="0"
                                        Source="/Views/Images/Key.png"
                                        Width="24" />
-                                <Label Grid.Column="1"
-                                       Content="公钥"
-                                       FontSize="21"
-                                       Foreground="#6B6B6B"
-                                       FontFamily="{StaticResource Hei}"
-                                       Margin="0 15 0 0"
-                                       VerticalContentAlignment="Top"
-                                       HorizontalContentAlignment="Left"
-                                       Padding="0" />
-                                <Label Grid.Column="1"
-                                       Content="用于识别和鉴定管理端发出的指令"
-                                       FontSize="16"
-                                       Foreground="#D2D2D2"
-                                       FontFamily="{StaticResource Hei}"
-                                       Margin="0 0 0 15"
-                                       VerticalContentAlignment="Bottom"
-                                       HorizontalContentAlignment="Left"
-                                       Padding="0" />
+                                <TextBlock Grid.Column="1"
+                                           Text="公钥"
+                                           FontSize="21"
+                                           Foreground="#6B6B6B"
+                                           FontFamily="{StaticResource Hei}"
+                                           Margin="0 15 0 0"
+                                           VerticalAlignment="Top"
+                                           HorizontalAlignment="Left"
+                                           Padding="0" />
+                                <TextBlock Grid.Column="1"
+                                           Text="用于识别和鉴定管理端发出的指令"
+                                           FontSize="16"
+                                           Foreground="#D2D2D2"
+                                           FontFamily="{StaticResource Hei}"
+                                           Margin="0 0 0 15"
+                                           VerticalAlignment="Bottom"
+                                           HorizontalAlignment="Left"
+                                           Padding="0" />
                                 <Button Grid.Column="2"
                                         Height="40"
                                         Width="80"
                                         BorderThickness="0">
                                     <Button.Template>
                                         <ControlTemplate>
-                                            <Label Content="{Binding IsKeyLoadedString}"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center"
-                                                   FontFamily="{StaticResource Hei}"
-                                                   FontSize="21"
-                                                   Foreground="{Binding IsKeyLoadedBrush}" />
+                                            <TextBlock Text="{Binding IsKeyLoadedString}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       FontFamily="{StaticResource Hei}"
+                                                       FontSize="21"
+                                                       Foreground="{Binding IsKeyLoadedBrush}" />
                                         </ControlTemplate>
                                     </Button.Template>
                                 </Button>
@@ -480,24 +481,24 @@
                                 <Image Grid.Column="0"
                                        Source="/Views/Images/Lock.png"
                                        Width="22" />
-                                <Label Grid.Column="1"
-                                       Content="控制权限"
-                                       FontSize="21"
-                                       Foreground="#6B6B6B"
-                                       FontFamily="{StaticResource Hei}"
-                                       Margin="0 15 0 0"
-                                       VerticalContentAlignment="Top"
-                                       HorizontalContentAlignment="Left"
-                                       Padding="0" />
-                                <Label Grid.Column="1"
-                                       Content="授权管理端对本机的控制权"
-                                       FontSize="16"
-                                       Foreground="#D2D2D2"
-                                       FontFamily="{StaticResource Hei}"
-                                       Margin="0 0 0 15"
-                                       VerticalContentAlignment="Bottom"
-                                       HorizontalContentAlignment="Left"
-                                       Padding="0" />
+                                <TextBlock Grid.Column="1"
+                                           Text="控制权限"
+                                           FontSize="21"
+                                           Foreground="#6B6B6B"
+                                           FontFamily="{StaticResource Hei}"
+                                           Margin="0 15 0 0"
+                                           VerticalAlignment="Top"
+                                           HorizontalAlignment="Left"
+                                           Padding="0" />
+                                <TextBlock Grid.Column="1"
+                                           Text="授权管理端对本机的控制权"
+                                           FontSize="16"
+                                           Foreground="#D2D2D2"
+                                           FontFamily="{StaticResource Hei}"
+                                           Margin="0 0 0 15"
+                                           VerticalAlignment="Bottom"
+                                           HorizontalAlignment="Left"
+                                           Padding="0" />
                                 <Button Grid.Column="2"
                                         Height="40"
                                         Width="80"
@@ -505,12 +506,12 @@
                                         Command="{Binding PermissionSwitchCommand}">
                                     <Button.Template>
                                         <ControlTemplate>
-                                            <Label Content="{Binding PermissionString}"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center"
-                                                   FontSize="21"
-                                                   FontFamily="{StaticResource Hei}"
-                                                   Foreground="{Binding PermissionBrush}" />
+                                            <TextBlock Text="{Binding PermissionString}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       FontSize="21"
+                                                       FontFamily="{StaticResource Hei}"
+                                                       Foreground="{Binding PermissionBrush}" />
                                         </ControlTemplate>
                                     </Button.Template>
                                 </Button>

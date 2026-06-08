@@ -365,9 +365,9 @@ namespace ExamClock.ViewModels
                     continue;
                 }
 
-                Label dateLabel = new Label
+                TextBlock dateLabel = new TextBlock
                 {
-                    Content = item.First().BeginTime.ToString("yyyy/MM/dd"),
+                    Text = item.First().BeginTime.ToString("yyyy/MM/dd"),
                     FontSize = 25,
                     Margin = new Thickness(0, 10, 0, 5),
                     Foreground = new SolidColorBrush(Color.FromRgb(46, 73, 89)),

@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:ExamClock.Views"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="用户输入"
         Width="380"
-        Height="200"
+        Height="160"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
@@ -24,20 +25,19 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
-                <RowDefinition Height="46" />
-                <RowDefinition Height="60" />
-                <RowDefinition Height="64" />
+                <RowDefinition Height="70" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
             <!--  标题栏  -->
             <Border Grid.Row="0"
                     Height="30"
                     Background="#F3F3F3">
                 <Grid>
-                    <Label Margin="14,0,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           Content="用户输入"
-                           FontSize="14" />
+                    <TextBlock Margin="14,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Text="用户输入"
+                               FontSize="14" />
                     <Button Name="CloseWindowButton"
                             Width="30"
                             Height="30"
@@ -52,62 +52,33 @@
                     </Button>
                 </Grid>
             </Border>
-            <Label Name="PromptLabel"
-                   Padding="0"
-                   Grid.Row="1"
-                   Margin="36,0,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Bottom"
-                   Content=""
-                   FontFamily="{StaticResource Hei}"
-                   FontSize="18" />
-            <TextBox Name="InputTextBox"
-                     Grid.Row="2"
-                     Height="32"
-                     Margin="36,0,30,0"
-                     FontSize="18" />
+            <hc:TextBox Name="InputTextBox"
+                        Grid.Row="1"
+                        Height="40"
+                        Margin="30 20 30 0"
+                        FontSize="17"
+                        hc:InfoElement.Placeholder="这是标题"/>
 
-            <Label Name="WarningLabel"
-                   Padding="0"
-                   Grid.Row="3"
-                   Margin="38,0,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Content=""
-                   FontFamily="{StaticResource Hei}"
-                   FontSize="18"
-                   Foreground="#BF1515" />
+            <TextBlock Name="WarningTextBlock"
+                       Padding="0"
+                       Grid.Row="3"
+                       Margin="38,0,0,0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Text=""
+                       FontSize="16"
+                       Foreground="#BF1515" />
             <Button Name="SubmitButton"
                     Grid.Row="3"
                     Width="119"
-                    Height="45"
+                    Content="确认"
+                    FontSize="15"
+                    Height="40"
                     IsDefault="True"
                     Margin="0,0,30,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Click="SubmitButton_Click">
-                <Button.Template>
-                    <ControlTemplate>
-                        <Border Background="{StaticResource ShallowBlueBrush}"
-                                BorderBrush="{StaticResource BorderBlueBrush}"
-                                BorderThickness="2"
-                                CornerRadius="23">
-                            <Label HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Content="确认"
-                                   FontFamily="{StaticResource Hei}"
-                                   FontSize="18"
-                                   Foreground="#0099FF" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Effect>
-                    <DropShadowEffect BlurRadius="10"
-                                      Direction="0"
-                                      Opacity="0.2"
-                                      ShadowDepth="0"
-                                      Color="#0099FF" />
-                </Button.Effect>
             </Button>
         </Grid>
     </Border>
