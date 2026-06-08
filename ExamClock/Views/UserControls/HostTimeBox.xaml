@@ -12,7 +12,10 @@
         <SolidColorBrush x:Key="ViceFontBrush" Color="#808080"/>
         <SolidColorBrush x:Key="MainFontBrush" Color="Black"/>
     </UserControl.Resources>
-    <Button Command="{Binding SetSystemTimeCommand,RelativeSource={RelativeSource AncestorType=local:HostTimeBox}}">
+    <Button Command="{Binding SetSystemTimeCommand,RelativeSource={RelativeSource AncestorType=local:HostTimeBox}}"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Height="60">
         <Button.Template>
             <ControlTemplate>
                 <Border Background="{StaticResource BackGroundBrush}"
