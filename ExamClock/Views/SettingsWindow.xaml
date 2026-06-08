@@ -22,29 +22,6 @@
                       GlassFrameThickness="-1"
                       ResizeBorderThickness="5" />
     </WindowChrome.WindowChrome>
-    <Window.Resources>
-        <Style x:Key="DisplayBorder"
-               TargetType="Border">
-            <Setter Property="Width"
-                    Value="466" />
-            <Setter Property="Height"
-                    Value="86" />
-            <Setter Property="HorizontalAlignment"
-                    Value="Left" />
-            <Setter Property="VerticalAlignment"
-                    Value="Top" />
-            <Setter Property="BorderThickness"
-                    Value="2" />
-            <Setter Property="BorderBrush"
-                    Value="#D9D9D9" />
-            <Setter Property="Background"
-                    Value="#F8F8F8" />
-            <Setter Property="CornerRadius"
-                    Value="10" />
-            <Setter Property="Margin"
-                    Value="0 0 0 3" />
-        </Style>
-    </Window.Resources>
 
     <Border BorderThickness="1"
             Background="White"
@@ -399,7 +376,7 @@
             <!--  【集控】页面  -->
             <Grid Name="CalibrationGrid"
                   Visibility="{Binding CalibrationGridVisibility}">
-                <Grid Margin="52,0,38,0">
+                <Grid Margin="52,0,50,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="36" />
                         <RowDefinition Height="46" />
@@ -424,8 +401,10 @@
                                FontSize="16"
                                Foreground="#D2D2D2" />
                     <StackPanel Grid.Row="3">
-                        <Border Grid.Row="3"
-                                Style="{StaticResource DisplayBorder}">
+                        <hc:Card Height="86"
+                                 hc:BorderElement.CornerRadius="10"
+                                 BorderThickness="2"
+                                 Margin="0 0 0 5">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="60" />
@@ -469,9 +448,11 @@
                                     </Button.Template>
                                 </Button>
                             </Grid>
-                        </Border>
-                        <Border Grid.Row="3"
-                                Style="{StaticResource DisplayBorder}">
+                        </hc:Card>
+                        <hc:Card Height="86"
+                                 hc:BorderElement.CornerRadius="10"
+                                 BorderThickness="2"
+                                 Margin="0 0 0 5">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="60" />
@@ -516,11 +497,10 @@
                                     </Button.Template>
                                 </Button>
                             </Grid>
-                        </Border>
+                        </hc:Card>
                     </StackPanel>
                 </Grid>
             </Grid>
         </StackPanel>
     </Border>
-
 </Window>
