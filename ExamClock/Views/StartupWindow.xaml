@@ -35,14 +35,14 @@
                         <RowDefinition Height="60" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           Content="教育考试时钟"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="40" />
-                    <Label Grid.Row="1"
-                           Content="{Binding ExamDateText}"
-                           FontFamily="{StaticResource Hei}"
-                           FontSize="20" />
+                    <TextBlock Grid.Row="0"
+                               Text="教育考试时钟"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="40" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding ExamDateText}"
+                               FontFamily="{StaticResource Hei}"
+                               FontSize="20" />
                 </Grid>
 
             </Border>
@@ -86,14 +86,14 @@
                     </Button.Effect>
                 </Button>
 
-                <Label Grid.Row="1"
-                       Grid.Column="0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Content="开始考试"
-                       FontFamily="{StaticResource Hei}"
-                       FontSize="18"
-                       Foreground="#5D5D5D" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="开始考试"
+                           FontFamily="{StaticResource Hei}"
+                           FontSize="18"
+                           Foreground="#5D5D5D" />
 
                 <Button Name="TimeTableButton"
                         Grid.Row="0"
@@ -124,14 +124,14 @@
                     </Button.Effect>
                 </Button>
 
-                <Label Grid.Row="1"
-                       Grid.Column="1"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Content="修改配置"
-                       FontFamily="{StaticResource Hei}"
-                       FontSize="18"
-                       Foreground="#5D5D5D" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="修改配置"
+                           FontFamily="{StaticResource Hei}"
+                           FontSize="18"
+                           Foreground="#5D5D5D" />
             </Grid>
 
             <Button Name="CloseButton"

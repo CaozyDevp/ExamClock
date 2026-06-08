@@ -1,10 +1,10 @@
 ﻿<UserControl x:Class="ExamClock.Views.UserControls.HostTimeBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ExamClock.Views.UserControls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="60" d:DesignWidth="466">
     <UserControl.Resources>
         <SolidColorBrush x:Key="BackGroundBrush" Color="#F8F8F8"/>
@@ -26,27 +26,27 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="25"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="{Binding DisplayedTime,RelativeSource={RelativeSource AncestorType=local:HostTimeBox}}"
-                               Grid.Column="1"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Foreground="{StaticResource MainFontBrush}"
-                               FontFamily="{StaticResource Hei}"
-                               FontSize="18"/>
-                        <Label Content="{Binding HostName,RelativeSource={RelativeSource AncestorType=local:HostTimeBox}}"
-                               Grid.Column="2"
-                               HorizontalAlignment="Left"
-                               Foreground="{StaticResource ViceFontBrush}"
-                               VerticalAlignment="Center"
-                               FontFamily="{StaticResource Hei}"
-                               FontSize="18"/>
-                        <Label Content="{Binding IpString,RelativeSource={RelativeSource AncestorType=local:HostTimeBox}}"
-                               Grid.Column="2"
-                               Foreground="{StaticResource ViceFontBrush}"
-                               VerticalAlignment="Center"
-                               FontFamily="{StaticResource Hei}"
-                               FontSize="18" 
-                               HorizontalAlignment="Right"/>
+                        <TextBlock Text="{Binding DisplayedTime,RelativeSource={RelativeSource AncestorType=local:HostTimeBox}}"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource MainFontBrush}"
+                                   FontFamily="{StaticResource Hei}"
+                                   FontSize="18"/>
+                        <TextBlock Text="{Binding HostName,RelativeSource={RelativeSource AncestorType=local:HostTimeBox}}"
+                                   Grid.Column="2"
+                                   HorizontalAlignment="Left"
+                                   Foreground="{StaticResource ViceFontBrush}"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{StaticResource Hei}"
+                                   FontSize="18"/>
+                        <TextBlock Text="{Binding IpString,RelativeSource={RelativeSource AncestorType=local:HostTimeBox}}"
+                                   Grid.Column="2"
+                                   Foreground="{StaticResource ViceFontBrush}"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{StaticResource Hei}"
+                                   FontSize="18"
+                                   HorizontalAlignment="Right"/>
                     </Grid>
                 </Border>
             </ControlTemplate>

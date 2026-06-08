@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using HandyControl.Controls;
 using System;
 using System.Windows;
 
@@ -23,13 +24,13 @@ namespace ExamClock.Views
     /// <summary>
     /// UserInputWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class UserInputWindow : Window
+    public partial class UserInputWindow : System.Windows.Window
     {
         public UserInputWindow(Func<string, string> checkIfValid, string prompt, string defaultValue)
         {
             InitializeComponent();
             CheckIfValid = checkIfValid;
-            PromptLabel.Content = prompt;
+            InfoElement.SetPlaceholder(InputTextBox, prompt);
             InputTextBox.Text = defaultValue;
         }
 
@@ -55,7 +56,7 @@ namespace ExamClock.Views
                 var warning = CheckIfValid.Invoke(InputTextBox.Text);
                 if (warning != null)
                 {
-                    WarningLabel.Content = warning;
+                    WarningTextBlock.Text = warning;
                     return;
                 }
             }
