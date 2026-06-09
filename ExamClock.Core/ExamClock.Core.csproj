@@ -49,6 +49,7 @@
     <Compile Include="Constants\SpecialSubject.cs" />
     <Compile Include="Enums\SoundType.cs" />
     <Compile Include="ExamItem.cs" />
+    <Compile Include="ExamSchedule.cs" />
     <Compile Include="NoticeItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\SystemTimeManager.cs" />
@@ -56,6 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spf\Spf.csproj">
+      <Project>{29f6436e-39ca-45ba-ad95-ed307f29230e}</Project>
+      <Name>Spf</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
