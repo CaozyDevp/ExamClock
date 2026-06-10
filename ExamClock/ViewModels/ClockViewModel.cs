@@ -308,10 +308,13 @@ namespace ExamClock.ViewModels
                 }
 
                 // 收卷前铃
-                DateTime noticeTime = item.EndTime - beforeEnding;
-                if (beforeEnding != TimeSpan.Zero && noticeTime > DateTime.Now && item.Duration > beforeEnding)
+                if (beforeEnding != TimeSpan.Zero)
                 {
-                    _noticeTimes.Add(new NoticeItem(noticeTime, noticeBeforeEnding));
+                    DateTime noticeTime = item.EndTime - beforeEnding;
+                    if (noticeTime > DateTime.Now && item.Duration > beforeEnding)
+                    {
+                        _noticeTimes.Add(new NoticeItem(noticeTime, noticeBeforeEnding));
+                    }
                 }
 
                 // 结束铃
