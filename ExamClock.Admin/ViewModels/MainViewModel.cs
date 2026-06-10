@@ -552,7 +552,14 @@ namespace ExamClock.Admin.ViewModels
                 EventTitle = "下一场";
                 EventName = next.Subject == Core.Constants.SpecialSubject.EnteringRoom ? "入考场" : next.Subject;
                 TimeTitle = "开始时间";
-                EventTimeString = next.BeginTime.ToString("HH:mm");
+                if (next.BeginTime.Date == DateTime.Now.Date)
+                {
+                    EventTimeString = next.BeginTime.ToString("HH:mm");
+                }
+                else
+                {
+                    EventTimeString = "--";
+                }
                 return;
             }
             EventTitle = "下一场";
