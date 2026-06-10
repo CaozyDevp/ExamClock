@@ -34,7 +34,7 @@ namespace ExamClock.Views
             // 要求用户输入考场号
             while (Configuration.RoomNumber == 0)
             {
-                var dialog = new UserInputWindow(Configuration.JudgeRoomNumberInput, "请设置考场号", Configuration.RoomNumber.ToString("0000"));
+                var dialog = new UserInputWindow(Configuration.JudgeRoomNumberInput, "请设置考场号", "");
                 if (dialog.ShowDialog() == false)
                 {
                     Environment.Exit(0);
