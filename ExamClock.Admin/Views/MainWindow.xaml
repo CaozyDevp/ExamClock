@@ -368,7 +368,7 @@
                                Foreground="#757575"
                                Margin="0 0 0 28"
                                Padding="0" />
-                    <TextBlock Text="开考时间"
+                    <TextBlock Text="{Binding TimeTitle}"
                                FontFamily="{StaticResource Hei}"
                                FontSize="18"
                                Margin="0 0 0 3"

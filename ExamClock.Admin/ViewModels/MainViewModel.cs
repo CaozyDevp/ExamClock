@@ -116,14 +116,24 @@ namespace ExamClock.Admin.ViewModels
         private ushort _timeWrongRooms;
 
         /// <summary>
-        /// 事件标题（正在进行/即将进行）
+        /// 事件标题（正在进行/下一场）
         /// </summary>
         public string EventTitle
         {
-            get => _isEventContinuing ? "正在进行" : "下一场";
+            get => _eventTitle;
+            set => SetProperty(ref _eventTitle, value);
         }
+        private string _eventTitle = "下一场";
 
-        private bool _isEventContinuing = false;
+        /// <summary>
+        /// 时间标题（开始时间/结束时间）
+        /// </summary>
+        public string TimeTitle
+        {
+            get => _timeTitle;
+            set => SetProperty(ref _timeTitle, value);
+        }
+        private string _timeTitle = "开始时间";
 
         /// <summary>
         /// 正在进行/即将进行的考试名称
@@ -256,6 +266,7 @@ namespace ExamClock.Admin.ViewModels
         private void Timer_Tick(object sender, EventArgs e)
         {
             OnPropertyChanged(nameof(LocalTimeString));
+            RefreshExamDisplay();
         }
 
         /// <summary>
@@ -521,6 +532,32 @@ namespace ExamClock.Admin.ViewModels
 
             var privateKey = KeyManager.GetKeyXml(Configuration.Username, password);
             return privateKey;
+        }
+
+        private void RefreshExamDisplay()
+        {
+            var curr = Configuration.Schedule.Current;
+            if (curr != null)
+            {
+                EventTitle = "正在进行";
+                EventName = curr.Subject == Core.Constants.SpecialSubject.EnteringRoom ? "入考场" : curr.Subject;
+                TimeTitle = "结束时间";
+                EventTimeString = curr.EndTime.ToString("HH:mm");
+                return;
+            }
+            var next = Configuration.Schedule.Next;
+            if (next != null)
+            {
+                EventTitle = "下一场";
+                EventName = next.Subject == Core.Constants.SpecialSubject.EnteringRoom ? "入考场" : next.Subject;
+                TimeTitle = "开始时间";
+                EventTimeString = next.BeginTime.ToString("HH:mm");
+                return;
+            }
+            EventTitle = "下一场";
+            EventName = "--";
+            TimeTitle = "开始时间";
+            EventTimeString = "--:--";
         }
 
         public void Dispose()
