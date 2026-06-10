@@ -21,8 +21,6 @@ using Spf;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
 
 namespace ExamClock
@@ -189,158 +187,15 @@ namespace ExamClock
         }
 
         /// <summary>
-        /// 考试时间表，在调用set访问器时会自动进行排序
+        /// 考试时间表
         /// </summary>
-        public static List<ExamItem> TimeTable
+        public static ExamSchedule Schedule
         {
-            get
-            {
-                var list = new List<ExamItem>();
-                var dataObj = Config.GetValue("TIMETABLE.items");
-                if (dataObj.GetType() != typeof(Table))
-                {
-                    throw new Exception("Invalid type!");
-                }
-                var data = dataObj as Table;
-
-                for (int i = 0; i < data.Count; i++)
-                {
-                    var subjectObj = data[i][0];
-                    var beginTimeObj = data[i][1];
-                    var durationObj = data[i][2];
-
-                    if (subjectObj.GetType() != typeof(string) ||
-                        beginTimeObj.GetType() != typeof(DateTime) ||
-                        durationObj.GetType() != typeof(int))
-                    {
-                        throw new Exception("Invalid type!");
-                    }
-
-                    list.Add(new ExamItem((string)subjectObj,
-                        (DateTime)beginTimeObj,
-                        TimeSpan.FromMinutes((int)durationObj)));
-                }
-
-                return list;
-            }
-            set
-            {
-                var table = new Table();
-                SortTimeTable(ref value);   // 排序
-                foreach (var item in value)
-                {
-                    var tableItem = new TableItem(new List<object>
-                    {
-                        item.Subject,
-                        item.BeginTime,
-                        (int)item.Duration.TotalMinutes,
-                    });
-                    table.Add(tableItem);
-                }
-                Config.SetValue("TIMETABLE.items", table);
-            }
-        }
-
+            get;
+        } = new ExamSchedule();
         #endregion
 
         #region Methods
-        /// <summary>
-        /// 直接设置考试时间表，设置后需要调用<see cref="SaveConfig"/>方法保存配置
-        /// </summary>
-        /// <param name="table">考试时间表，需要满足格式要求</param>
-        /// <returns>是否设置成功</returns>
-        public static bool SetTimeTable(Table table)
-        {
-            var list = new List<ExamItem>();
-            try
-            {
-                for (int i = 0; i < table.Count; i++)
-                {
-                    var subjectObj = table[i][0];
-                    var beginTimeObj = table[i][1];
-                    var durationObj = table[i][2];
-
-                    if (!(subjectObj is string &&
-                        beginTimeObj is DateTime &&
-                        durationObj is int))
-                    {
-                        throw new Exception("Invalid type!");
-                    }
-
-                    list.Add(new ExamItem((string)subjectObj,
-                        (DateTime)beginTimeObj,
-                        TimeSpan.FromMinutes((int)durationObj)));
-                }
-                TimeTable = list;
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 获取当前考试项，如果没有则返回<see langword="null"/>
-        /// </summary>
-        public static ExamItem GetCurrentItem()
-        {
-            if (TimeTable == null || TimeTable.Count == 0)
-            {
-                return null;
-            }
-            foreach (var item in TimeTable)
-            {
-                DateTime endTime = item.BeginTime + item.Duration;
-                if (DateTime.Now >= item.BeginTime && DateTime.Now <= endTime)
-                {
-                    return item;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// 获取下一个考试项，如果没有则返回<see langword="null"/>
-        /// </summary>
-        public static ExamItem GetNextItem()
-        {
-            if (TimeTable == null || TimeTable.Count == 0)
-            {
-                return null;
-            }
-            foreach (var item in TimeTable)
-            {
-                if (DateTime.Now < item.BeginTime)
-                {
-                    return item;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// 对<see cref="ExamItem"/>列表按照时间由早到晚进行冒泡排序
-        /// </summary>
-        private static void SortTimeTable(ref List<ExamItem> timeTable)
-        {
-            if (timeTable == null)
-            {
-                return;
-            }
-
-            // 冒泡排序，将开始时间从小到大排列
-            for (var i = 0; i < timeTable.Count - 1; i++)
-            {
-                for (var j = 0; j < timeTable.Count - i - 1; j++)
-                {
-                    if (timeTable[j].BeginTime <= timeTable[j + 1].BeginTime) continue;
-                    ExamItem temp = timeTable[j];
-                    timeTable[j] = timeTable[j + 1];
-                    timeTable[j + 1] = temp;
-                }
-            }
-        }
 
         /// <summary>
         /// 从指定的配置文件加载配置。如果没有找到配置文件，按照默认配置加载
@@ -372,9 +227,28 @@ namespace ExamClock
             }
 
             MatchConfig(source, out var result);
-
             Config = result;
 
+            return ImportSchedule();
+        }
+
+        /// <summary>
+        /// 将配置文件中的考试时间表导入到<see cref="Schedule"/>对象中
+        /// </summary>
+        /// <returns></returns>
+        private static bool ImportSchedule()
+        {
+            var tableObj = Config.GetValue("TIMETABLE.items");
+            var type = tableObj.GetType();
+            if (type != null && type != typeof(Table))
+            {
+                return false;
+            }
+            if (!(tableObj is Table table))
+            {
+                return false;
+            }
+            Schedule.Import(table);
             return true;
         }
 
@@ -485,6 +359,7 @@ namespace ExamClock
                 {
                     Config.Path = configFile;
                 }
+                Config.SetValue("TIMETABLE.items", Schedule.Export());
                 Config.SaveFile();
 
                 return true;
@@ -501,24 +376,6 @@ namespace ExamClock
         public static bool SaveConfig()
         {
             return SaveConfig(ConfigPath);
-        }
-
-        /// <summary>
-        /// 获取日程配置的MD5值（SPF配置项UTF8字符串的MD5）
-        /// </summary>
-        /// <returns></returns>
-        public static byte[] GetScheduleHash()
-        {
-            using (var md5 = MD5.Create())
-            {
-                var table = Config.GetValue("TIMETABLE.items");
-                if (table.GetType() != typeof(Table))
-                {
-                    throw new Exception("Invalid type!");
-                }
-                var bytes = Encoding.UTF8.GetBytes((table as Table).ToString());
-                return md5.ComputeHash(bytes);
-            }
         }
 
         /// <summary>

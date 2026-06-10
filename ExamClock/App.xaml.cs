@@ -215,7 +215,7 @@ namespace ExamClock
                     () => { return (byte)SystemVolumeManager.GetVolume(); },
                     () => { return Configuration.RoomNumber; },
                     () => { return Status; },
-                    () => { return Configuration.GetScheduleHash(); },
+                    () => { return Configuration.Schedule.GetScheduleHash(); },
                     () =>
                     {
                         return new NoticeConfig()
@@ -331,7 +331,7 @@ namespace ExamClock
                     case InstructionType.PushSchedule:
                         string scheduleStr = Encoding.UTF8.GetString(paras);
                         var timetable = Spf.Table.Parse(scheduleStr);
-                        if (Configuration.SetTimeTable(timetable))
+                        if (Configuration.Schedule.Import(timetable))
                         {
                             Configuration.SaveConfig();
                         }

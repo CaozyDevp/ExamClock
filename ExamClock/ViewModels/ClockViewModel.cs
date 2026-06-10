@@ -31,7 +31,7 @@ namespace ExamClock.ViewModels
     {
         public ClockViewModel()
         {
-            SetNoticeTimes(Configuration.TimeTable,
+            SetNoticeTimes(Configuration.Schedule.ExamItems,
                 Configuration.NoticeBeforeEnding,
                 Configuration.ExamBeginningNotice == SoundType.ExamBeginning,
                 Configuration.ExamEndingNotice == SoundType.ExamEnding);
@@ -195,8 +195,8 @@ namespace ExamClock.ViewModels
 
         private void SetEventNameAndTime()
         {
-            var current = Configuration.GetCurrentItem();
-            var next = Configuration.GetNextItem();
+            var current = Configuration.Schedule.Current;
+            var next = Configuration.Schedule.Next;
             if (current != null)
             {
                 if (current.Subject == SpecialSubject.EnteringRoom)

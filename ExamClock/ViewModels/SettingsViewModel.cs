@@ -294,13 +294,13 @@ namespace ExamClock.ViewModels
         {
             ExamItems.Clear();
 
-            if (Configuration.TimeTable == null)
+            if (Configuration.Schedule.ExamItems == null)
             {
                 return;
             }
 
             ExamItem currentItem = null;
-            foreach (var item in Configuration.TimeTable)
+            foreach (var item in Configuration.Schedule.ExamItems)
             {
                 if (currentItem == null || currentItem.BeginTime.Date != item.BeginTime.Date)
                 {
@@ -507,9 +507,13 @@ namespace ExamClock.ViewModels
         private void InitArrangementText()
         {
             TimeTableText = "";
-            for (int i = 0; i < Configuration.TimeTable.Count; i++)
+            if (Configuration.Schedule == null || Configuration.Schedule.ExamItems == null)
             {
-                ExamItem item = Configuration.TimeTable[i];
+                return;
+            }
+            for (int i = 0; i < Configuration.Schedule.ExamItems.Count; i++)
+            {
+                ExamItem item = Configuration.Schedule.ExamItems[i];
 
                 if (item == null)
                 {
@@ -518,7 +522,7 @@ namespace ExamClock.ViewModels
 
                 TimeTableText += $"{item.Subject} {item.BeginTime:yyyy/MM/dd} {item.BeginTime:HH:mm} {(int)item.Duration.TotalMinutes}";
 
-                if (i < Configuration.TimeTable.Count - 1)
+                if (i < Configuration.Schedule.ExamItems.Count - 1)
                 {
                     TimeTableText += "\n";
                 }
@@ -546,7 +550,7 @@ namespace ExamClock.ViewModels
 
             try
             {
-                Configuration.TimeTable = timeTable;
+                Configuration.Schedule.Import(timeTable);
                 Configuration.SaveConfig();
                 InitElements();
                 MessageBox.Show("保存成功", "提示", MessageBoxButton.OK, MessageBoxImage.Asterisk);

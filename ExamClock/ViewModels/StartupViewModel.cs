@@ -45,8 +45,8 @@ namespace ExamClock.ViewModels
 
         private void RefreshExamInfo()
         {
-            var currentItem = Configuration.GetCurrentItem();
-            var nextItem = Configuration.GetNextItem();
+            var currentItem = Configuration.Schedule.Current;
+            var nextItem = Configuration.Schedule.Next;
 
             var nowTime = DateTime.Now;
 
