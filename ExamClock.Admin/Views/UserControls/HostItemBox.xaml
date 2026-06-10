@@ -90,7 +90,7 @@
                                 Text="{Binding TimeString, RelativeSource={RelativeSource AncestorType=local:HostItemBox}}"
                                 FontFamily="{StaticResource Hei}"
                                 FontSize="18"
-                                Foreground="{StaticResource LightGray}" />
+                                Foreground="{Binding TimeTextBrush, RelativeSource={RelativeSource AncestorType=local:HostItemBox}}" />
                             <Image
                                 Grid.Row="1"
                                 Grid.Column="0"

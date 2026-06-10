@@ -507,7 +507,8 @@ namespace ExamClock.Admin.ViewModels
                     RoomInfo = rooms[i],
                     RoomTime = times[i],
                     Margin = new Thickness(4),
-                    IsCorrect = rooms[i].ScheduleHash != null && hash.SequenceEqual(rooms[i].ScheduleHash)
+                    IsCorrect = rooms[i].ScheduleHash != null && hash.SequenceEqual(rooms[i].ScheduleHash),
+                    IsTimeCorrect = Math.Abs(times[i].Offset.TotalMilliseconds) < 1000
                 };
                 HostElements.Add(element);
             }

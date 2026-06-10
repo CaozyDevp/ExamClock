@@ -91,6 +91,17 @@ namespace ExamClock.Admin.Views.UserControls
         }
         private static readonly DependencyProperty IsCorrectProperty =
             DependencyProperty.Register(nameof(IsCorrect), typeof(bool), typeof(HostItemBox), new PropertyMetadata(false, OnIsCorrectChanged));
+
+        /// <summary>
+        /// 时间是否正确
+        /// </summary>
+        public bool IsTimeCorrect
+        {
+            get => (bool)GetValue(IsTimeCorrectProperty);
+            set => SetValue(IsTimeCorrectProperty, value);
+        }
+        private static readonly DependencyProperty IsTimeCorrectProperty =
+            DependencyProperty.Register(nameof(IsTimeCorrect), typeof(bool), typeof(HostItemBox), new PropertyMetadata(false, OnIsTimeCorrectChanged));
         #endregion
 
         #region Properties
@@ -205,6 +216,24 @@ namespace ExamClock.Admin.Views.UserControls
         }
 
         /// <summary>
+        /// 时间文本的颜色
+        /// </summary>
+        public SolidColorBrush TimeTextBrush
+        {
+            get
+            {
+                if (IsTimeCorrect)
+                {
+                    return (SolidColorBrush)Resources["LightGray"];
+                }
+                else
+                {
+                    return (SolidColorBrush)Resources["RedBorder"];
+                }
+            }
+        }
+
+        /// <summary>
         /// 考场时间字符串
         /// </summary>
         public string TimeString
@@ -280,6 +309,13 @@ namespace ExamClock.Admin.Views.UserControls
 
             box.OnPropertyChanged(nameof(BackgroundBrush));
             box.OnPropertyChanged(nameof(BorderColorBrush));
+        }
+
+        private static void OnIsTimeCorrectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is HostItemBox box)) return;
+
+            box.OnPropertyChanged(nameof(TimeTextBrush));
         }
 
     }
