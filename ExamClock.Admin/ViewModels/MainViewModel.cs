@@ -337,7 +337,7 @@ namespace ExamClock.Admin.ViewModels
                 // 显示时间和配置情况
                 ushort timeSynced = 0, timeWandered = 0, timeWrong = 0;
                 ushort configRight = 0, configWrong = 0;
-                var hash = Configuration.GetScheduleHash();     // 本机时间表配置的哈希值
+                var hash = Configuration.Schedule.GetScheduleHash();     // 本机时间表配置的哈希值
                 for (int i = 0; i < rooms.Count; i++)
                 {
                     // 判断时间
@@ -488,7 +488,7 @@ namespace ExamClock.Admin.ViewModels
 
             HostElements.Clear();
 
-            var hash = Configuration.GetScheduleHash();
+            var hash = Configuration.Schedule.GetScheduleHash();
             for (int i = 0; i < rooms.Count; i++)
             {
                 var element = new HostItemBox()

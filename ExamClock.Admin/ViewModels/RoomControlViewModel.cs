@@ -322,7 +322,7 @@ namespace ExamClock.Admin.ViewModels
                     return;
                 }
 
-                string scheduleStr = Configuration.GetScheduleString(); // 日程配置的SPF字符串
+                string scheduleStr = Configuration.Schedule.Export().ToString(); // 日程配置的SPF字符串
                 var instructor = new InstructionClient(privateKey);
                 var result = await instructor.SendInstructionAsync(new IPEndPoint(Ip, Configuration.ControllingPort), InstructionType.PushSchedule, Encoding.UTF8.GetBytes(scheduleStr));
 

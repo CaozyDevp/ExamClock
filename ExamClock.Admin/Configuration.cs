@@ -18,10 +18,7 @@
 using ExamClock.Core;
 using Spf;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
 
 namespace ExamClock.Admin
@@ -56,36 +53,13 @@ namespace ExamClock.Admin
         }
 
         /// <summary>
-        /// 考试日程表
+        /// 考试日程
         /// </summary>
-        private static Table TimeTable
+        public static ExamSchedule Schedule
         {
-            get; set;
-        }
+            get; private set;
+        } = new ExamSchedule();
         #endregion
-
-        /// <summary>
-        /// 获取日程配置的MD5值（SPF配置项UTF8字符串的MD5）
-        /// </summary>
-        /// <returns></returns>
-        public static byte[] GetScheduleHash()
-        {
-            using (var md5 = MD5.Create())
-            {
-                var timeTableText = GetScheduleString();
-                var bytes = Encoding.UTF8.GetBytes(timeTableText);
-                return md5.ComputeHash(bytes);
-            }
-        }
-
-        /// <summary>
-        /// 获取日程配置的SPF字符串
-        /// </summary>
-        /// <returns></returns>
-        public static string GetScheduleString()
-        {
-            return (TimeTable ?? new Table()).ToString();
-        }
 
         /// <summary>
         /// 从文件加载时间表配置文件
@@ -102,39 +76,16 @@ namespace ExamClock.Admin
             try
             {
                 string rawText = File.ReadAllText(configFile);
-                TimeTable = Table.Parse(rawText);
+                Schedule.Import(Table.Parse(rawText));
             }
             catch
             {
                 MessageBox.Show("配置文件可能损坏，无法读取。\n注意：原有的所有配置将被覆盖！");
+                Schedule = new ExamSchedule();
                 return false;
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// 获取所有有效考试项目
-        /// </summary>
-        public static List<ExamItem> GetExamItems()
-        {
-            var examItems = new List<ExamItem>();
-            for (int i = 0; i < TimeTable.Count; i++)
-            {
-                try
-                {
-                    var item = TimeTable[i];
-                    var subject = (string)item[0];
-                    var beginTime = (DateTime)item[1];
-                    var duration = (int)item[2];
-                    examItems.Add(new ExamItem(subject, beginTime, TimeSpan.FromMinutes(duration)));
-                }
-                catch
-                {
-                    continue;
-                }
-            }
-            return examItems;
         }
 
         static Configuration()
@@ -143,7 +94,6 @@ namespace ExamClock.Admin
             if (!LoadTimeTable(Path.Combine(Environment.CurrentDirectory, defaultConfigFile)))
             {
                 MessageBox.Show("无法找到配置文件");
-                TimeTable = new Table();
             }
         }
     }
