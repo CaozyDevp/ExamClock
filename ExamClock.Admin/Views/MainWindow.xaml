@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:ExamClock.Admin.ViewModels"
+        xmlns:ctrl="clr-namespace:ExamClock.Admin.Views.UserControls"
         xmlns:local="clr-namespace:ExamClock.Admin"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
@@ -330,18 +331,30 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Text="{Binding DetectingStatusString}" />
-                <ItemsControl Grid.Row="1"
+                <ScrollViewer Grid.Row="1"
                               Grid.Column="1"
-                              VerticalAlignment="Top"
-                              HorizontalAlignment="Left"
-                              ItemsSource="{Binding HostElements, Mode=OneWay}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"
-                                       FlowDirection="LeftToRight" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  ItemsSource="{Binding RoomViewModels}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"
+                                           FlowDirection="LeftToRight">
+                                </WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ctrl:HostItemBox RoomInfo="{Binding Room}"
+                                                  RoomTime="{Binding Time}"
+                                                  IsCorrect="{Binding IsCorrect}"
+                                                  IsTimeCorrect="{Binding IsTimeCorrect}"
+                                                  Margin="5"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
 
                 <Border Grid.Row="1"
                         Grid.Column="2"

@@ -237,19 +237,19 @@ namespace ExamClock.Admin.ViewModels
         private List<RoomInfo> _rooms = new List<RoomInfo>();
 
         /// <summary>
-        /// 在主窗体上显示的考场相关控件
+        /// 在主窗体上显示的考场
         /// </summary>
-        public ObservableCollection<UIElement> HostElements
+        public ObservableCollection<RoomViewModel> RoomViewModels
         {
-            get => _hostElements;
+            get => _roomViewModels;
             private set
             {
-                if (value == _hostElements) return;
-                _hostElements = value ?? throw new ArgumentNullException(nameof(value));
+                if (value == _roomViewModels) return;
+                _roomViewModels = value ?? throw new ArgumentNullException(nameof(value));
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<UIElement> _hostElements = new ObservableCollection<UIElement>();
+        private ObservableCollection<RoomViewModel> _roomViewModels = new ObservableCollection<RoomViewModel>();
 
         private DispatcherTimer _timer;
 
@@ -294,7 +294,7 @@ namespace ExamClock.Admin.ViewModels
                     return;
                 }
 
-                HostElements.Clear();
+                RoomViewModels.Clear();
                 DetectingStatus = DetectingStatus.Detecting;
 
                 // 获取考场信息
@@ -331,7 +331,7 @@ namespace ExamClock.Admin.ViewModels
                 }
 
                 // 在UI上显示考场信息
-                ShowHosts(rooms, sortedTimes);
+                InitRoomViewModels(rooms, sortedTimes);
 
                 // 显示实际考场数量
                 ActualTotalRooms = (ushort)rooms.Count;
@@ -486,31 +486,30 @@ namespace ExamClock.Admin.ViewModels
         }
 
         /// <summary>
-        /// 在UI上显示考场信息
+        /// 初始化考场显示
         /// </summary>
         /// <param name="rooms">考场列表</param>
         /// <param name="times">考场时间，要求与考场按顺序一一对应</param>
-        private void ShowHosts(List<RoomInfo> rooms, List<TimeKeeper> times)
+        private void InitRoomViewModels(List<RoomInfo> rooms, List<TimeKeeper> times)
         {
             if (rooms.Count != times.Count)
             {
                 throw new ArgumentException("The count of rooms must equal to that of times.");
             }
 
-            HostElements.Clear();
+            RoomViewModels.Clear();
 
             var hash = Configuration.Schedule.GetScheduleHash();
             for (int i = 0; i < rooms.Count; i++)
             {
-                var element = new HostItemBox()
+                var vm = new RoomViewModel()
                 {
-                    RoomInfo = rooms[i],
-                    RoomTime = times[i],
-                    Margin = new Thickness(4),
+                    Room = rooms[i],
+                    Time = times[i],
                     IsCorrect = rooms[i].ScheduleHash != null && hash.SequenceEqual(rooms[i].ScheduleHash),
                     IsTimeCorrect = Math.Abs(times[i].Offset.TotalMilliseconds) < 1000
                 };
-                HostElements.Add(element);
+                RoomViewModels.Add(vm);
             }
         }
 

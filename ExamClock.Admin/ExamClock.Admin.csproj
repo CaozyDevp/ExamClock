@@ -62,6 +62,7 @@
     <Compile Include="Enums\DetectingStatus.cs" />
     <Compile Include="Models\InstructionClient.cs" />
     <Compile Include="ViewModels\RoomControlViewModel.cs" />
+    <Compile Include="ViewModels\RoomViewModel.cs" />
     <Compile Include="Views\PasswordInputWindow.xaml.cs">
       <DependentUpon>PasswordInputWindow.xaml</DependentUpon>
     </Compile>
