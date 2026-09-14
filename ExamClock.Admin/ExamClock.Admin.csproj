@@ -63,11 +63,15 @@
     <Compile Include="Models\InstructionClient.cs" />
     <Compile Include="ViewModels\RoomControlViewModel.cs" />
     <Compile Include="ViewModels\RoomViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\PasswordInputWindow.xaml.cs">
       <DependentUpon>PasswordInputWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RoomControlWindow.xaml.cs">
       <DependentUpon>RoomControlWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\HostItemBox.xaml.cs">
       <DependentUpon>HostItemBox.xaml</DependentUpon>
@@ -92,6 +96,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RoomControlWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

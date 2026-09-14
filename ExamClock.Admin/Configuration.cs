@@ -59,7 +59,10 @@ namespace ExamClock.Admin
         {
             get; private set;
         } = new ExamSchedule();
+
         #endregion
+
+        private static readonly string _configFilePath = Path.Combine(Environment.CurrentDirectory, "timeTable.spf");
 
         /// <summary>
         /// 从文件加载时间表配置文件
@@ -88,10 +91,39 @@ namespace ExamClock.Admin
             return true;
         }
 
+        /// <summary>
+        /// 将时间表配置文件保存到默认路径
+        /// </summary>
+        /// <returns></returns>
+        public static bool SaveConfig()
+        {
+            return SaveConfig(_configFilePath);
+        }
+
+        /// <summary>
+        /// 将时间表配置文件保存到指定路径
+        /// </summary>
+        /// <param name="configFile">目标路径</param>
+        /// <returns></returns>
+        public static bool SaveConfig(string configFile)
+        {
+            try
+            {
+                if (!File.Exists(configFile)) return false;
+                string rawText = Schedule.Export().ToString();
+                File.WriteAllText(configFile, rawText);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("无法保存配置文件，错误信息：" + ex.Message);
+                return false;
+            }
+            return true;
+        }
+
         static Configuration()
         {
-            const string defaultConfigFile = "timeTable.spf";
-            if (!LoadTimeTable(Path.Combine(Environment.CurrentDirectory, defaultConfigFile)))
+            if (!LoadTimeTable(_configFilePath))
             {
                 MessageBox.Show("无法找到配置文件");
             }
