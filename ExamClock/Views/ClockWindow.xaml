@@ -25,6 +25,7 @@
                     FlowDirection="RightToLeft">
             <Button Width="52"
                     Height="52"
+                    Name="ExitButton"
                     Click="ExitButton_Click"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
@@ -35,6 +36,7 @@
                                 Height="52"
                                 BorderThickness="2.5"
                                 BorderBrush="#606060"
+                                Background="#191919"
                                 CornerRadius="16">
                             <Image Source="/Views/Images/Exit.png"
                                    Width="23"
@@ -47,35 +49,137 @@
                                                   ShadowDepth="0"
                                                   Color="White" />
                             </Border.Effect>
-                            <Border.Background>
-                                <RadialGradientBrush Center="0.5,0.5"
-                                                     RadiusX="0.5"
-                                                     RadiusY="0.5">
-                                    <RadialGradientBrush.GradientStops>
-                                        <GradientStop Color="#191919"
-                                                      Offset="0" />
-                                        <GradientStop Color="#232323"
-                                                      Offset="1" />
-                                    </RadialGradientBrush.GradientStops>
-                                </RadialGradientBrush>
-                            </Border.Background>
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <TextBlock Foreground="#5E5E5E"
-                       Text="{Binding RoomNumberText}"
-                       FontFamily="{StaticResource Hei}"
-                       FontSize="30"
-                       Margin="13 0 0 0"
-                       FlowDirection="LeftToRight"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Center"/>
+            <ToggleButton Width="52"
+                          Height="52"
+                          Margin="12 0"
+                          Name="AudioButton"
+                          VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          Visibility="{Binding AudioButtonVisibility}">
+                <ToggleButton.Template>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Width="52"
+                                Height="52"
+                                Name="AudioButtonBorder"
+                                BorderThickness="2.5"
+                                BorderBrush="#606060"
+                                Background="#191919"
+                                CornerRadius="16">
+                            <Image Source="/Views/Images/Audio.png"
+                                   Width="24"/>
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="25"
+                                                  Direction="0"
+                                                  Opacity="0.3"
+                                                  ShadowDepth="0"
+                                                  Color="White" />
+                            </Border.Effect>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="AudioButtonBorder"
+                                        Property="Background"
+                                        Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+            <Popup IsOpen="{Binding IsChecked, ElementName=AudioButton}"
+                   Placement="Bottom"
+                   PlacementTarget="{Binding ElementName=AudioButton}"
+                   AllowsTransparency="True"
+                   Margin="5"
+                   StaysOpen="True"
+                   FlowDirection="LeftToRight">
+                <Border Height="106"
+                        Width="320"
+                        Background="#191919"
+                        BorderBrush="#767676"
+                        BorderThickness="2"
+                        CornerRadius="15">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="70"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+                        <Button Grid.Row="1"
+                                Grid.Column="1"
+                                Width="60"
+                                Height="60">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Source="/Views/Images/Backward.png"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button Grid.Row="1"
+                                Grid.Column="2"
+                                Width="60"
+                                Height="60">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Source="/Views/Images/Pause.png"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button Grid.Row="1"
+                                Grid.Column="3"
+                                Width="60"
+                                Height="60">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Source="/Views/Images/Forward.png"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Rectangle Height="49"
+                                   Width="1"
+                                   Fill="Gray"
+                                   Grid.Column="4"
+                                   Grid.Row="1"/>
+                        <Button Grid.Column="5"
+                                Grid.Row="1"
+                                Width="50"
+                                Height="50"
+                                HorizontalAlignment="Left"
+                                Padding="5">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Image Source="/Views/Images/Volume.png"
+                                           Width="25"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="1"
+                                   Grid.ColumnSpan="3"
+                                   Foreground="Gray"
+                                   FontSize="16"
+                                   Text="15:15 / 20:01"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+            </Popup>
         </StackPanel>
         <Grid Visibility="{Binding ClockGridVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*" />
-                <ColumnDefinition Width="{Binding ElementName=ClockGrid, Path=Width}" />
+                <ColumnDefinition Width="7*" />
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
 

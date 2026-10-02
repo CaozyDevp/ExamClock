@@ -24,6 +24,7 @@ using System.Windows;
 using ExamClock.Mvvm;
 using System.Windows.Threading;
 using ExamClock.Core.Constants;
+using System.Windows.Input;
 
 namespace ExamClock.ViewModels
 {
@@ -122,6 +123,11 @@ namespace ExamClock.ViewModels
         /// 进场页面的可见性（模式切换时使用）
         /// </summary>
         public Visibility EnteringGridVisibility => Mode == ClockDisplayMode.EnteringRoom ? Visibility.Visible : Visibility.Collapsed;
+
+        /// <summary>
+        /// 听力控制按钮的可见性（仅在考试中显示）
+        /// </summary>
+        public Visibility AudioButtonVisibility => Mode == ClockDisplayMode.Clock ? Visibility.Visible : Visibility.Collapsed;
 
         /// <summary>
         /// 考试项目名称

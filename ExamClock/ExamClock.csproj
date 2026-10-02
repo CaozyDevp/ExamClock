@@ -257,5 +257,17 @@
   <ItemGroup>
     <Resource Include="Views\Images\Alarm.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\Audio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\Pause.png" />
+    <Resource Include="Views\Images\Start.png" />
+    <Resource Include="Views\Images\Volume.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\Backward.png" />
+    <Resource Include="Views\Images\Forward.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
