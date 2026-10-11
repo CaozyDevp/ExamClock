@@ -16,13 +16,19 @@
 {
 	items = table:"[
 		(string:'语文', DateTime:'2025/9/4 08:00:00.0', int:'120'),
-		(string:'数学', DateTime:'2025/9/4 10:00:00.0', int:'100'),
-		(string:'数学', DateTime:'2025/9/6 10:00:00.0', int:'100'),
-		(string:'数学', DateTime:'2025/9/7 10:00:00.0', int:'100'),
-		(string:'数学', DateTime:'2025/9/8 10:00:00.0', int:'100'),
-		(string:'数学', DateTime:'2025/9/9 10:00:00.0', int:'100'),
-		(string:'数学', DateTime:'2025/9/10 10:00:00.0', int:'100'),
-		(string:'数学', DateTime:'2025/9/11 10:00:00.0', int:'100'),
-		(string:'数学', DateTime:'2025/9/12 10:00:00.0', int:'100')
+		(string:'数学', DateTime:'2025/9/4 13:00:00.0', int:'100'),
+		(string:'英语', DateTime:'2025/9/6 10:00:00.0', int:'100'),
+		(string:'物理', DateTime:'2025/9/7 10:00:00.0', int:'100'),
+		(string:'化学', DateTime:'2025/9/8 10:00:00.0', int:'100'),
+		(string:'生物', DateTime:'2025/9/9 10:00:00.0', int:'100'),
+		(string:'政治', DateTime:'2025/9/10 10:00:00.0', int:'100'),
+		(string:'历史', DateTime:'2025/9/11 10:00:00.0', int:'100'),
+		(string:'地理', DateTime:'2025/9/12 10:00:00.0', int:'100')
 	]"
+}
+
+#AUDIO
+{
+	src = string:"E:\audio.mp3",
+	start = DateTime:"2025/9/6 10:00:00.0"
 }
