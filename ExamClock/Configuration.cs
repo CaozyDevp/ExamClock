@@ -193,6 +193,24 @@ namespace ExamClock
         {
             get;
         } = new ExamSchedule();
+
+        /// <summary>
+        /// 听力音频文件的路径
+        /// </summary>
+        public static string AudioFileSource
+        {
+            get => (string)Config.GetValue("AUDIO.src");
+            set => Config.SetValue("AUDIO.src", value);
+        }
+
+        /// <summary>
+        /// 听力音频开始播放的时间
+        /// </summary>
+        public static DateTime AudioStartTime
+        {
+            get => (DateTime)Config.GetValue("AUDIO.start");
+            set => Config.SetValue("AUDIO.start", value);
+        }
         #endregion
 
         #region Methods
@@ -282,6 +300,10 @@ namespace ExamClock
             // TIMETABLE
             object items = new Table();
 
+            // AUDIO
+            object src = string.Empty;
+            object start = DateTime.MinValue;
+
             if (source != null)
             {
                 source.TryGetValue($"VERSION.{nameof(prgm)}", ref prgm);
@@ -294,6 +316,9 @@ namespace ExamClock
                 source.TryGetValue($"SETTINGS.{nameof(allowControl)}", ref allowControl);
 
                 source.TryGetValue($"TIMETABLE.{nameof(items)}", ref items);
+
+                source.TryGetValue($"AUDIO.{nameof(src)}", ref src);
+                source.TryGetValue($"AUDIO.{nameof(start)}", ref start);
             }
 
             target = new SpfItem()
@@ -328,6 +353,15 @@ namespace ExamClock
                         Properties = new List<PropertyItem>
                         {
                             new PropertyItem(nameof(items), items)
+                        }
+                    },
+                    new ConfigurationItem
+                    {
+                        Key = "AUDIO",
+                        Properties = new List<PropertyItem>
+                        {
+                            new PropertyItem(nameof(src), src),
+                            new PropertyItem(nameof(start), start)
                         }
                     }
                 }
