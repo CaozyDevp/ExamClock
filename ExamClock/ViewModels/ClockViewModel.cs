@@ -195,7 +195,15 @@ namespace ExamClock.ViewModels
                         TimeToBeginningText = "--:--";
                         return;
                     }
-                    TimeToBeginningText = (next.BeginTime - DateTime.Now).ToString(@"mm\:ss");
+                    var offset = next.BeginTime - DateTime.Now;
+                    if (offset > TimeSpan.Zero)
+                    {
+                        TimeToBeginningText = $"{(int)offset.TotalMinutes:00}:{offset.Seconds:00}";
+                    }
+                    else
+                    {
+                        TimeToBeginningText = "00:00";
+                    }
                     return;
                 }
                 EventNameText = current.Subject;
