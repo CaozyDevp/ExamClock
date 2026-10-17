@@ -24,7 +24,9 @@ using System.Windows;
 using ExamClock.Mvvm;
 using System.Windows.Threading;
 using ExamClock.Core.Constants;
-using System.Windows.Input;
+using System.Windows.Media;
+using System.IO;
+using ExamClock.Core.System;
 
 namespace ExamClock.ViewModels
 {
@@ -32,6 +34,34 @@ namespace ExamClock.ViewModels
     {
         public ClockViewModel()
         {
+            // 加载听力音频
+            string path = "";
+            try
+            {
+                path = Configuration.AudioFileSource;
+                if (File.Exists(path))
+                {
+                    AudioPlayer = new MediaPlayer();
+                    AudioPlayer.MediaOpened += (s, e) =>
+                    {
+                        OnPropertyChanged(nameof(HasAudio));
+                        OnPropertyChanged(nameof(AudioPositionText));
+                        OnPropertyChanged(nameof(AudioButtonVisibility));
+                    };
+                    AudioPlayer.MediaEnded += (s, e) =>
+                    {
+                        IsAudioPlaying = false;
+                        AudioPlayer.Position = TimeSpan.Zero;
+                        AudioPlayer.Pause();
+                        OnPropertyChanged(nameof(AudioPositionText));
+                    };
+                    AudioPlayer.Open(new Uri(path, UriKind.RelativeOrAbsolute));
+                }
+            }
+            catch
+            {
+            }
+
             SetNoticeTimes(Configuration.Schedule.ExamItems,
                 Configuration.NoticeBeforeEnding,
                 Configuration.ExamBeginningNotice == SoundType.ExamBeginning,
@@ -44,33 +74,71 @@ namespace ExamClock.ViewModels
             {
                 Interval = TimeSpan.FromSeconds(0.4)
             };
-            _timer.Tick += (s, e) =>
-            {
-                try
-                {
-                    RefreshClock();         // 刷新时间显示
-                    SetEventNameAndTime();  // 刷新考试项目和考试时间显示
+            _timer.Tick += Timer_Tick;
+            _timer.Start();
+        }
 
-                    var now = DateTime.Now;
-                    for (int i = 0; i < NoticeTimes.Count; i++)
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                RefreshClock();         // 刷新时间显示
+                SetEventNameAndTime();  // 刷新考试项目和考试时间显示
+
+                var now = DateTime.Now;
+                if (HasAudio)
+                {
+                    if (now < Configuration.AudioStartTime - TimeSpan.FromMinutes(20) ||
+                        now > Configuration.AudioStartTime + AudioPlayer.NaturalDuration.TimeSpan + TimeSpan.FromMinutes(30))
                     {
-                        NoticeItem notice = NoticeTimes[i];
-                        if (now >= notice.NoticeTime && now < notice.NoticeTime.AddSeconds(2))
+                        AudioButtonVisibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        AudioButtonVisibility = Visibility.Visible;
+                    }
+                    if (now >= Configuration.AudioStartTime && now < Configuration.AudioStartTime.AddSeconds(2))
+                    {
+                        // 处于指定的听力播放时间内，播放听力
+                        if (!IsAudioPlaying)
                         {
-                            // 处于提醒的时间内，播放提醒
-                            ExamVoiceReminder.Instance.Play(notice.NoticeType);
+                            AudioPlayer.Play();
+                            IsAudioPlaying = true;
+                        }
+                        OnPropertyChanged(nameof(AudioButtonVisibility));
+                        return;
+                    }
+                    if (IsAudioPlaying)
+                    {
+                        OnPropertyChanged(nameof(AudioPositionText));
+                    }
+                }
+                for (int i = 0; i < NoticeTimes.Count; i++)
+                {
+                    NoticeItem notice = NoticeTimes[i];
+                    if (now >= notice.NoticeTime && now < notice.NoticeTime.AddSeconds(2))
+                    {
+                        // 如果听力正在播放，则不播放提醒
+                        if (IsAudioPlaying)
+                        {
                             NoticeTimes.RemoveAt(i);
                             return;
                         }
+                        // 处于提醒的时间内，播放提醒
+                        ExamVoiceReminder.Instance.Play(notice.NoticeType);
+                        NoticeTimes.RemoveAt(i);
+                        return;
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Timer Tick 出现异常：{ex}");
-                }
-            };
-            _timer.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Timer Tick 出现异常：{ex}");
+            }
         }
+
+
+        #region Clock & Notice
 
         /// <summary>
         /// 定时器
@@ -98,65 +166,6 @@ namespace ExamClock.ViewModels
         public double SecondAngle => Time.Second * 6.0;
 
         /// <summary>
-        /// 当前的显示模式
-        /// </summary>
-        public ClockDisplayMode Mode
-        {
-            get => _mode;
-            set
-            {
-                if (SetProperty(ref _mode, value))
-                {
-                    OnPropertyChanged(nameof(ClockGridVisibility));
-                    OnPropertyChanged(nameof(EnteringGridVisibility));
-                }
-            }
-        }
-        private ClockDisplayMode _mode;
-
-        /// <summary>
-        /// 时钟页面的可见性（模式切换时使用）
-        /// </summary>
-        public Visibility ClockGridVisibility => Mode == ClockDisplayMode.Clock ? Visibility.Visible : Visibility.Collapsed;
-
-        /// <summary>
-        /// 进场页面的可见性（模式切换时使用）
-        /// </summary>
-        public Visibility EnteringGridVisibility => Mode == ClockDisplayMode.EnteringRoom ? Visibility.Visible : Visibility.Collapsed;
-
-        /// <summary>
-        /// 听力控制按钮的可见性（仅在考试中显示）
-        /// </summary>
-        public Visibility AudioButtonVisibility => Mode == ClockDisplayMode.Clock ? Visibility.Visible : Visibility.Collapsed;
-
-        /// <summary>
-        /// 考试项目名称
-        /// </summary>
-        public string EventNameText
-        {
-            get => _eventNameText;
-            private set
-            {
-                if (value == null) value = "";
-                SetProperty(ref _eventNameText, value);
-            }
-        }
-        private string _eventNameText = "";
-
-        /// <summary>
-        /// 显示的时间
-        /// </summary>
-        public string EventTimeText
-        {
-            get => _eventTimeText;
-            private set
-            {
-                SetProperty(ref _eventTimeText, value);
-            }
-        }
-        private string _eventTimeText = "";
-
-        /// <summary>
         /// 需要播放提醒的时间
         /// </summary>
         private List<NoticeItem> NoticeTimes
@@ -169,35 +178,6 @@ namespace ExamClock.ViewModels
             }
         }
         private List<NoticeItem> _noticeTimes = new List<NoticeItem>();
-
-        /// <summary>
-        /// 考场号文本
-        /// </summary>
-        public string RoomNumberText
-        {
-            get
-            {
-                var number = Configuration.RoomNumber;
-                if (number == 0)
-                {
-                    return "未知考场";
-                }
-                return number.ToString("0000");
-            }
-        }
-
-        /// <summary>
-        /// 距离考试开始的时间文本，仅在进场页面时显示
-        /// </summary>
-        public string TimeToBeginningText
-        {
-            get => _timeToBeginningText;
-            set
-            {
-                SetProperty(ref _timeToBeginningText, value);
-            }
-        }
-        private string _timeToBeginningText = "";
 
         private void SetEventNameAndTime()
         {
@@ -333,10 +313,228 @@ namespace ExamClock.ViewModels
             return true;
         }
 
+        #endregion
+
+        #region Mode
+
+        /// <summary>
+        /// 当前的显示模式
+        /// </summary>
+        public ClockDisplayMode Mode
+        {
+            get => _mode;
+            set
+            {
+                if (SetProperty(ref _mode, value))
+                {
+                    OnPropertyChanged(nameof(ClockGridVisibility));
+                    OnPropertyChanged(nameof(EnteringGridVisibility));
+                }
+            }
+        }
+        private ClockDisplayMode _mode;
+
+        /// <summary>
+        /// 时钟页面的可见性（模式切换时使用）
+        /// </summary>
+        public Visibility ClockGridVisibility => Mode == ClockDisplayMode.Clock ? Visibility.Visible : Visibility.Collapsed;
+
+        /// <summary>
+        /// 进场页面的可见性（模式切换时使用）
+        /// </summary>
+        public Visibility EnteringGridVisibility => Mode == ClockDisplayMode.EnteringRoom ? Visibility.Visible : Visibility.Collapsed;
+
+        #endregion
+
+        #region Audio
+
+        /// <summary>
+        /// 音频播放器
+        /// </summary>
+        public MediaPlayer AudioPlayer { get; }
+
+        /// <summary>
+        /// 音频是否正在播放
+        /// </summary>
+        public bool IsAudioPlaying
+        {
+            get => _isAudioPlaying;
+            set
+            {
+                _isAudioPlaying = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PauseVisibility));
+                OnPropertyChanged(nameof(PlayVisibility));
+            }
+        }
+        private bool _isAudioPlaying = false;
+
+        /// <summary>
+        /// 是否有音频文件
+        /// </summary>
+        public bool HasAudio => AudioPlayer != null && AudioPlayer.Source != null && AudioPlayer.NaturalDuration.HasTimeSpan;
+
+        /// <summary>
+        /// 听力控制按钮的可见性
+        /// </summary>
+        public Visibility AudioButtonVisibility
+        {
+            get => _audioButtonVisibility;
+            set
+            {
+                if (value == _audioButtonVisibility)
+                    return;
+
+                _audioButtonVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+        private Visibility _audioButtonVisibility = Visibility.Collapsed;
+
+        public Visibility PauseVisibility => IsAudioPlaying ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility PlayVisibility => IsAudioPlaying ? Visibility.Collapsed : Visibility.Visible;
+
+        public int SystemVolume
+        {
+            get => SystemVolumeManager.GetVolume();
+            set
+            {
+                SystemVolumeManager.SetVolume(value);
+                OnPropertyChanged(nameof(SystemVolume));
+            }
+        }
+
+        public string AudioPositionText
+        {
+            get
+            {
+                if (!HasAudio)
+                {
+                    return "00:00 / 00:00";
+                }
+                return $"{AudioPlayer.Position:mm\\:ss} / {AudioPlayer.NaturalDuration.TimeSpan:mm\\:ss}";
+            }
+        }
+
+        public RelayCommand PlayAudioCommand => new RelayCommand((_) =>
+        {
+            if (!HasAudio)
+            {
+                return;
+            }
+            if (IsAudioPlaying)
+            {
+                AudioPlayer.Pause();
+                IsAudioPlaying = false;
+            }
+            else
+            {
+                AudioPlayer.Play();
+                IsAudioPlaying = true;
+            }
+        });
+
+        public RelayCommand AudioForwardCommand => new RelayCommand((_) =>
+        {
+            if (!HasAudio || !IsAudioPlaying)
+            {
+                return;
+            }
+            var total = AudioPlayer.NaturalDuration.TimeSpan;
+            var position = AudioPlayer.Position;
+            var newposition = position + TimeSpan.FromSeconds(5);
+            if (newposition > total)
+            {
+                newposition = total;
+            }
+            AudioPlayer.Position = newposition;
+        });
+
+        public RelayCommand AudioBackwardCommand => new RelayCommand((_) =>
+        {
+            if (!HasAudio || !IsAudioPlaying)
+            {
+                return;
+            }
+            var position = AudioPlayer.Position;
+            var newposition = position - TimeSpan.FromSeconds(5);
+            if (newposition < TimeSpan.Zero)
+            {
+                newposition = TimeSpan.Zero;
+            }
+            AudioPlayer.Position = newposition;
+        });
+
+        #endregion
+
+        #region Info
+
+        /// <summary>
+        /// 考试项目名称
+        /// </summary>
+        public string EventNameText
+        {
+            get => _eventNameText;
+            private set
+            {
+                if (value == null) value = "";
+                SetProperty(ref _eventNameText, value);
+            }
+        }
+        private string _eventNameText = "";
+
+        /// <summary>
+        /// 显示的时间
+        /// </summary>
+        public string EventTimeText
+        {
+            get => _eventTimeText;
+            private set
+            {
+                SetProperty(ref _eventTimeText, value);
+            }
+        }
+        private string _eventTimeText = "";
+
+        /// <summary>
+        /// 考场号文本
+        /// </summary>
+        public string RoomNumberText
+        {
+            get
+            {
+                var number = Configuration.RoomNumber;
+                if (number == 0)
+                {
+                    return "未知考场";
+                }
+                return number.ToString("0000");
+            }
+        }
+
+        /// <summary>
+        /// 距离考试开始的时间文本，仅在进场页面时显示
+        /// </summary>
+        public string TimeToBeginningText
+        {
+            get => _timeToBeginningText;
+            set
+            {
+                SetProperty(ref _timeToBeginningText, value);
+            }
+        }
+        private string _timeToBeginningText = "";
+
+        #endregion
+
         public void Dispose()
         {
             _timer?.Stop();
             _timer = null;
+
+            AudioPlayer?.Stop();
+            AudioPlayer?.Close();
         }
     }
 }
