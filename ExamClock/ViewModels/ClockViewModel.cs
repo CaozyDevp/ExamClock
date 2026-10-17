@@ -92,10 +92,15 @@ namespace ExamClock.ViewModels
                         now > Configuration.AudioStartTime + AudioPlayer.NaturalDuration.TimeSpan + TimeSpan.FromMinutes(30))
                     {
                         AudioButtonVisibility = Visibility.Collapsed;
+                        AudioStatusText = "";
                     }
                     else
                     {
                         AudioButtonVisibility = Visibility.Visible;
+                        if (Configuration.AudioStartTime > DateTime.Now && !IsAudioPlaying)
+                        {
+                            AudioStatusText = $"将在{Configuration.AudioStartTime:hh:mm}播放听力";
+                        }
                     }
                     if (now >= Configuration.AudioStartTime && now < Configuration.AudioStartTime.AddSeconds(2))
                     {
@@ -134,6 +139,7 @@ namespace ExamClock.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show($"Timer Tick 出现异常：{ex}");
+                _timer.Stop();
             }
         }
 
@@ -369,10 +375,20 @@ namespace ExamClock.ViewModels
             get => _isAudioPlaying;
             set
             {
+                if (value == _isAudioPlaying) return;
+
                 _isAudioPlaying = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(PauseVisibility));
                 OnPropertyChanged(nameof(PlayVisibility));
+                if (value)
+                {
+                    AudioStatusText = "正在播放听力";
+                }
+                else
+                {
+                    AudioStatusText = "";
+                }
             }
         }
         private bool _isAudioPlaying = false;
@@ -533,6 +549,19 @@ namespace ExamClock.ViewModels
             }
         }
         private string _timeToBeginningText = "";
+
+        /// <summary>
+        /// 听力考试音频状态的文本
+        /// </summary>
+        public string AudioStatusText
+        {
+            get => _audioStatusText;
+            set
+            {
+                SetProperty(ref _audioStatusText, value);
+            }
+        }
+        private string _audioStatusText = "";
 
         #endregion
 
